@@ -313,7 +313,6 @@
         const STORAGE_KEY = 'menitiSejarahAppState';
         // NEW: Konstanta Batasan Waktu (20 menit = 1200 detik)
         const MISSION_TIME_LIMIT_SECONDS = 20 * 60;
-        const GRADING_TIMEOUT_MS = 20000; // 20 detik batas waktu penilaian AI
         
         // Konstanta Tombol Audio
         const originalButtonContent = '<svg class="w-5 h-5 mr-2 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.26a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> Dengarkan Audio Soal';
@@ -410,7 +409,7 @@
                 { id: 'aceh_10', type: 'essay', question: "Analisis: Jelaskan secara singkat mengapa kegagalan serangan Sultan Iskandar Muda ke Malaka pada 1629 tetap dianggap penting bagi posisi politik Aceh di Nusantara?", difficulty: 'HOTS', minWords: 30, points: SCORE_MAP.essay } 
             ],
             "Perlawanan Maluku (Pattimura)": [
-                { id: 'maluku_1', type: 'narrative_mc', question: "Selamat datang di Misi Perlawanan Maluku. Dengarkan baik-baik narasi berikut: Setelah Inggris menyerahkan Maluku kepada Belanda pada tahun 1817, Belanda segera mengaktifkan kembali praktik monopoli rempah-rempah yang sangat merugikan rakyat, menghapus uang kertas, dan menghapus hak-hak masyarakat adat. Kebijakan ini, ditambah dengan wajib militer dan kerja rodi, memicu kemarahan massal. Berdasarkan narasi, apa kebijakan ekonomi Belanda yang sangat membebani rakyat Maluku pasca kedatangan kembali Inggris?", difficulty: 'MUDAH', options: ["Monopoli cengkeh dan pala", "Kewajiban kerja paksa di tambang batu bara", "Pajak tanah yang sangat tinggi", "Larangan berlayar di Laut Banda"], answer: "Monopoli cengkeh dan pala", points: SCORE_MAP.multiple_choice }, 
+                { id: 'maluku_1', type: 'narrative_mc', question: "Selamat datang di Misi Perlawanan Maluku. Dengarkan baik-baik narasi berikut: Setelah Inggris menyerahkan Maluku kepada Belanda pada tahun 1817, Belanda segera mengaktifkan kembali praktik monopoli rempah-rempah yang sangat merugikan rakyat, menghapus uang kertas, dan menghapus hak-hak masyarakat adat. Kebijakan ini, ditambah dengan wajib militer dan kerja rodi, memicu kemarahan massal. Berdasarkan narasi, apa kebijakan ekonomi Belanda yang sangat membebani rakyat Maluku pasca kedatangan kembali Inggris?", difficulty: 'MUDAH', options: ["Monopoli cengkeh dan pala", "Kewajiban kerja paksa di tambang batu bara", "Pajak tanah yang sangat tinggi", "Larangan berlayar di Laut Banda"], answer: "Monopoli cengkeh dan pala", points: SCORE_MAP.narrative_mc }, 
                 
                 { id: 'maluku_2', type: 'multiple_choice', question: "Tokoh perempuan yang ikut berjuang bersama Pattimura di Pulau Nusalaut adalah?", difficulty: 'MUDAH', options: ["Dewi Sartika", "Martha Christina Tiahahu", "Cut Nyak Dhien", "R.A. Kartini"], answer: "Martha Christina Tiahahu", points: SCORE_MAP.multiple_choice },
                 
@@ -422,7 +421,7 @@
                     difficulty: 'SEDANG', 
                     gridItems: [
                         { text: "Pattimura adalah nama asli Thomas Matulessy.", answer: true }, 
-                        { text: "Benteng Duurstede berhasil direbut oleh pasukan Pattimura pada 16 Mei 1817. (JAWABAN BENAR: Benar)", answer: true }, 
+                        { text: "Benteng Duurstede berhasil direbut oleh pasukan Pattimura.", answer: true }, 
                         { text: "Motif utama perlawanan adalah untuk membalas dendam Pattimura di Ambon.", answer: false }, 
                         { text: "Perlawanan ini didukung oleh masyarakat Kristen dan Muslim.", answer: true }
                     ],
@@ -454,7 +453,7 @@
                 { id: 'maluku_10', type: 'essay', question: "Analisis: Jelaskan dampak politik dan psikologis dari hukuman mati Pattimura terhadap semangat perjuangan rakyat Maluku selanjutnya.", difficulty: 'HOTS', minWords: 30, points: SCORE_MAP.essay } 
             ],
             "Perlawanan Banten (Sultan Ageng Tirtayasa)": [
-                { id: 'banten_1', type: 'narrative_mc', question: "Selamat datang di Misi Perlawanan Banten. Dengarkan baik-baik narasi berikut: Sultan Ageng Tirtayasa dikenal sebagai sultan yang gigih melawan VOC, karena ia menentang keras upaya monopoli. Beliau berusaha menjadikan Banten sebagai pelabuhan internasional yang bebas dari campur tangan VOC, bersaing langsung dengan Batavia. Inilah yang membuat VOC murka dan memicu konflik berkelanjutan. Berdasarkan narasi, apa fokus utama kebijakan Sultan Ageng Tirtayasa yang bertentangan dengan kepentingan VOC?", difficulty: 'MUDAH', options: ["Memperluas lahan pertanian tebu", "Membangun armada laut modern untuk perdagangan bebas", "Menciptakan aliansi dengan Kesultanan Demak", "Memindahkan pusat pemerintahan ke pedalaman"], answer: "Membangun armada laut modern untuk perdagangan bebas", points: SCORE_MAP.multiple_choice }, 
+                { id: 'banten_1', type: 'narrative_mc', question: "Selamat datang di Misi Perlawanan Banten. Dengarkan baik-baik narasi berikut: Sultan Ageng Tirtayasa dikenal sebagai sultan yang gigih melawan VOC, karena ia menentang keras upaya monopoli. Beliau berusaha menjadikan Banten sebagai pelabuhan internasional yang bebas dari campur tangan VOC, bersaing langsung dengan Batavia. Inilah yang membuat VOC murka dan memicu konflik berkelanjutan. Berdasarkan narasi, apa fokus utama kebijakan Sultan Ageng Tirtayasa yang bertentangan dengan kepentingan VOC?", difficulty: 'MUDAH', options: ["Memperluas lahan pertanian tebu", "Membangun armada laut modern untuk perdagangan bebas", "Menciptakan aliansi dengan Kesultanan Demak", "Memindahkan pusat pemerintahan ke pedalaman"], answer: "Membangun armada laut modern untuk perdagangan bebas", points: SCORE_MAP.narrative_mc }, 
                 
                 { id: 'banten_2', type: 'multiple_choice', question: "Apa nama strategi VOC yang paling merusak internal Kesultanan Banten?", difficulty: 'SEDANG', options: ["Cultuurstelsel", "Devide et Impera", "Benteng Stelsel", "Pax Neerlandica"], answer: "Devide et Impera", points: SCORE_MAP.multiple_choice },
                 
@@ -1337,7 +1336,7 @@
 3. Penangkapan Sultan Ageng Tirtayasa mengakhiri perjuangan militer Banten. (JAWABAN BENAR: Benar)
 4. VOC berhasil menangkap Sultan Ageng setelah mengalahkan semua pasukannya di medan perang terbuka. (JAWABAN BENAR: Salah)`; // grid 2
                 case 'banten_9': return `VOC menjanjikan pengakuan Sultan yang sah dan bantuan militer untuk merebut istana.`;
-                case 'banten_10': return `Jawaban harus menjelaskan bahwa politik adu domba VOC berhasil merusak Kesultanan Banten dan menyebabkan kekalahan perlawanan yang dipimpin Sultan Ageng Tirtayasa.`; // essay
+                case 'banten_10': return `Jawaban harus menjelaskan bahwa VOC berhasil karena adanya perpecahan suksesi yang dimanfaatkan secara politik, di mana ambisi Sultan Haji diadu domba dengan prinsip anti-monopoli Sultan Ageng.`; // essay
 
                 // Gowa
                 case 'gowa_1': return `Julukan Ayam Jantan dari Timur diberikan oleh Belanda kepada Sultan Hasanuddin karena kegigihan perlawanan Gowa.`;
@@ -1819,10 +1818,16 @@
             const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
 
             // OPTIMASI: System prompt yang lebih ringkas dan fokus pada tugas inti
-            // Fokus pada: 1. Akurasi Materi, 2. Kejelasan Struktur Kalimat, 3. Analisis Kritis (pemikiran orisinal)
-            const systemPrompt = `Anda adalah Ahli Sejarah. Nilai esai dari 0 sampai ${maxScore}. Kriteria: 1. Akurasi Materi Sejarah (Relevansi jawaban dengan konteks sejarah). 2. Kejelasan Struktur Kalimat (Tata bahasa dan kelancaran). 3. Analisis Kritis (Kedalaman interpretasi peserta). Berikan skor berdasarkan ketiga kriteria ini secara seimbang. Jawab HANYA dalam format JSON.`;
+            const systemPrompt = `Anda adalah seorang Ahli Sejarah Indonesia. Tugas Anda adalah memberikan skor dari 0 sampai ${maxScore} dan feedback untuk jawaban esai siswa. Fokuslah pada kedalaman analisis (HOTS) dan akurasi historis.
 
-            const userQuery = `Pertanyaan: "${questionText}"\n\nJawaban Siswa: "${userAnswer}"\n\nBeri skor dan feedback (maksimal 3 kalimat).`;
+Instruksi Penilaian:
+1. Skor 0: Jawaban tidak relevan, sangat singkat, atau tidak memenuhi minimal ${POINTS_PER_QUESTION} kata.
+2. Skor 1 sampai ${maxScore - 1}: Skor parsial untuk jawaban yang akurat namun kurang analisis kritis atau kurang detail.
+3. Skor ${maxScore}: Jawaban komprehensif yang menampilkan analisis kritis yang mendalam dan akurat.
+
+Jawablah HANYA dalam format JSON.`;
+
+            const userQuery = `Pertanyaan: "${questionText}"\n\nJawaban Siswa: "${userAnswer}"\n\nBeri skor dan feedback.`;
 
             const payload = {
                 contents: [{ parts: [{ text: userQuery }] }],
@@ -1839,26 +1844,13 @@
                     }
                 }
             };
-
-            // Tambahkan batasan waktu (timeout) 
-            const fetchPromise = fetch(apiUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
-
+            
             try {
-                const response = await Promise.race([
-                    fetchPromise,
-                    new Promise((_, reject) =>
-                        setTimeout(() => reject(new Error('Penilaian AI Melebihi Batas Waktu (20 detik).')), GRADING_TIMEOUT_MS)
-                    )
-                ]);
-                
-                // Check if response is null (due to timeout handling)
-                if (!response) {
-                    throw new Error("Penilaian AI gagal karena batas waktu (Timeout)");
-                }
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
 
                 const result = await response.json();
                 const jsonText = result?.candidates?.[0]?.content?.parts?.[0]?.text;
@@ -1873,7 +1865,7 @@
                 return { score: 0, feedback: "Penilaian AI gagal (API error), skor 0 diberikan." };
             } catch (e) {
                 console.error("AI Grading Error:", e);
-                return { score: 0, feedback: `Penilaian otomatis gagal: ${e.message}. Skor 0 diberikan.` };
+                return { score: 0, feedback: "Kesalahan koneksi atau format saat menilai dengan AI. Skor 0 diberikan." };
             }
         };
 
@@ -1910,8 +1902,8 @@
                     return;
                 }
                 
-                // Tampilkan loading saat menunggu penilaian AI (Diubah sesuai permintaan)
-                document.getElementById('feedback-message').innerHTML = '<div class="w-5 h-5 border-2 border-yellow-400 border-t-yellow-900 rounded-full animate-spin inline-block mr-2"></div> Menilai Esai Otomatis...';
+                // Tampilkan loading saat menunggu penilaian AI
+                document.getElementById('feedback-message').textContent = 'Mengirim jawaban ke Ahli Sejarah (AI) untuk dinilai...';
                 document.getElementById('feedback-message').classList.remove('text-red-400', 'text-green-400');
                 document.getElementById('feedback-message').classList.add('text-yellow-400');
                 document.getElementById('submit-answer-btn').disabled = true;
