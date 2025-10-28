@@ -511,7 +511,7 @@
                         { text: "Motif utama VOC menyerang Gowa adalah monopoli perdagangan rempah-rempah.", answer: true }, 
                         { text: "Sultan Hasanuddin mendukung kebijakan monopoli dagang VOC.", answer: false }, 
                         { text: "Arung Palakka adalah sekutu VOC karena dendam pribadi.", answer: true }, 
-                        { text: "Julukan Ayam Jantan dari Timur diberikan oleh sekutu Sultan Hasanuddin.", answer: false }
+                        { text: "Julukan Ayam Jantan dari Timur diberikan oleh Belanda. (JAWABAN BENAR: Salah)", answer: false }
                     ],
                     points: SCORE_MAP.grid_tf
                 },
@@ -1817,12 +1817,15 @@
             const apiKey = TTS_API_KEY; // Menggunakan API key yang sama
             const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
 
-            const systemPrompt = `Anda adalah seorang asisten pengoreksi ujian Sejarah Indonesia. Berikan penilaian otomatis untuk sebuah jawaban esai (HOTS) yang diberikan oleh siswa. Tugas Anda adalah:
-1. Analisis pertanyaan dan jawaban siswa.
-2. Tentukan skor dari 0 hingga ${maxScore}. Berikan skor maksimal hanya jika jawaban benar-benar komprehensif, kritis, dan memenuhi semua poin analisis yang relevan. Berikan skor 0 jika jawaban tidak relevan atau terlalu singkat.
-3. Berikan *feedback* yang konstruktif dan detail berdasarkan kriteria penilaian Anda.
+            // OPTIMASI: System prompt yang lebih ringkas dan fokus pada tugas inti
+            const systemPrompt = `Anda adalah seorang Ahli Sejarah Indonesia. Tugas Anda adalah memberikan skor dari 0 sampai ${maxScore} dan feedback untuk jawaban esai siswa. Fokuslah pada kedalaman analisis (HOTS) dan akurasi historis.
 
-Instruksi: Jawablah HANYA dalam format JSON yang ditentukan.`;
+Instruksi Penilaian:
+1. Skor 0: Jawaban tidak relevan, sangat singkat, atau tidak memenuhi minimal ${POINTS_PER_QUESTION} kata.
+2. Skor 1 sampai ${maxScore - 1}: Skor parsial untuk jawaban yang akurat namun kurang analisis kritis atau kurang detail.
+3. Skor ${maxScore}: Jawaban komprehensif yang menampilkan analisis kritis yang mendalam dan akurat.
+
+Jawablah HANYA dalam format JSON.`;
 
             const userQuery = `Pertanyaan: "${questionText}"\n\nJawaban Siswa: "${userAnswer}"\n\nBeri skor dan feedback.`;
 
@@ -1859,7 +1862,7 @@ Instruksi: Jawablah HANYA dalam format JSON yang ditentukan.`;
                     return parsed;
                 }
                 
-                return { score: 0, feedback: "Penilaian AI gagal, skor 0 diberikan." };
+                return { score: 0, feedback: "Penilaian AI gagal (API error), skor 0 diberikan." };
             } catch (e) {
                 console.error("AI Grading Error:", e);
                 return { score: 0, feedback: "Kesalahan koneksi atau format saat menilai dengan AI. Skor 0 diberikan." };
