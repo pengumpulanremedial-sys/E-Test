@@ -234,17 +234,19 @@
             </div>
 
             <!-- LAYAR PELANGGARAN ATURAN BARU -->
-            <div id="penalty-screen" class="hidden text-center py-10 bg-gray-700 rounded-xl container-card">
-                <h2 class="text-4xl font-extrabold text-red-600 mb-4">PELANGGARAN TERDETEKSI! ⚠️</h2>
-                <p class="text-xl text-gray-300 mb-6">Anda telah melanggar aturan game.</p>
-                <div class="p-8 bg-gray-800 rounded-xl shadow-lg inline-block border-2 border-yellow-600">
-                    <p class="text-3xl font-bold text-red-400 mb-2" id="penalty-reason"></p>
-                    <p class="text-base text-gray-400">Pelanggaran ke: <span id="penalty-count" class="text-red-400 font-bold">1</span> dari <span class="text-red-400 font-bold">2</span></p>
-                </div>
-                <div class="mt-8">
-                    <button id="penalty-continue-btn" class="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg transition duration-200">
-                        Lanjutkan Misi
-                    </button>
+            <div id="penalty-screen" class="hidden">
+                <div class="text-center py-10 bg-gray-700 rounded-xl container-card">
+                    <h2 class="text-4xl font-extrabold text-red-600 mb-4">PELANGGARAN TERDETEKSI! ⚠️</h2>
+                    <p class="text-xl text-gray-300 mb-6">Anda telah melanggar aturan game.</p>
+                    <div class="p-8 bg-gray-800 rounded-xl shadow-lg inline-block border-2 border-yellow-600">
+                        <p class="text-3xl font-bold text-red-400 mb-2" id="penalty-reason"></p>
+                        <p class="text-base text-gray-400">Pelanggaran ke: <span id="penalty-count" class="text-red-400 font-bold">1</span> dari <span class="text-red-400 font-bold">2</span></p>
+                    </div>
+                    <div class="mt-8">
+                        <button id="penalty-continue-btn" class="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg transition duration-200">
+                            Lanjutkan Misi
+                        </button>
+                    </div>
                 </div>
             </div>
 
@@ -286,7 +288,7 @@
         const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
         const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
         // Ganti URL Web App ini dengan URL yang valid setelah Anda deploy Google Apps Script Anda.
-        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw5sQ5EWlky7O3syb1raZl2HO1-Sg46ny0Dju5XRSBBa0nTQlOa-WCkozVefLZfFTaO/exec'; 
+        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxMp_1DplyWKRpvXsj7psoIZhvDxa8FB1DY5Ug7JXAZrncMozummp1G_tJww6Sz-UK02w/exec'; 
         const TTS_API_KEY = ""; 
         const POINTS_PER_QUESTION = 2.5; // DIUBAH: 10 * 40 = 400. Sekarang 2.5 * 40 = 100.
         const CONSULT_HINT_SCORE = 5;
@@ -576,7 +578,8 @@
                 const stateToSave = {
                     appState: {
                         ...appState,
-                        missionActiveStartTimestamp: appState.screen === 'inMission' ? Date.now() : null,
+                        // Hanya simpan timestamp jika layar aktif adalah inMission atau penalty
+                        missionActiveStartTimestamp: (appState.screen === 'inMission' || appState.screen === 'penalty') ? Date.now() : null,
                     },
                     userInfo,
                     totalTimeSeconds,
@@ -607,14 +610,19 @@
         // --- LOGIKA ALUR BARU: MENGHILANGKAN PEMILIHAN MISI ---
 
         function updateAppScreen() {
+            // 1. Sembunyikan semua layar
             document.getElementById('loading-screen').classList.add('hidden');
             document.getElementById('intro-screen').classList.add('hidden'); 
-            // document.getElementById('mission-select-screen').classList.add('hidden'); // Dihapus
             document.getElementById('in-mission-screen').classList.add('hidden');
             document.getElementById('final-screen').classList.add('hidden');
             document.getElementById('penalty-screen').classList.add('hidden');
 
-            
+            // 2. Kontrol Timer Status (Stop jika keluar dari mode permainan)
+            if (appState.screen !== 'inMission' && appState.screen !== 'penalty') {
+                 stopMissionTimer();
+            }
+
+            // 3. Tampilkan layar yang sesuai
             if (appState.screen === 'loading') {
                 document.getElementById('loading-screen').classList.remove('hidden');
             } else if (appState.screen === 'intro') { 
@@ -622,7 +630,7 @@
             } else if (appState.screen === 'inMission') {
                 document.getElementById('in-mission-screen').classList.remove('hidden');
                 renderMissionState();
-                startMissionTimer(); // Pastikan timer dimulai saat masuk misi
+                startMissionTimer(); // Starts (or continues) the timer
             } else if (appState.screen === 'finished') {
                 document.getElementById('final-screen').classList.remove('hidden');
                 renderFinalScreen();
@@ -663,27 +671,9 @@
             updateAppScreen();
         }
 
+        // Fungsi tidak terpakai, logika dipindahkan ke handleProfileStart
         function selectMission(name) {
-            // Fungsi ini sekarang dipanggil dari handleProfileStart, jadi tidak perlu tombol di sini.
-            triggerHaptics();
-            stopCurrentAudio();
-            appState.currentMission = name;
-
-            appState.missionElapsedTime = 0; 
-            
-            appState.isCheatingListenerActive = true; 
-            startMissionTimer();
-            
-            const missionQ = appState.missions[name]; 
-            const firstUncompletedQuestion = missionQ.find(q => !appState.scores[name][q.id].completed);
-            
-            if (firstUncompletedQuestion) {
-                goToQuestion(firstUncompletedQuestion.id);
-            } else {
-                goToQuestion(missionQ[0].id);
-            }
-            appState.screen = 'inMission';
-            updateAppScreen();
+            // Kode ini dibiarkan kosong karena tidak ada lagi menu pilih misi
         }
 
         // --- END LOGIKA ALUR BARU ---
@@ -744,6 +734,7 @@
         // --- END: PROFILE HANDLERS ---
         
         const loadAppState = () => {
+            let loadedSuccessfully = false;
             try {
                 const savedState = localStorage.getItem(STORAGE_KEY);
                 if (!savedState) return false;
@@ -812,15 +803,13 @@
                 }
 
                 console.log('State berhasil dimuat dari LocalStorage.');
-                
-                updateAppScreen(); 
-                
-                return true;
+                loadedSuccessfully = true;
             } catch (e) {
                 console.error('Kesalahan memuat state, memulai sesi baru:', e);
                 localStorage.removeItem(STORAGE_KEY);
-                return false;
+                // Biarkan loadedSuccessfully = false
             }
+            return loadedSuccessfully;
         }
         
         const showModal = (title, body, onClose = null) => {
@@ -870,6 +859,7 @@
 
             qState.currentAnswer = currentAnswer;
             saveAppState();
+            // JANGAN panggil renderMissionState di sini
         }
 
         // FUNGSI PENGACAKAN
@@ -944,7 +934,7 @@
             });
         }
         
-        const renderQuestionNavigation = (missionQ) => {
+        function renderQuestionNavigation(missionQ) {
             const navContainer = document.getElementById('question-navigation');
             navContainer.innerHTML = '';
             
@@ -1090,6 +1080,54 @@
         }
         // -----------------------------------------------------------
         
+        // NEW FUNCTION: Check if answer is ready and update submit button state
+        function checkAnswerReady() {
+            if (!appState.currentMission || !appState.currentQuestionId) return;
+
+            const missionQ = appState.missions[appState.currentMission];
+            const currentQ = missionQ.find(q => q.id === appState.currentQuestionId);
+            const currentQState = appState.scores[appState.currentMission][appState.currentQuestionId];
+
+            if (currentQState.completed) {
+                document.getElementById('submit-answer-btn').disabled = true;
+                document.getElementById('consult-expert-btn').classList.add('hidden');
+                document.getElementById('submit-answer-btn').classList.add('hidden');
+                document.getElementById('skip-btn').classList.add('hidden');
+                return;
+            }
+
+            let answerReady = false;
+            const currentAnswer = currentQState.currentAnswer;
+
+            if (currentQ.type === 'multiple_choice' || currentQ.type === 'true_false' || currentQ.type === 'narrative_mc') {
+                answerReady = currentAnswer !== null;
+            } else if (currentQ.type === 'multiple_correct') {
+                answerReady = Array.isArray(currentAnswer) && currentAnswer.length > 0;
+            } else if (currentQ.type === 'matching') {
+                // Semua dropdown harus memiliki nilai selain default ('')
+                answerReady = Array.isArray(currentAnswer) && currentAnswer.length === currentQ.matches.length && currentAnswer.every(val => val !== '' && val !== null);
+            } else if (currentQ.type === 'essay') {
+                // Cek kata minimum untuk esai
+                const text = currentAnswer || '';
+                const wordCount = text.trim() ? text.trim().split(/\s+/).filter(word => word.length > 0).length : 0;
+                answerReady = wordCount >= currentQ.minWords;
+            } else if (currentQ.type === 'grid_tf') {
+                // Semua item di grid harus memiliki seleksi (true/false)
+                const items = currentQ.gridItems.length;
+                answerReady = Object.keys(currentAnswer).length === items && Object.values(currentAnswer).every(val => val === 'true' || val === 'false');
+            }
+
+            document.getElementById('submit-answer-btn').disabled = !answerReady;
+            document.getElementById('submit-answer-btn').classList.toggle('disabled:bg-green-300', !answerReady);
+
+
+            // Aturan tampilkan/sembunyikan tombol ahli
+            document.getElementById('consult-expert-btn').classList.toggle('hidden', currentQState.isConsulted || currentQ.type === 'essay');
+            document.getElementById('submit-answer-btn').classList.remove('hidden');
+            document.getElementById('skip-btn').classList.remove('hidden');
+        }
+
+
         function renderMissionState() {
              if (!appState.currentMission || !appState.currentQuestionId) {
                 return finishQuiz();
@@ -1156,30 +1194,19 @@
             
             playBtn.innerHTML = originalButtonContent;
 
-            document.getElementById('submit-answer-btn').classList.toggle('hidden', isCompleted);
-            document.getElementById('skip-btn').classList.toggle('hidden', isCompleted);
-            document.getElementById('consult-expert-btn').classList.add('hidden'); 
 
-            document.getElementById('submit-answer-btn').disabled = isCompleted;
-            document.getElementById('skip-btn').disabled = isCompleted; 
-
+            // --- KONTROL TOMBOL: Dipindahkan ke checkAnswerReady, hanya perlu reset di sini jika completed ---
             if (isCompleted) {
-                document.getElementById('feedback-message').textContent = `Soal Selesai. Skor: ${currentQState.score.toFixed(2)}`;
-                document.getElementById('feedback-message').classList.remove('text-red-400', 'text-yellow-500', 'text-orange-400');
-                document.getElementById('feedback-message').classList.add('text-green-400');
+                 document.getElementById('feedback-message').textContent = `Soal Selesai. Skor: ${currentQState.score.toFixed(2)}`;
+                 document.getElementById('feedback-message').classList.remove('text-red-400', 'text-yellow-500', 'text-orange-400');
+                 document.getElementById('feedback-message').classList.add('text-green-400');
             } else if (!isCompleted && currentQState.isConsulted) {
-                document.getElementById('submit-answer-btn').classList.remove('hidden');
-                document.getElementById('skip-btn').classList.remove('hidden');
-                document.getElementById('submit-answer-btn').disabled = false;
-                document.getElementById('skip-btn').disabled = false;
-                document.getElementById('feedback-message').textContent = `Anda menggunakan Bantuan Ahli (Max ${CONSULT_HINT_SCORE} Poin). Pilih Jawaban Anda.`;
-                document.getElementById('feedback-message').classList.add('text-orange-400');
-            } else if (!isCompleted && currentQState.currentAnswer !== null) {
-                document.getElementById('submit-answer-btn').classList.remove('hidden');
-                document.getElementById('skip-btn').classList.remove('hidden');
-                document.getElementById('submit-answer-btn').disabled = false;
-                document.getElementById('skip-btn').disabled = false;
+                 document.getElementById('feedback-message').textContent = `Anda menggunakan Bantuan Ahli (Max ${CONSULT_HINT_SCORE} Poin). Pilih Jawaban Anda.`;
+                 document.getElementById('feedback-message').classList.add('text-orange-400');
             }
+            // PENTING: Panggil fungsi cek tombol utama di akhir render
+            checkAnswerReady();
+            // --- END KONTROL TOMBOL ---
         }
         
         function renderQuestionInput(q, qState) {
@@ -1216,7 +1243,8 @@
 
                     btn.className = `option-button w-full text-left p-3 rounded-lg border border-gray-600 ${btnClass} shadow-md`;
                     btn.setAttribute('data-value', option);
-                    btn.onclick = () => { selectOption(btn); trackInputChanges(); };
+                    // PENTING: Panggil checkAnswerReady di sini
+                    btn.onclick = () => { selectOption(btn); trackInputChanges(); checkAnswerReady(); }; 
                     btn.disabled = qState.completed;
                     inputArea.appendChild(btn);
                 });
@@ -1248,7 +1276,8 @@
                     checkbox.className = 'w-5 h-5 text-red-500 border-gray-600 rounded focus:ring-red-500 bg-gray-700';
                     checkbox.disabled = qState.completed;
                     
-                    checkbox.onchange = trackInputChanges; 
+                    // PENTING: Panggil checkAnswerReady di sini
+                    checkbox.onchange = () => { trackInputChanges(); checkAnswerReady(); };
 
                     const span = document.createElement('span');
                     span.textContent = option;
@@ -1280,7 +1309,8 @@
                     select.name = `matching-${index}`;
                     select.className = 'w-full md:w-1/2 p-2 border border-gray-600 rounded-lg bg-gray-700 text-white focus:ring-red-500 focus:border-red-500';
                     select.disabled = qState.completed;
-                    select.onchange = trackInputChanges; 
+                    // PENTING: Panggil checkAnswerReady di sini
+                    select.onchange = () => { trackInputChanges(); checkAnswerReady(); }; 
 
                     const defaultOption = document.createElement('option');
                     defaultOption.textContent = '-- Pilih Pasangan --';
@@ -1319,7 +1349,8 @@
                 textarea.className = 'w-full p-3 border border-gray-600 rounded-lg focus:ring-red-500 focus:border-red-500 bg-gray-700 text-white';
                 textarea.disabled = qState.completed;
                 textarea.value = qState.currentAnswer || ''; 
-                textarea.addEventListener('input', trackInputChanges); 
+                // PENTING: Panggil checkAnswerReady di sini
+                textarea.addEventListener('input', () => { trackInputChanges(); checkAnswerReady(); }); 
                 inputArea.appendChild(textarea);
                 
                 const wordCount = document.createElement('p');
@@ -1417,6 +1448,7 @@
                                 btn.classList.add('bg-gray-800', 'hover:bg-gray-600', 'text-white');
                             }
                             
+                            // PENTING: Panggil checkAnswerReady di sini
                             btn.onclick = () => selectGridOption(row, value);
                         }
 
@@ -1444,6 +1476,7 @@
             selectedBtn.classList.add('bg-red-600', 'text-white');
             
             trackInputChanges();
+            checkAnswerReady(); // PENTING: Ganti renderMissionState()
         }
 
         const selectOption = (button) => {
@@ -1454,25 +1487,27 @@
             });
             button.classList.add('bg-red-600', 'border-red-500'); 
             // saveAppState() dipanggil di trackInputChanges()
+            checkAnswerReady(); // PENTING: Ganti renderMissionState()
         }
 
         function goToQuestion(questionId) {
-            // Mengatur layar ke 'inMission' untuk mengatasi transisi dari 'penalty'
-            if (appState.screen === 'penalty') {
-                appState.screen = 'inMission';
-                // Tidak perlu panggil updateAppScreen di sini karena akan dipanggil lagi di akhir fungsi
-            }
-            
-            stopCurrentAudio(); 
-            // Waktu dicatat sebelum berpindah soal
-            stopMissionTimer(); 
-            startMissionTimer();
-            
             triggerHaptics(50);
+            stopCurrentAudio(); 
+            // Waktu dicatat dan disimpan ke appState.missionElapsedTime
+            stopMissionTimer(); 
+
+            // Set new state
             appState.currentQuestionId = questionId;
-            renderMissionState();
-            document.getElementById('in-mission-screen').scrollIntoView({ behavior: 'smooth' });
-            saveAppState();
+            appState.screen = 'inMission';
+            
+            // Gunakan updateAppScreen untuk handle full screen redraw dan restart timer
+            updateAppScreen();
+            
+            // Scroll view only if not coming from penalty (to avoid jarring animation immediately after screen flash)
+            if (document.getElementById('penalty-screen').classList.contains('hidden')) {
+                 document.getElementById('in-mission-screen').scrollIntoView({ behavior: 'smooth' });
+            }
+            // saveAppState() is called by updateAppScreen()
         }
 
         function navigateToNextQuestion() {
@@ -1515,11 +1550,9 @@
             showModal('Bantuan Ahli (Konsekuensi: Max 5 Poin)', 
                         `Anda memilih menggunakan bantuan ahli. Skor maksimal untuk soal ini sekarang adalah ${CONSULT_HINT_SCORE} poin. \n\nKeterangan Ahli: ${expertHint}`, 
                         () => {
-                                document.getElementById('submit-answer-btn').disabled = false;
-                                document.getElementById('skip-btn').disabled = false;
-                                document.getElementById('play-audio-btn').disabled = false;
-                                document.getElementById('consult-expert-btn').classList.add('hidden');
-                                renderMissionState();
+                                // Panggil checkAnswerReady untuk update UI setelah modal ditutup
+                                checkAnswerReady(); 
+                                renderMissionState(); // Panggil ini untuk update feedback dan navigasi
                                 saveAppState();
                            }
             );
@@ -1767,7 +1800,7 @@
 
             } else {
                 // Hanya terjadi jika non-esai dan salah (skor 0)
-                document.getElementById('submit-answer-btn').disabled = true;
+                // Tombol submit sudah dinonaktifkan oleh checkAnswerReady di akhir renderMissionState.
                 document.getElementById('skip-btn').disabled = false; // Boleh dilewati
                 document.getElementById('play-audio-btn').disabled = true;
                 if (!qState.isConsulted) {
@@ -1817,7 +1850,229 @@
         document.getElementById('consult-expert-btn').addEventListener('click', handleConsultExpert);
         // --- End Event Listener Fix ---
         
-        // --- End of Script Tag ---
+        // --- FINAL SCREEN LOGIC ---
+        
+        const renderFinalScreen = async () => {
+             // FIX: Hentikan timer dan pastikan waktu total terakumulasi sebelum rendering
+            stopMissionTimer();
+            
+            // Nonaktifkan listener saat selesai
+            appState.isCheatingListenerActive = false; 
+            // Reset mission elapsed time (waktu misi saat ini)
+            appState.missionElapsedTime = 0; 
+
+            const finalScore = calculateGameScore(); 
+            const missionName = 'Quiz Biaya Produksi & BEP';
+
+            document.getElementById('mission-final-title').textContent = missionName;
+            document.getElementById('mission-final-score').textContent = finalScore.toFixed(2);
+            document.getElementById('max-game-score').textContent = MAX_GAME_SCORE;
+            document.getElementById('final-user-info').textContent = `${userInfo.nama} dari ${userInfo.jurusan} (${userInfo.kelas})`;
+            document.getElementById('total-time-display').textContent = formatTime(totalTimeSeconds); // Menggunakan totalTimeSeconds
+            
+            const dataToSave = {
+                timestamp: new Date().toLocaleString('id-ID'),
+                nama_lengkap: userInfo.nama,
+                kelas: userInfo.kelas,
+                jurusan: userInfo.jurusan,
+                skor_total: finalScore,
+                waktu_total: formatTime(totalTimeSeconds), 
+                
+                // DATA ESSAY
+                essay_q40_essay: getEssayAnswer(appState.currentMission, 'q40_essay'),
+                
+                // DATA PELENGKAP
+                jumlah_pelanggaran: appState.cheatingCount,
+                jumlah_tanya_ahli: calculateTotalConsultations(),
+                status: appState.cheatingCount >= MAX_CHEATING_ATTEMPTS ? `GAGAL KARENA ${appState.cheatingCount} PELANGGARAN` : 'SELESAI NORMAL',
+            };
+            
+            sendDataToGoogleSheet(dataToSave);
+
+            const nextActionBtn = document.getElementById('next-action-btn');
+            
+            // PERBAIKAN: Selalu tampilkan "Keluar & Mulai Sesi Baru" dan reset game
+            nextActionBtn.textContent = 'Keluar & Mulai Sesi Baru';
+            nextActionBtn.onclick = () => {
+                triggerHaptics(50);
+                resetGameStateAndUser();
+                appState.screen = 'intro';
+                updateAppScreen();
+            };
+        }
+        
+        // --- EVENT LISTENERS TAMBAHAN & INIT ---
+        
+        document.getElementById('play-audio-btn').addEventListener('click', () => {
+            triggerHaptics(30);
+            if (appState.currentQuestionId) {
+                playQuestionAudio(appState.currentQuestionId).catch(err => {
+                    console.error("Error playing audio on manual click:", err);
+                });
+            }
+        });
+
+        document.getElementById('finish-mission-btn').addEventListener('click', () => {
+            triggerHaptics(150);
+            finishQuiz(); 
+        });
+        
+        document.getElementById('next-action-btn').addEventListener('click', function() {
+            triggerHaptics(50);
+            resetGameStateAndUser(); 
+            appState.screen = 'intro';
+            updateAppScreen();
+        });
+        
+        // --- Tombol Lanjutkan Misi (Penalty) ---
+        document.getElementById('penalty-continue-btn').addEventListener('click', () => {
+            triggerHaptics(150);
+            
+            if (!appState.currentMission || !appState.currentQuestionId) {
+                return finishQuiz();
+            }
+            
+            appState.isCheatingListenerActive = true; 
+            
+            // Memanggil goToQuestion akan mengatur appState.screen = 'inMission' dan memanggil updateAppScreen()
+            goToQuestion(appState.currentQuestionId); 
+            
+            // JANGAN menyembunyikan secara eksplisit di sini, biarkan updateAppScreen yang mengatur
+            // karena updateAppScreen sekarang dipanggil di dalam goToQuestion.
+        });
+        // --- End Tombol Lanjutkan Misi ---
+
+        document.getElementById('nama-input').addEventListener('input', checkProfileInputs);
+        document.getElementById('jurusan-input').addEventListener('change', checkProfileInputs); 
+        document.getElementById('kelas-input').addEventListener('change', checkProfileInputs); 
+        document.getElementById('start-profile-btn').addEventListener('click', handleProfileStart);
+        document.getElementById('start-profile-btn').disabled = true; 
+        
+        document.getElementById('question-input-area').addEventListener('input', (e) => {
+             if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT') {
+                trackInputChanges();
+                // PENTING: Panggil checkAnswerReady untuk memperbarui status tombol submit
+                checkAnswerReady(); 
+            }
+        });
+        
+        const hideModal = () => {
+            document.getElementById('modal').classList.add('hidden');
+            document.getElementById('modal').classList.remove('flex');
+            if (modalCloseCallback) {
+                modalCloseCallback();
+                modalCloseCallback = null;
+            }
+        }
+        document.getElementById('modal-close-btn').addEventListener('click', hideModal);
+
+        // --- Anti-Cheating Event Listeners (Memanggil handleCheatingAttempt) ---
+        
+        const handleCheatingAttempt = (message) => {
+            if (isAppInitializing) {
+                console.warn('[AC] Diabaikan (INIT): Event terjadi saat aplikasi memuat ulang.');
+                return;
+            }
+            
+            if (appState.screen !== 'inMission' || !appState.isCheatingListenerActive || document.getElementById('modal').classList.contains('flex')) {
+                return; 
+            }
+
+            console.warn(`[AC] PELANGGARAN TERDETEKSI: ${message}. Count: ${appState.cheatingCount + 1}`);
+
+            stopCurrentAudio();
+            stopMissionTimer(); 
+
+            appState.cheatingCount++;
+            
+            if (appState.cheatingCount >= MAX_CHEATING_ATTEMPTS) {
+                appState.isCheatingListenerActive = false; 
+
+                showModal('ANDA TELAH MELEBIHI BATAS PELANGGARAN!', 
+                         `Anda telah melakukan ${MAX_CHEATING_ATTEMPTS} pelanggaran. Pengerjaan dihentikan dan dicatat.`, 
+                         () => {
+                                // Paksa penyelesaian quiz dan pindah ke layar final
+                                finishQuiz(true); 
+                           }
+                );
+                return;
+            }
+            
+            // Pergi ke layar penalty
+            document.getElementById('penalty-reason').textContent = message;
+            document.getElementById('penalty-count').textContent = appState.cheatingCount;
+            appState.screen = 'penalty'; 
+            updateAppScreen();
+        }
+        
+        document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'hidden' && appState.screen === 'inMission') {
+                 handleCheatingAttempt("Anda terdeteksi berpindah Tab/Aplikasi saat misi berlangsung. Sesi dibatalkan dan skor direset.");
+            }
+        });
+
+        window.addEventListener('blur', () => {
+             if (appState.screen === 'inMission' && !document.getElementById('modal').classList.contains('flex')) {
+                if (!isAppInitializing && !document.hasFocus()) {
+                    handleCheatingAttempt("Anda terdeteksi berpindah Aplikasi atau Split-Screen saat misi berlangsung. Sesi dibatalkan dan skor direset.");
+                } else if (isAppInitializing) {
+                    console.warn('[AC] Diabaikan (INIT-BLUR): Event terjadi saat aplikasi memuat ulang.');
+                }
+            }
+        });
+
+        document.addEventListener('keyup', (e) => {
+            if (appState.screen === 'inMission' && (e.key === 'PrintScreen' || e.keyCode === 44)) {
+                 handleCheatingAttempt("Anda terdeteksi mencoba mengambil tangkapan layar (screenshot). Sesi dibatalkan dan skor direset.");
+            }
+        });
+        
+        // --- Inisialisasi Aplikasi (Urutan Eksekusi yang Tepat) ---
+        window.onload = () => {
+            if (Object.keys(firebaseConfig).length > 0) {
+                app = initializeApp(firebaseConfig);
+                auth = getAuth(app);
+
+                async function authenticate() {
+                    try {
+                        if (initialAuthToken) {
+                            await signInWithCustomToken(auth, initialAuthToken);
+                        } else {
+                            await signInAnonymously(auth);
+                        }
+                        userId = auth.currentUser?.uid || crypto.randomUUID();
+                    } catch (error) {
+                        console.error("Gagal autentikasi Firebase:", error);
+                    }
+                }
+                authenticate();
+            } else {
+                console.warn("Firebase config tidak tersedia.");
+            }
+            
+            // 1. Inisialisasi data game (termasuk pengacakan)
+            initGameData();
+
+            // 2. Tentukan status awal
+            let stateLoaded = loadAppState();
+            
+            if (!stateLoaded) {
+                // Data baru: Atur status ke Intro
+                appState.screen = 'intro';
+                // Panggil clearInputFields untuk mereset tampilan input
+                clearInputFields(); 
+            }
+            
+            // 3. Panggil fungsi render utama (terakhir)
+            updateAppScreen(); 
+
+            // 4. Set anti-cheating flag
+            setTimeout(() => {
+                isAppInitializing = false; 
+                console.log("[AC] Inisialisasi Selesai. Anti-Cheating Aktif.");
+            }, 500); 
+        }
+
     </script>
 </body>
 </html>
