@@ -366,7 +366,7 @@
                 // Soal cerita panjang (narrative_mc)
                 { id: 'aceh_1', type: 'narrative_mc', question: "Selamat datang di Misi Perlawanan Aceh. Dengarkan baik-baik narasi berikut: Setelah jatuhnya Malaka ke tangan Portugis pada tahun 1511, banyak pedagang Muslim memindahkan kegiatan mereka ke Aceh. Sultan Ali Mughayat Syah kemudian memimpin Aceh untuk merebut kembali wilayah penting seperti Pasai dan memimpin serangan pertama terhadap Portugis di Malaka untuk mengamankan posisi Aceh sebagai pusat perdagangan Islam yang baru. Berdasarkan narasi, apa peran utama Sultan Ali Mughayat Syah setelah jatuhnya Malaka?", difficulty: 'MUDAH', options: ["Membuat perjanjian damai dengan Portugis", "Mendirikan pusat militer di Pulau Weh", "Mempimpin Aceh merebut wilayah Pasai dan menyerang Portugis", "Mengekspor rempah-rempah langsung ke Eropa"], answer: "Mempimpin Aceh merebut wilayah Pasai dan menyerang Portugis", points: SCORE_MAP.narrative_mc }, 
                 
-                { id: 'aceh_2', type: 'multiple_choice', question: "Kapal maritim terbesar Aceh yang terkenal di masa Sultan Iskandar Muda bernama?", difficulty: 'SEDANG', options: ["Panglima Armada", "Kapal Iskandar", "Cakra Donya", "Gajah Putih"], answer: "Cakra Donya", points: SCORE_MAP.multiple_choice },
+                { id: 'aceh_2', type: 'multiple_choice', question: "Pasukan maritim Aceh yang terkenal di masa Sultan Iskandar Muda bernama?", difficulty: 'SEDANG', options: ["Panglima Armada", "Pasukan Iskandar", "Cakra Donya", "Gajah Putih"], answer: "Cakra Donya", points: SCORE_MAP.multiple_choice },
                 
                 // Grid TF 1 (Soal No. 3)
                 { 
@@ -914,7 +914,7 @@
             }
             
             if (timeExpired) {
-                 // Tandai semua soal yang belum selesai sebagai selesai (skor 0)
+                // Tandai semua soal yang belum selesai sebagai selesai (skor 0)
                 if (appState.currentMission) {
                     appState.missions[appState.currentMission].forEach(q => {
                         if (!appState.scores[appState.currentMission][q.id].completed) {
@@ -1032,12 +1032,15 @@
                 appState.screen = 'missionSelect';
                 updateAppScreen();
             } else {
-                 showModal('Informasi Kurang', 'Mohon lengkapi semua data (Nama, Jurusan, Kelas) sebelum memulai misi.');
+                showModal('Informasi Kurang', 'Mohon lengkapi semua data (Nama, Jurusan, Kelas) sebelum memulai misi.');
             }
         }
         // --- END: PROFILE HANDLERS ---
         
         const loadAppState = () => {
+            // Logic ini sudah tidak diperlukan karena state missionElapsedTime sudah dihandle di stopMissionTimer/startMissionTimer
+            // Kita hanya perlu menyimpan appState.missionElapsedTime
+            
             try {
                 const savedState = localStorage.getItem(STORAGE_KEY);
                 if (!savedState) return false;
@@ -1055,7 +1058,7 @@
                 
                 // Memulihkan daftar misi yang sudah diacak
                 if (loadedData.appState.missions) {
-                     appState.missions = loadedData.appState.missions;
+                    appState.missions = loadedData.appState.missions;
                 }
 
                 // --- PERBAIKAN WAKTU SESI ---
@@ -1790,15 +1793,15 @@
             const expertHint = getExpertHint(q);
 
             showModal('Bantuan Ahli (Konsekuensi: Max 5 Poin)', 
-                    `Anda memilih menggunakan bantuan ahli. Skor maksimal untuk soal ini sekarang adalah ${CONSULT_HINT_SCORE} poin. \n\nKeterangan Ahli: ${expertHint}`, 
-                    () => {
-                            document.getElementById('submit-answer-btn').disabled = false;
-                            document.getElementById('skip-btn').disabled = false;
-                            document.getElementById('play-audio-btn').disabled = false;
-                            document.getElementById('consult-expert-btn').classList.add('hidden');
-                            renderMissionState();
-                            saveAppState();
-                     }
+                        `Anda memilih menggunakan bantuan ahli. Skor maksimal untuk soal ini sekarang adalah ${CONSULT_HINT_SCORE} poin. \n\nKeterangan Ahli: ${expertHint}`, 
+                        () => {
+                                document.getElementById('submit-answer-btn').disabled = false;
+                                document.getElementById('skip-btn').disabled = false;
+                                document.getElementById('play-audio-btn').disabled = false;
+                                document.getElementById('consult-expert-btn').classList.add('hidden');
+                                renderMissionState();
+                                saveAppState();
+                           }
             );
 
             // Sementara menonaktifkan semua aksi
@@ -1809,9 +1812,63 @@
             saveAppState();
         }
 
+        // --- FUNGSI BARU: Penilaian Esai Otomatis menggunakan Gemini API ---
+        const gradeEssay = async (questionText, userAnswer, maxScore) => {
+            const apiKey = TTS_API_KEY; // Menggunakan API key yang sama
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+
+            const systemPrompt = `Anda adalah seorang asisten pengoreksi ujian Sejarah Indonesia. Berikan penilaian otomatis untuk sebuah jawaban esai (HOTS) yang diberikan oleh siswa. Tugas Anda adalah:
+1. Analisis pertanyaan dan jawaban siswa.
+2. Tentukan skor dari 0 hingga ${maxScore}. Berikan skor maksimal hanya jika jawaban benar-benar komprehensif, kritis, dan memenuhi semua poin analisis yang relevan. Berikan skor 0 jika jawaban tidak relevan atau terlalu singkat.
+3. Berikan *feedback* yang konstruktif dan detail berdasarkan kriteria penilaian Anda.
+
+Instruksi: Jawablah HANYA dalam format JSON yang ditentukan.`;
+
+            const userQuery = `Pertanyaan: "${questionText}"\n\nJawaban Siswa: "${userAnswer}"\n\nBeri skor dan feedback.`;
+
+            const payload = {
+                contents: [{ parts: [{ text: userQuery }] }],
+                systemInstruction: { parts: [{ text: systemPrompt }] },
+                generationConfig: {
+                    responseMimeType: "application/json",
+                    responseSchema: {
+                        type: "OBJECT",
+                        properties: {
+                            "score": { "type": "NUMBER", "description": "Skor yang diberikan, dari 0 hingga maksimal." },
+                            "feedback": { "type": "STRING", "description": "Ulasan detail dan konstruktif tentang jawaban siswa." }
+                        },
+                        required: ["score", "feedback"]
+                    }
+                }
+            };
+            
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const result = await response.json();
+                const jsonText = result?.candidates?.[0]?.content?.parts?.[0]?.text;
+                
+                if (jsonText) {
+                    const parsed = JSON.parse(jsonText);
+                    // Memastikan skor tidak melebihi batas yang ditentukan
+                    parsed.score = Math.min(Math.round(parsed.score), maxScore);
+                    return parsed;
+                }
+                
+                return { score: 0, feedback: "Penilaian AI gagal, skor 0 diberikan." };
+            } catch (e) {
+                console.error("AI Grading Error:", e);
+                return { score: 0, feedback: "Kesalahan koneksi atau format saat menilai dengan AI. Skor 0 diberikan." };
+            }
+        };
+
         // --- Penilaian dan Penanganan Jawaban ---
 
-        const handleSubmit = () => {
+        const handleSubmit = async () => { // Menambahkan async
             triggerHaptics(100);
             stopCurrentAudio(); 
             
@@ -1841,9 +1898,29 @@
                     showModal('Peringatan', `Jawaban esai Anda harus minimal ${q.minWords} kata. Kata saat ini: ${wordCount}.`);
                     return;
                 }
-                score = maxScoreForQuestion; 
-                isCorrect = true;
-                feedback = `Jawaban Anda (${wordCount} kata) telah dicatat. Mendapatkan ${score} poin.`;
+                
+                // Tampilkan loading saat menunggu penilaian AI
+                document.getElementById('feedback-message').textContent = 'Mengirim jawaban ke Ahli Sejarah (AI) untuk dinilai...';
+                document.getElementById('feedback-message').classList.remove('text-red-400', 'text-green-400');
+                document.getElementById('feedback-message').classList.add('text-yellow-400');
+                document.getElementById('submit-answer-btn').disabled = true;
+
+                // Memanggil fungsi penilaian AI
+                const aiResult = await gradeEssay(q.question, text, maxScoreForQuestion);
+                
+                score = aiResult.score; 
+                feedback = aiResult.feedback;
+                
+                // Gunakan feedback dari AI sebagai feedback utama
+                let finalFeedback = `Penilaian AI (${score} Poin): ${aiResult.feedback}`;
+
+                // Aturan penyelesaian: jika skor > 0, selesaikan, jika tidak, selesaikan dengan 0 poin
+                if (score > 0) {
+                     finalFeedback = `Jawaban Esai Dicatat! Skor: ${score} Poin. ${aiResult.feedback}`;
+                } else {
+                     finalFeedback = `Jawaban Esai Dicatat. Skor: ${score} Poin. ${aiResult.feedback}`;
+                }
+
 
             } else if (q.type === 'grid_tf') { // NEW: Logic penilaian untuk soal grid
                 const userSelections = qState.currentAnswer || {};
@@ -1911,23 +1988,30 @@
                 }
             }
                 
-            if (isCorrect) {
-                 feedback = qState.isConsulted ? `Jawaban Benar dengan Bantuan Ahli! Mendapat ${score} Poin.` : 'Jawaban Benar! 🎉';
+            if (q.type !== 'essay') { // Logika feedback normal untuk non-esai
+                if (isCorrect) {
+                    feedback = qState.isConsulted ? `Jawaban Benar dengan Bantuan Ahli! Mendapat ${score} Poin.` : 'Jawaban Benar! 🎉';
+                } else {
+                    if (qState.isConsulted) {
+                        feedback = `Jawaban salah, meskipun sudah menggunakan Ahli. Mendapat ${score} Poin.`;
+                    } else {
+                        feedback = 'Jawaban Salah. Anda bisa coba Tanya Ahli (Max 5 Poin), atau Lewati Soal.';
+                    }
+                }
             } else {
-                 if (qState.isConsulted) {
-                     feedback = `Jawaban salah, meskipun sudah menggunakan Ahli. Mendapat ${score} Poin.`;
-                 } else {
-                     feedback = 'Jawaban Salah. Anda bisa coba Tanya Ahli (Max 5 Poin), atau Lewati Soal.';
-                 }
+                // Gunakan finalFeedback dari proses esai
+                feedback = finalFeedback;
+                // Set isCorrect flag untuk menampilkan feedback visual di sini
+                isCorrect = (score === maxScoreForQuestion); // Hanya dianggap "Benar" jika skor penuh
             }
 
             document.getElementById('feedback-message').textContent = feedback;
-            document.getElementById('feedback-message').classList.toggle('text-green-400', isCorrect || qState.isConsulted);
-            document.getElementById('feedback-message').classList.toggle('text-red-400', !isCorrect && !qState.isConsulted);
+            document.getElementById('feedback-message').classList.toggle('text-green-400', isCorrect);
+            document.getElementById('feedback-message').classList.toggle('text-red-400', !isCorrect && score === 0);
             document.getElementById('feedback-message').classList.remove('text-yellow-500', 'text-orange-400');
-            document.getElementById('feedback-message').classList.toggle('text-orange-400', qState.isConsulted && !isCorrect);
-
-            if (isCorrect || qState.isConsulted || q.type === 'essay') {
+            document.getElementById('feedback-message').classList.toggle('text-orange-400', score > 0 && score < maxScoreForQuestion); // Skor parsial
+            
+            if (isCorrect || qState.isConsulted || q.type === 'essay' || score > 0) { // Jika esai atau skor > 0, selesaikan
                 appState.scores[appState.currentMission][q.id].score = score;
                 appState.scores[appState.currentMission][q.id].completed = true;
                 appState.scores[appState.currentMission][q.id].skipped = false;
@@ -1942,19 +2026,12 @@
                 }
 
             } else {
-                if (q.type === 'essay') {
-                    // Logic ini sudah ditangani di bagian atas sebelum pengecekan if (isCorrect || qState.isConsulted...)
-                    // Untuk jaga-jaga (esay tanpa batas kata), tetap jalankan nextQ
-                    appState.scores[appState.currentMission][q.id].score = 0;
-                    appState.scores[appState.currentMission][q.id].completed = true;
-                    navigateToNextQuestion();
-                } else {
-                    document.getElementById('submit-answer-btn').disabled = true;
-                    document.getElementById('skip-btn').disabled = false; // Boleh dilewati
-                    document.getElementById('play-audio-btn').disabled = true;
-                    if (!qState.isConsulted) {
-                        document.getElementById('consult-expert-btn').classList.remove('hidden');
-                    }
+                // Hanya terjadi jika non-esai dan salah (skor 0)
+                document.getElementById('submit-answer-btn').disabled = true;
+                document.getElementById('skip-btn').disabled = false; // Boleh dilewati
+                document.getElementById('play-audio-btn').disabled = true;
+                if (!qState.isConsulted) {
+                    document.getElementById('consult-expert-btn').classList.remove('hidden');
                 }
             }
             saveAppState();
@@ -2076,7 +2153,7 @@
                                });
                                appState.screen = 'finished';
                                updateAppScreen();
-                          }
+                           }
                 );
                 return;
             }
@@ -2268,7 +2345,7 @@
             
             // 2. Muat state yang tersimpan (Ini akan menimpa pengacakan jika state lama ditemukan)
             if (loadAppState()) { // loadAppState sekarang memanggil updateAppScreen jika berhasil
-                 // Perlu diperhatikan: loadAppState sudah memanggil updateAppScreen. Cukup atur flag shouldStartTimer.
+                // Perlu diperhatikan: loadAppState sudah memanggil updateAppScreen. Cukup atur flag shouldStartTimer.
                 if (appState.cheatingCount >= MAX_CHEATING_ATTEMPTS) {
                    console.log("[AC] Status Gagal Ditemukan saat Load. Memaksa ke layar 'finished'.");
                    appState.screen = 'finished';
@@ -2304,5 +2381,3 @@
     </script>
 </body>
 </html>
-
-
