@@ -305,7 +305,7 @@
         const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
         // PENTING: Ganti URL Web App ini dengan URL yang valid setelah Anda deploy Google Apps Script Anda.
         const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxMp_1DplyWKRpvXsj7psoIZhvDxa8FB1DY5Ug7JXAZrncMozummp1G_tJww6Sz-UK02w/exec'; 
-        const TTS_API_KEY = ""; // Kunci API akan otomatis disediakan oleh Canvas. Jangan diisi secara manual.
+        const TTS_API_KEY = "AIzaSyDo4tVXdPCfxlzJ5cVnWTzfb9wain7_qKg"; // Kunci API akan otomatis disediakan oleh Canvas. Jangan diisi secara manual.
         const POINTS_PER_QUESTION = 10;
         const CONSULT_HINT_SCORE = 5;
         const MAX_CHEATING_ATTEMPTS = 3;
@@ -836,7 +836,7 @@
         }
 
         const isMissionCompleted = (missionName) => {
-            if (!appState.scores[missionName]) return false;
+            if (!appState.scores[missionName]) return 0;
             return Object.values(appState.scores[missionName]).filter(q => q.completed).length === 10;
         }
 
@@ -2263,6 +2263,7 @@
                 skor_gowa: calculateMissionScore("Perlawanan Gowa (Sultan Hasanuddin)"),
                 status: appState.cheatingCount >= MAX_CHEATING_ATTEMPTS ? `GAGAL KARENA ${appState.cheatingCount} PELANGGARAN` : 'SELESAI NORMAL',
                 // JAWABAN ESAI TAMBAHAN
+                // Kolom akan dibuat secara otomatis di Google Sheet berdasarkan kunci ini
                 essay_aceh_10: getEssayAnswer("Perlawanan Aceh", "aceh_10"),
                 essay_maluku_10: getEssayAnswer("Perlawanan Maluku (Pattimura)", "maluku_10"),
                 essay_banten_10: getEssayAnswer("Perlawanan Banten (Sultan Ageng Tirtayasa)", "banten_10"),
