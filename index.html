@@ -304,8 +304,8 @@
         const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
         const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
         // PENTING: Ganti URL Web App ini dengan URL yang valid setelah Anda deploy Google Apps Script Anda.
-        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxLaNUvD4fOeNMlQz1zt9SqsFgc81xOYIuYwQVqQHDtoUZNl5RkbsLOGvpSB1Ti8dULqg/exec'; 
-        const TTS_API_KEY = "AIzaSyDo4tVXdPCfxlzJ5cVnWTzfb9wain7_qKg"; // Kunci API akan otomatis disediakan oleh Canvas. Jangan diisi secara manual.
+        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyMxi_LC-yIRRwtnXO7GFxqhWuq4Lm3hglDUXjJc8VRINzLzhIq2CTZ0JKXL-URh-WYHw/exec'; 
+        const TTS_API_KEY = ""; // Kunci API akan otomatis disediakan oleh Canvas. Jangan diisi secara manual.
         const POINTS_PER_QUESTION = 10;
         const CONSULT_HINT_SCORE = 5;
         const MAX_CHEATING_ATTEMPTS = 3;
@@ -1365,6 +1365,23 @@
 
         // --- END NAVIGATION & HINT HELPERS ---
 
+        // NEW UTILITY FUNCTION: Hitung Total Konsultasi Ahli
+        const calculateTotalConsultations = () => {
+            let count = 0;
+            const missionNames = Object.keys(missionData);
+            missionNames.forEach(missionName => {
+                const scores = appState.scores[missionName];
+                if (scores) {
+                    for (const qId in scores) {
+                        if (scores[qId].isConsulted) {
+                            count++;
+                        }
+                    }
+                }
+            });
+            return count;
+        };
+
 
         const renderMissionState = () => {
             if (!appState.currentMission || !appState.currentQuestionId) {
@@ -2174,7 +2191,7 @@
             console.warn(`[AC] PELANGGARAN TERDETEKSI: ${message}. Count: ${appState.cheatingCount + 1}`);
 
             // FIX UTAMA WAKTU: Hentikan timer dan catat waktu yang telah berlalu ke appState.missionElapsedTime.
-            // JANGAN RESET WAKTU ATAU PINDAHKAN KE totalTimeSeconds.
+            // Waktu misi tidak dipindahkan ke totalTimeSeconds karena ini adalah pause sementara.
             stopMissionTimer(); 
 
             appState.cheatingCount++;
@@ -2231,12 +2248,9 @@
             
             // Nonaktifkan listener saat selesai
             appState.isCheatingListenerActive = false; 
-            // Waktu misi saat ini (jika ada) sudah diakumulasikan di navigateToMissionSelect.
-            // Jika misi terakhir dihentikan karena pelanggaran, waktu yang terakumulasi saat ini adalah missionElapsedTime.
-            // Jika misi selesai normal, missionElapsedTime sudah direset di navigateToMissionSelect.
 
-            // Akumulasi sisa waktu misi yang terpause sebelum final screen (hanya jika ada)
-            // Ini akan mencakup kasus final screen setelah 3x pelanggaran di tengah misi.
+            // Akumulasi sisa waktu misi yang terpause (hanya jika final screen dipicu dari inMission/penalty
+            // akibat pelanggaran ke-3 atau waktu habis saat di inMission)
             if (appState.currentMission && appState.missionElapsedTime > 0) {
                  totalTimeSeconds += appState.missionElapsedTime;
                  appState.missionElapsedTime = 0;
@@ -2244,6 +2258,9 @@
 
             const finalScore = calculateGameScore(); 
             const missionName = 'Seluruh Misi Perlawanan Daerah';
+            
+            // NEW: Hitung total konsultasi
+            const totalConsultations = calculateTotalConsultations();
 
             document.getElementById('mission-final-title').textContent = missionName;
             document.getElementById('mission-final-score').textContent = finalScore;
@@ -2251,26 +2268,29 @@
             document.getElementById('final-user-info').textContent = `${userInfo.nama} dari ${userInfo.jurusan} (${userInfo.kelas})`;
             document.getElementById('total-time-display').textContent = formatTime(totalTimeSeconds); // Menggunakan totalTimeSeconds
             
-            // PERBAIKAN: Menyertakan jawaban Esai ke data yang akan dikirim
+            // PERBAIKAN: Menyertakan jawaban Esai, Jumlah Pelanggaran, dan Jumlah Tanya Ahli
             const dataToSave = {
                 timestamp: new Date().toLocaleString('id-ID'),
                 nama_lengkap: userInfo.nama,
                 kelas: userInfo.kelas,
                 jurusan: userInfo.jurusan,
                 skor_total: finalScore,
-                // Mengirim total waktu dalam format HH:MM:SS (walaupun formatTime hanya MM:SS)
                 waktu_total: formatTime(totalTimeSeconds), 
                 skor_aceh: calculateMissionScore("Perlawanan Aceh"),
                 skor_maluku: calculateMissionScore("Perlawanan Maluku (Pattimura)"),
                 skor_banten: calculateMissionScore("Perlawanan Banten (Sultan Ageng Tirtayasa)"),
                 skor_gowa: calculateMissionScore("Perlawanan Gowa (Sultan Hasanuddin)"),
                 status: appState.cheatingCount >= MAX_CHEATING_ATTEMPTS ? `GAGAL KARENA ${appState.cheatingCount} PELANGGARAN` : 'SELESAI NORMAL',
-                // JAWABAN ESAI TAMBAHAN
-                // Kunci ini akan otomatis menjadi nama kolom di Google Sheet.
+                
+                // JAWABAN ESAI TAMBAHAN (Setelah Skor Gowa)
                 essay_aceh_10: getEssayAnswer("Perlawanan Aceh", "aceh_10"),
                 essay_maluku_10: getEssayAnswer("Perlawanan Maluku (Pattimura)", "maluku_10"),
                 essay_banten_10: getEssayAnswer("Perlawanan Banten (Sultan Ageng Tirtayasa)", "banten_10"),
                 essay_gowa_10: getEssayAnswer("Perlawanan Gowa (Sultan Hasanuddin)", "gowa_10"),
+                
+                // NEW Requested Fields (Setelah Essay Gowa)
+                jumlah_pelanggaran: appState.cheatingCount,     // Request 1
+                jumlah_tanya_ahli: totalConsultations,          // Request 2
             };
             
             sendDataToGoogleSheet(dataToSave);
@@ -2455,5 +2475,3 @@
     </script>
 </body>
 </html>
-
-
