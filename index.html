@@ -109,7 +109,7 @@
                             </div>
                             <div class="flex items-start">
                                 <span class="text-red-400 font-extrabold mr-2 mt-[-3px] text-lg">&bull;</span>
-                                <span>Total skor maksimal yang dapat diraih adalah <strong>400 Poin</strong>.</span>
+                                <span>Total skor maksimal yang dapat diraih adalah <strong>100 Poin</strong>.</span>
                             </div>
                             <div class="flex items-start">
                                 <span class="text-red-400 font-extrabold mr-2 mt-[-3px] text-lg">&bull;</span>
@@ -187,7 +187,7 @@
                 <div class="bg-red-900/50 p-3 rounded-lg mb-6 text-center">
                     <span class="text-red-300 font-semibold">SKOR SAAT INI:</span> 
                     <span id="mission-current-score" class="text-yellow-300 font-extrabold text-xl">0</span>
-                    <span class="text-red-300 font-semibold">/ 400</span>
+                    <span class="text-red-300 font-semibold">/ 100</span>
                 </div>
 
                 <h2 class="text-3xl font-bold text-center text-red-400 mb-4" id="mission-title">Quiz Biaya Produksi & BEP</h2>
@@ -253,7 +253,7 @@
                 <h2 class="text-4xl font-extrabold text-red-400 mb-4">Quiz Selesai! 🎉</h2>
                 <p class="text-xl text-gray-300 mb-6">Skor Akhir <span id="mission-final-title" class="text-red-400 font-bold"></span>:</p>
                 <div class="p-8 bg-gray-800 rounded-xl shadow-lg inline-block border-2 border-red-600">
-                    <!-- MAX SCORE 400 -->
+                    <!-- MAX SCORE 100 -->
                     <p class="text-6xl font-extrabold text-green-400" id="mission-final-score">0</p>
                     <p class="text-base text-gray-400 mt-2">Poin dari <span id="max-game-score"></span> Maksimal</p>
                     <p class="text-sm text-gray-400 mt-4">Waktu Total Pengerjaan: <span id="total-time-display">00:00</span></p>
@@ -288,15 +288,15 @@
         // Ganti URL Web App ini dengan URL yang valid setelah Anda deploy Google Apps Script Anda.
         const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxMp_1DplyWKRpvXsj7psoIZhvDxa8FB1DY5Ug7JXAZrncMozummp1G_tJww6Sz-UK02w/exec'; 
         const TTS_API_KEY = ""; 
-        const POINTS_PER_QUESTION = 10;
+        const POINTS_PER_QUESTION = 2.5; // DIUBAH: 10 * 40 = 400. Sekarang 2.5 * 40 = 100.
         const CONSULT_HINT_SCORE = 5;
         const MAX_CHEATING_ATTEMPTS = 3;
         const MAX_QUESTIONS = 40; // Total soal
-        const MAX_GAME_SCORE = MAX_QUESTIONS * POINTS_PER_QUESTION; // 400
+        const MAX_GAME_SCORE = 100; // DIUBAH: Menggunakan 100 sebagai skor maksimal
         const STORAGE_KEY = 'biayaProduksiQuizState';
 
         // Batas waktu pengerjaan (40 menit = 2400 detik)
-        const MISSION_TIME_LIMIT_SECONDS = 40 * 60; // DARI 20*60 MENJADI 40*60
+        const MISSION_TIME_LIMIT_SECONDS = 40 * 60; 
         const GRADING_TIMEOUT_MS = 20000; 
         
         // Konstanta Tombol Audio (Dihilangkan di HTML, tapi logicnya dipertahankan jika diperlukan)
@@ -1059,7 +1059,7 @@
 
             document.getElementById('user-name-display').textContent = `${userInfo.nama} (${userInfo.kelas} ${userInfo.jurusan})`;
             // Update skor total game
-            document.getElementById('mission-current-score').textContent = currentMissionScore;
+            document.getElementById('mission-current-score').textContent = currentMissionScore.toFixed(2); // Menampilkan dua desimal
             // Update Title (tetap statis di quiz tunggal)
             document.getElementById('mission-title').textContent = `Soal ${currentQuestionIndex}/${MAX_QUESTIONS} - Biaya Produksi & BEP`;
             
@@ -1116,7 +1116,7 @@
             document.getElementById('skip-btn').disabled = isCompleted; 
 
             if (isCompleted) {
-                document.getElementById('feedback-message').textContent = `Soal Selesai. Skor: ${currentQState.score}`;
+                document.getElementById('feedback-message').textContent = `Soal Selesai. Skor: ${currentQState.score.toFixed(2)}`;
                 document.getElementById('feedback-message').classList.remove('text-red-400', 'text-yellow-500', 'text-orange-400');
                 document.getElementById('feedback-message').classList.add('text-green-400');
             } else if (!isCompleted && currentQState.isConsulted) {
@@ -1295,7 +1295,7 @@
                 if (qState.completed) {
                     const scoreDisplay = document.createElement('div');
                     scoreDisplay.className = 'mt-4 p-3 bg-red-800 rounded-lg text-sm';
-                    scoreDisplay.textContent = `Jawaban Esai Dicatat. Skor: ${qState.score} Poin.`;
+                    scoreDisplay.textContent = `Jawaban Esai Dicatat. Skor: ${qState.score.toFixed(2)} Poin.`;
                     inputArea.appendChild(scoreDisplay);
                 }
             } else if (q.type === 'grid_tf') { 
@@ -1591,7 +1591,7 @@
                 score = aiResult.score; 
                 feedback = aiResult.feedback;
                 
-                let finalFeedback = `Penilaian AI (${score} Poin): ${aiResult.feedback}`;
+                let finalFeedback = `Penilaian AI (${score.toFixed(2)} Poin): ${aiResult.feedback}`;
 
                 isCorrect = (score === maxScoreForQuestion); 
                 
@@ -1633,7 +1633,8 @@
                     }
                 });
 
-                score = Math.round((correctCount / totalItems) * maxScoreForQuestion);
+                // Menggunakan pembulatan 2 desimal agar tetap 40 soal * 2.5 = 100
+                score = (correctCount / totalItems) * maxScoreForQuestion;
                 isCorrect = (correctCount === totalItems);
                 
             } else { 
@@ -1658,7 +1659,8 @@
                             score = maxScoreForQuestion; isCorrect = true;
                         } else if (incorrectlySelected === 0 && correctlySelected > 0) {
                             const ratio = (correctlySelected / correctAnswers.length);
-                            score = Math.round(ratio * maxScoreForQuestion); isCorrect = false;
+                            score = ratio * maxScoreForQuestion; // Menggunakan skor desimal
+                            isCorrect = false;
                         } else { score = 0; isCorrect = false; }
                     }
 
@@ -1672,17 +1674,17 @@
                     q.matches.forEach((match, index) => {
                         if (selectedTargets[index] === match.target) correctMatches++;
                     });
-                    score = Math.round((correctMatches / q.matches.length) * maxScoreForQuestion);
+                    score = (correctMatches / q.matches.length) * maxScoreForQuestion; // Menggunakan skor desimal
                     isCorrect = (score === maxScoreForQuestion);
                 }
             }
                 
             if (q.type !== 'essay') { 
                 if (isCorrect) {
-                    feedback = qState.isConsulted ? `Jawaban Benar dengan Bantuan Ahli! Mendapat ${score} Poin.` : 'Jawaban Benar! 🎉';
+                    feedback = qState.isConsulted ? `Jawaban Benar dengan Bantuan Ahli! Mendapat ${score.toFixed(2)} Poin.` : 'Jawaban Benar! 🎉';
                 } else {
                     if (qState.isConsulted) {
-                        feedback = `Jawaban salah, meskipun sudah menggunakan Ahli. Mendapat ${score} Poin.`;
+                        feedback = `Jawaban salah, meskipun sudah menggunakan Ahli. Mendapat ${score.toFixed(2)} Poin.`;
                     } else {
                         feedback = 'Jawaban Salah. Anda bisa coba Tanya Ahli (Max 5 Poin), atau Lewati Soal.';
                     }
@@ -1846,7 +1848,7 @@
             const totalConsultations = calculateTotalConsultations();
 
             document.getElementById('mission-final-title').textContent = missionName;
-            document.getElementById('mission-final-score').textContent = finalScore;
+            document.getElementById('mission-final-score').textContent = finalScore.toFixed(2); // Menampilkan dua desimal
             document.getElementById('max-game-score').textContent = MAX_GAME_SCORE;
             document.getElementById('final-user-info').textContent = `${userInfo.nama} dari ${userInfo.jurusan} (${userInfo.kelas})`;
             document.getElementById('total-time-display').textContent = formatTime(totalTimeSeconds); 
@@ -1860,7 +1862,7 @@
                 nama_lengkap: userInfo.nama,
                 kelas: userInfo.kelas,
                 jurusan: userInfo.jurusan,
-                skor_total: finalScore,
+                skor_total: finalScore.toFixed(2),
                 waktu_total: formatTime(totalTimeSeconds), 
                 status: appState.cheatingCount >= MAX_CHEATING_ATTEMPTS ? `GAGAL KARENA ${appState.cheatingCount} PELANGGARAN` : 'SELESAI NORMAL',
                 
