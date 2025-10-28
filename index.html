@@ -1911,6 +1911,7 @@
                 }
                 
                 // Tampilkan loading saat menunggu penilaian AI (Diubah sesuai permintaan)
+                // HILANGKAN TAMPILAN BATAS WAKTU 20 DETIK
                 document.getElementById('feedback-message').innerHTML = '<div class="w-5 h-5 border-2 border-yellow-400 border-t-yellow-900 rounded-full animate-spin inline-block mr-2"></div> Menilai Esai Otomatis...';
                 document.getElementById('feedback-message').classList.remove('text-red-400', 'text-green-400');
                 document.getElementById('feedback-message').classList.add('text-yellow-400');
@@ -1925,13 +1926,36 @@
                 // Gunakan feedback dari AI sebagai feedback utama
                 let finalFeedback = `Penilaian AI (${score} Poin): ${aiResult.feedback}`;
 
-                // Aturan penyelesaian: jika skor > 0, selesaikan, jika tidak, selesaikan dengan 0 poin
-                if (score > 0) {
-                     finalFeedback = `Jawaban Esai Dicatat! Skor: ${score} Poin. ${aiResult.feedback}`;
-                } else {
-                     finalFeedback = `Jawaban Esai Dicatat. Skor: ${score} Poin. ${aiResult.feedback}`;
-                }
+                // Aturan penyelesaian: karena ini esai HOTS, jika sudah dinilai AI, langsung selesaikan dan pindah.
+                
+                // Set isCorrect flag untuk visual feedback
+                isCorrect = (score === maxScoreForQuestion); // Hanya dianggap "Benar" jika skor penuh
+                
+                // --- Logic penyelesaian otomatis untuk Esai ---
+                appState.scores[appState.currentMission][q.id].score = score;
+                appState.scores[appState.currentMission][q.id].completed = true;
+                appState.scores[appState.currentMission][q.id].skipped = false;
+                appState.scores[appState.currentMission][q.id].currentAnswer = qState.currentAnswer; // Simpan jawaban final
 
+                // Render ulang input untuk menampilkan skor/feedback AI
+                renderQuestionInput(q, appState.scores[appState.currentMission][q.id]);
+                
+                // Lanjutkan ke soal berikutnya
+                if (isMissionCompleted(appState.currentMission)) {
+                    navigateToMissionSelect();
+                } else {
+                    navigateToNextQuestion();
+                }
+                
+                // Selesai di sini, tidak perlu melanjutkan ke blok if/else non-esai di bawah.
+                document.getElementById('feedback-message').textContent = finalFeedback;
+                document.getElementById('feedback-message').classList.toggle('text-green-400', isCorrect);
+                document.getElementById('feedback-message').classList.toggle('text-red-400', !isCorrect && score === 0);
+                document.getElementById('feedback-message').classList.remove('text-yellow-400', 'text-orange-400');
+                document.getElementById('feedback-message').classList.toggle('text-orange-400', score > 0 && score < maxScoreForQuestion);
+                document.getElementById('submit-answer-btn').disabled = false; // Kembalikan ke normal, meski sudah pindah soal
+                saveAppState();
+                return; // KELUAR DARI FUNGSI HENDELSUBMIT
 
             } else if (q.type === 'grid_tf') { // NEW: Logic penilaian untuk soal grid
                 const userSelections = qState.currentAnswer || {};
@@ -2009,20 +2033,10 @@
                         feedback = 'Jawaban Salah. Anda bisa coba Tanya Ahli (Max 5 Poin), atau Lewati Soal.';
                     }
                 }
-            } else {
-                // Gunakan finalFeedback dari proses esai
-                feedback = finalFeedback;
-                // Set isCorrect flag untuk menampilkan feedback visual di sini
-                isCorrect = (score === maxScoreForQuestion); // Hanya dianggap "Benar" jika skor penuh
-            }
-
-            document.getElementById('feedback-message').textContent = feedback;
-            document.getElementById('feedback-message').classList.toggle('text-green-400', isCorrect);
-            document.getElementById('feedback-message').classList.toggle('text-red-400', !isCorrect && score === 0);
-            document.getElementById('feedback-message').classList.remove('text-yellow-500', 'text-orange-400');
-            document.getElementById('feedback-message').classList.toggle('text-orange-400', score > 0 && score < maxScoreForQuestion); // Skor parsial
+            } 
             
-            if (isCorrect || qState.isConsulted || q.type === 'essay' || score > 0) { // Jika esai atau skor > 0, selesaikan
+            // Non-esai dan Skor sudah ditentukan
+            if (isCorrect || qState.isConsulted || score > 0) { // Jika non-esai dan benar atau menggunakan bantuan atau skor > 0
                 appState.scores[appState.currentMission][q.id].score = score;
                 appState.scores[appState.currentMission][q.id].completed = true;
                 appState.scores[appState.currentMission][q.id].skipped = false;
@@ -2045,6 +2059,13 @@
                     document.getElementById('consult-expert-btn').classList.remove('hidden');
                 }
             }
+            
+            document.getElementById('feedback-message').textContent = feedback;
+            document.getElementById('feedback-message').classList.toggle('text-green-400', isCorrect);
+            document.getElementById('feedback-message').classList.toggle('text-red-400', !isCorrect && score === 0);
+            document.getElementById('feedback-message').classList.remove('text-yellow-500', 'text-orange-400');
+            document.getElementById('feedback-message').classList.toggle('text-orange-400', score > 0 && score < maxScoreForQuestion); // Skor parsial
+            
             saveAppState();
         }
         
