@@ -1820,15 +1820,15 @@
             const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
 
             // OPTIMASI: System prompt yang disederhanakan dan difokuskan pada kriteria yang diminta user
-            const systemPrompt = `Anda adalah Ahli Sejarah. Nilai esai dari 0 sampai ${maxScore}.
+            const systemPrompt = `Anda adalah Ahli Sejarah. PRIORITAS UTAMA: Kecepatan dan Latensi Rendah. Nilai esai dari 0 sampai ${maxScore}.
             Kriteria penilaian:
-            1. Susunan Kalimat: Apakah kalimat tersusun dengan baik dan relevan dengan pertanyaan?
-            2. Esensi Jawaban: Apakah jawaban menangkap poin kunci materi sejarah (fakta/konsep utama) dan memiliki keterkaitan yang kuat?
-            3. Berpikir Kritis: Apakah peserta didik menunjukkan analisis, sintesis, atau interpretasi pribadi?
+            1. Susunan Kalimat: Keterkaitan dan kejelasan tata bahasa relevan dengan pertanyaan.
+            2. Esensi Jawaban: Menangkap poin kunci materi sejarah dan memiliki keterkaitan jawaban yang kuat.
+            3. Berpikir Kritis: Menunjukkan analisis, sintesis, atau interpretasi sederhana.
             
-            Berikan skor tinggi (7-9) jika hampir semua kriteria terpenuhi, dan skor 10 jika semua kriteria (termasuk berpikir kritis) terpenuhi sempurna. Berikan skor berdasarkan ketiga kriteria ini secara seimbang (Max 10). Jawab HANYA dalam format JSON.`;
+            Skor 10 untuk jawaban sempurna. Skor 7-9 jika hampir semua kriteria terpenuhi. Berikan skor berdasarkan ketiga kriteria ini secara seimbang (Max 10). Jawab HANYA dalam format JSON.`;
 
-            const userQuery = `Pertanyaan: "${questionText}"\n\nJawaban Siswa: "${userAnswer}"\n\nBeri skor dan feedback (maksimal 3 kalimat).`;
+            const userQuery = `Pertanyaan: "${questionText}"\n\nJawaban Siswa: "${userAnswer}"\n\nBeri skor dan feedback (maksimal 2 kalimat).`; // Dibuat 2 kalimat untuk respons lebih cepat
 
             const payload = {
                 contents: [{ parts: [{ text: userQuery }] }],
@@ -1919,7 +1919,7 @@
                 }
                 
                 // Tampilkan loading saat menunggu penilaian AI (Diubah sesuai permintaan)
-                document.getElementById('feedback-message').innerHTML = '<div class="w-5 h-5 border-2 border-yellow-400 border-t-yellow-900 rounded-full animate-spin inline-block mr-2"></div> Menilai Esai Otomatis...';
+                document.getElementById('feedback-message').innerHTML = '<div class="w-5 h-5 border-2 border-yellow-400 border-t-yellow-900 rounded-full animate-spin inline-block mr-2"></div> Menilai...';
                 document.getElementById('feedback-message').classList.remove('text-red-400', 'text-green-400');
                 document.getElementById('feedback-message').classList.add('text-yellow-400');
                 document.getElementById('submit-answer-btn').disabled = true;
