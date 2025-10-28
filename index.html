@@ -314,7 +314,6 @@
         // NEW: Konstanta Batasan Waktu (20 menit = 1200 detik)
         const MISSION_TIME_LIMIT_SECONDS = 20 * 60;
         const GRADING_TIMEOUT_MS = 20000; // 20 detik batas waktu penilaian AI
-        const WORD_COUNT_FOR_MAX_SCORE = 40; // Batas kata minimum (melebihi ini untuk skor 10)
         
         // Konstanta Tombol Audio
         const originalButtonContent = '<svg class="w-5 h-5 mr-2 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.26a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> Dengarkan Audio Soal';
@@ -837,7 +836,7 @@
         }
 
         const isMissionCompleted = (missionName) => {
-            if (!appState.scores[missionName]) return 0;
+            if (!appState.scores[missionName]) return false;
             return Object.values(appState.scores[missionName]).filter(q => q.completed).length === 10;
         }
 
@@ -1308,7 +1307,7 @@
                 case 'maluku_4': return `Pejabat Belanda yang tewas adalah Residen Van den Berg.`; // MC baru
                 case 'maluku_5': return `Pattimura dihukum gantung di Benteng Victoria, Ambon.`;
                 case 'maluku_6': return `Pilih dua: Sistem penyerahan wajib rempah-rempah yang merusak ekonomi dan Pengangkatan raja-raja lokal yang sepihak oleh Belanda.`;
-                case 'maluku_7': return `Cocokkan Pattimura (Pemimpin Perlawanan di Saparua), Van den Berg (Kepala Benteng Duurstede), Said Perintah (Tokoh Muslim Perlawanan).`; // matching
+                case 'maluku_7': return `Cocokkan Pattimura (Pemimpin Saparua), Van den Berg (Kepala Benteng Duurstede), Said Perintah (Tokoh Muslim Perlawanan).`; // matching
                 case 'maluku_8': 
                     return `Khusus (Soal Grid):
 1. Pattimura dihukum gantung di Benteng Victoria, Ambon. (JAWABAN BENAR: Salah)
@@ -1819,16 +1818,11 @@
             const apiKey = TTS_API_KEY; // Menggunakan API key yang sama
             const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
 
-            // OPTIMASI: System prompt yang disederhanakan dan difokuskan pada kriteria yang diminta user
-            const systemPrompt = `Anda adalah Ahli Sejarah. PRIORITAS UTAMA: Kecepatan dan Latensi Rendah. Nilai esai dari 0 sampai ${maxScore}.
-            Kriteria penilaian:
-            1. Susunan Kalimat: Keterkaitan dan kejelasan tata bahasa relevan dengan pertanyaan.
-            2. Esensi Jawaban: Menangkap poin kunci materi sejarah dan memiliki keterkaitan jawaban yang kuat.
-            3. Berpikir Kritis: Menunjukkan analisis, sintesis, atau interpretasi sederhana.
-            
-            Skor 10 untuk jawaban sempurna. Skor 7-9 jika hampir semua kriteria terpenuhi. Berikan skor berdasarkan ketiga kriteria ini secara seimbang (Max 10). Jawab HANYA dalam format JSON.`;
+            // OPTIMASI: System prompt yang lebih ringkas dan fokus pada tugas inti
+            // Fokus pada: 1. Akurasi Materi, 2. Kejelasan Struktur Kalimat, 3. Analisis Kritis (pemikiran orisinal)
+            const systemPrompt = `Anda adalah Ahli Sejarah. Nilai esai dari 0 sampai ${maxScore}. Kriteria: 1. Akurasi Materi Sejarah (Relevansi jawaban dengan konteks sejarah). 2. Kejelasan Struktur Kalimat (Tata bahasa dan kelancaran). 3. Analisis Kritis (Kedalaman interpretasi peserta). Berikan skor berdasarkan ketiga kriteria ini secara seimbang. Jawab HANYA dalam format JSON.`;
 
-            const userQuery = `Pertanyaan: "${questionText}"\n\nJawaban Siswa: "${userAnswer}"\n\nBeri skor dan feedback (maksimal 2 kalimat).`; // Dibuat 2 kalimat untuk respons lebih cepat
+            const userQuery = `Pertanyaan: "${questionText}"\n\nJawaban Siswa: "${userAnswer}"\n\nBeri skor dan feedback (maksimal 3 kalimat).`;
 
             const payload = {
                 contents: [{ parts: [{ text: userQuery }] }],
@@ -1903,15 +1897,13 @@
             let isCorrect = false;
 
             const maxScoreForQuestion = qState.isConsulted ? CONSULT_HINT_SCORE : q.points;
-            const UNCONSULTED_MAX_SCORE = POINTS_PER_QUESTION; // 10
 
             // Pastikan input terakhir dicatat sebelum disubmit
             trackInputChanges();
 
             if (q.type === 'essay') {
                 const text = qState.currentAnswer || ''; // Ambil dari state
-                const words = text ? text.split(/\s+/).filter(word => word.length > 0) : [];
-                const wordCount = words.length;
+                const wordCount = text ? text.split(/\s+/).filter(word => word.length > 0).length : 0;
                 
                 if (wordCount < q.minWords) {
                     showModal('Peringatan', `Jawaban esai Anda harus minimal ${q.minWords} kata. Kata saat ini: ${wordCount}.`);
@@ -1919,60 +1911,27 @@
                 }
                 
                 // Tampilkan loading saat menunggu penilaian AI (Diubah sesuai permintaan)
-                document.getElementById('feedback-message').innerHTML = '<div class="w-5 h-5 border-2 border-yellow-400 border-t-yellow-900 rounded-full animate-spin inline-block mr-2"></div> Menilai...';
+                document.getElementById('feedback-message').innerHTML = '<div class="w-5 h-5 border-2 border-yellow-400 border-t-yellow-900 rounded-full animate-spin inline-block mr-2"></div> Menilai Esai Otomatis...';
                 document.getElementById('feedback-message').classList.remove('text-red-400', 'text-green-400');
                 document.getElementById('feedback-message').classList.add('text-yellow-400');
                 document.getElementById('submit-answer-btn').disabled = true;
 
                 // Memanggil fungsi penilaian AI
-                const aiResult = await gradeEssay(q.question, text, UNCONSULTED_MAX_SCORE);
+                const aiResult = await gradeEssay(q.question, text, maxScoreForQuestion);
                 
                 score = aiResult.score; 
                 feedback = aiResult.feedback;
                 
-                // --- KOREKSI LOGIKA SKOR BERDASARKAN KRITERIA PANJANG ---
-                // Jika pertanyaan TIDAK dikonsultasikan DAN AI memberi skor maksimal (10),
-                // CEK apakah panjang memenuhi 40+ kata (yaitu > 40 kata)
-                if (!qState.isConsulted && wordCount <= WORD_COUNT_FOR_MAX_SCORE && score === UNCONSULTED_MAX_SCORE) {
-                    score = CONSULT_HINT_SCORE; // Turunkan menjadi 5 poin
-                    finalFeedback = `Penilaian AI (${aiResult.score} Poin Asli): ${aiResult.feedback}. Peringatan: Jawaban terlalu singkat (${wordCount} kata, perlu >${WORD_COUNT_FOR_MAX_SCORE} kata), skor dibatasi menjadi ${CONSULT_HINT_SCORE} poin.`;
-                } else if (qState.isConsulted) {
-                    // Jika dikonsultasikan, pastikan skor tidak melebihi batas 5.
-                    score = Math.min(score, CONSULT_HINT_SCORE);
-                    finalFeedback = `Penilaian AI (${score} Poin): ${aiResult.feedback}`;
-                } else {
-                    // Jika tidak dikonsultasikan DAN memenuhi kata (>40) atau skor AI < 10, gunakan skor AI.
-                    finalFeedback = `Penilaian AI (${score} Poin): ${aiResult.feedback}`;
-                }
-                
-                // Set isCorrect flag for visual feedback (use max possible score for comparison)
-                isCorrect = (score === UNCONSULTED_MAX_SCORE); 
-                
-                // --- Logic penyelesaian otomatis untuk Esai ---
-                appState.scores[appState.currentMission][q.id].score = score;
-                appState.scores[appState.currentMission][q.id].completed = true;
-                appState.scores[appState.currentMission][q.id].skipped = false;
-                appState.scores[appState.currentMission][q.id].currentAnswer = qState.currentAnswer; // Simpan jawaban final
+                // Gunakan feedback dari AI sebagai feedback utama
+                let finalFeedback = `Penilaian AI (${score} Poin): ${aiResult.feedback}`;
 
-                // Render ulang input untuk menampilkan skor/feedback AI
-                renderQuestionInput(q, appState.scores[appState.currentMission][q.id]);
-                
-                // Lanjutkan ke soal berikutnya
-                if (isMissionCompleted(appState.currentMission)) {
-                    navigateToMissionSelect();
+                // Aturan penyelesaian: jika skor > 0, selesaikan, jika tidak, selesaikan dengan 0 poin
+                if (score > 0) {
+                     finalFeedback = `Jawaban Esai Dicatat! Skor: ${score} Poin. ${aiResult.feedback}`;
                 } else {
-                    navigateToNextQuestion();
+                     finalFeedback = `Jawaban Esai Dicatat. Skor: ${score} Poin. ${aiResult.feedback}`;
                 }
-                
-                // Selesai di sini, tidak perlu melanjutkan ke blok if/else non-esai di bawah.
-                document.getElementById('feedback-message').textContent = finalFeedback;
-                document.getElementById('feedback-message').classList.toggle('text-green-400', isCorrect);
-                document.getElementById('feedback-message').classList.toggle('text-red-400', !isCorrect && score === 0);
-                document.getElementById('feedback-message').classList.remove('text-yellow-400', 'text-orange-400');
-                document.getElementById('feedback-message').classList.toggle('text-orange-400', score > 0 && score < UNCONSULTED_MAX_SCORE);
-                document.getElementById('submit-answer-btn').disabled = false; // Kembalikan ke normal, meski sudah pindah soal
-                saveAppState();
-                return; // KELUAR DARI FUNGSI HENDELSUBMIT
+
 
             } else if (q.type === 'grid_tf') { // NEW: Logic penilaian untuk soal grid
                 const userSelections = qState.currentAnswer || {};
@@ -2050,10 +2009,20 @@
                         feedback = 'Jawaban Salah. Anda bisa coba Tanya Ahli (Max 5 Poin), atau Lewati Soal.';
                     }
                 }
-            } 
+            } else {
+                // Gunakan finalFeedback dari proses esai
+                feedback = finalFeedback;
+                // Set isCorrect flag untuk menampilkan feedback visual di sini
+                isCorrect = (score === maxScoreForQuestion); // Hanya dianggap "Benar" jika skor penuh
+            }
+
+            document.getElementById('feedback-message').textContent = feedback;
+            document.getElementById('feedback-message').classList.toggle('text-green-400', isCorrect);
+            document.getElementById('feedback-message').classList.toggle('text-red-400', !isCorrect && score === 0);
+            document.getElementById('feedback-message').classList.remove('text-yellow-500', 'text-orange-400');
+            document.getElementById('feedback-message').classList.toggle('text-orange-400', score > 0 && score < maxScoreForQuestion); // Skor parsial
             
-            // Non-esai dan Skor sudah ditentukan
-            if (isCorrect || qState.isConsulted || score > 0) { // Jika non-esai dan benar atau menggunakan bantuan atau skor > 0
+            if (isCorrect || qState.isConsulted || q.type === 'essay' || score > 0) { // Jika esai atau skor > 0, selesaikan
                 appState.scores[appState.currentMission][q.id].score = score;
                 appState.scores[appState.currentMission][q.id].completed = true;
                 appState.scores[appState.currentMission][q.id].skipped = false;
@@ -2076,13 +2045,6 @@
                     document.getElementById('consult-expert-btn').classList.remove('hidden');
                 }
             }
-            
-            document.getElementById('feedback-message').textContent = feedback;
-            document.getElementById('feedback-message').classList.toggle('text-green-400', isCorrect);
-            document.getElementById('feedback-message').classList.toggle('text-red-400', !isCorrect && score === 0);
-            document.getElementById('feedback-message').classList.remove('text-yellow-500', 'text-orange-400');
-            document.getElementById('feedback-message').classList.toggle('text-orange-400', score > 0 && score < maxScoreForQuestion); // Skor parsial
-            
             saveAppState();
         }
         
