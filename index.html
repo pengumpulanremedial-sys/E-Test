@@ -1818,9 +1818,13 @@
             const apiKey = TTS_API_KEY; // Menggunakan API key yang sama
             const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
 
-            // OPTIMASI: System prompt yang lebih ringkas dan fokus pada tugas inti
-            // Fokus pada: 1. Akurasi Materi, 2. Kejelasan Struktur Kalimat, 3. Analisis Kritis (pemikiran orisinal)
-            const systemPrompt = `Anda adalah Ahli Sejarah. Nilai esai dari 0 sampai ${maxScore}. Kriteria: 1. Akurasi Materi Sejarah (Relevansi jawaban dengan konteks sejarah). 2. Kejelasan Struktur Kalimat (Tata bahasa dan kelancaran). 3. Analisis Kritis (Kedalaman interpretasi peserta). Berikan skor berdasarkan ketiga kriteria ini secara seimbang. Jawab HANYA dalam format JSON.`;
+            // OPTIMASI: System prompt yang disederhanakan dan difokuskan pada kriteria yang diminta user
+            const systemPrompt = `Anda adalah Ahli Sejarah. Nilai esai dari 0 sampai ${maxScore}. 
+            Kriteria penilaian: 
+            1. Susunan Kalimat: Apakah kalimat tersusun dengan baik dan berkaitan dengan pertanyaan?
+            2. Esensi Jawaban: Apakah kalimat sederhana yang digunakan sudah menangkap poin kunci materi (fakta/konsep)?
+            3. Berpikir Kritis: Apakah ada unsur analisis sederhana atau interpretasi dari pemikiran peserta didik?
+            Berikan skor berdasarkan ketiga kriteria ini secara seimbang. Jawab HANYA dalam format JSON.`;
 
             const userQuery = `Pertanyaan: "${questionText}"\n\nJawaban Siswa: "${userAnswer}"\n\nBeri skor dan feedback (maksimal 3 kalimat).`;
 
