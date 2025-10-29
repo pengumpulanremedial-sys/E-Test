@@ -287,8 +287,8 @@
         // --- KONSTANTA DAN KONFIGURASI GLOBAL ---
         const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
         const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
-        // Ganti URL Web App ini dengan URL yang valid setelah Anda deploy Google Apps Script Anda.
-        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyzauD0braaHnf8r_Cs2BwEA6zP1kxADmE68nMIzH9LdNuIE6gRkOnFWbR-6IdWY4ahJQ/exec'; 
+        // PENTING: GANTI INI DENGAN URL WEB APP GOOGLE APPS SCRIPT ANDA YANG SUDAH DI-DEPLOY
+        const APPS_SCRIPT_URL = 'GANTI_DENGAN_URL_WEB_APP_ANDA_YANG_VALID'; 
         const TTS_API_KEY = ""; 
         const POINTS_PER_QUESTION = 2.5; // DIUBAH: 10 * 40 = 400. Sekarang 2.5 * 40 = 100.
         const CONSULT_HINT_SCORE = 5;
@@ -1010,7 +1010,7 @@
         const getEssayAnswer = (missionName, questionId) => {
             const scoreData = appState.scores[missionName]?.[questionId];
             return (scoreData && typeof scoreData.currentAnswer === 'string') ? scoreData.currentAnswer.replace(/\n/g, ' ') : '- Belum Dijawab -';
-        };
+        }
         
         // NEW UTILITY FUNCTION: Hitung Total Konsultasi Ahli
         const calculateTotalConsultations = () => {
@@ -1025,7 +1025,7 @@
                 }
             }
             return count;
-        };
+        }
 
         const sendDataToGoogleSheet = async (data) => {
             console.log("Mencoba mengirim data ke Google Sheets...");
@@ -1143,7 +1143,8 @@
             const currentMissionScore = calculateMissionScore(appState.currentMission);
 
             document.getElementById('user-name-display').textContent = `${userInfo.nama} (${userInfo.kelas} ${userInfo.jurusan})`;
-            document.getElementById('mission-current-score').textContent = currentMissionScore.toFixed(2);
+            // TAMPILAN SKOR SEMENTARA DIBIARKAN DENGAN 2 DESIMAL UNTUK AKURASI
+            document.getElementById('mission-current-score').textContent = currentMissionScore.toFixed(2); 
             document.getElementById('mission-title').textContent = appState.currentMission;
             
             // NEW: Perbarui tampilan waktu saat rendering state misi
@@ -1612,6 +1613,7 @@
                         
                         if (jsonText) {
                             const parsed = JSON.parse(jsonText);
+                            // FIX: Membulatkan skor AI ke bilangan genap sebelum disimpan
                             parsed.score = Math.min(Math.round(parsed.score), maxScore);
                             return parsed;
                         }
@@ -1680,7 +1682,7 @@
                 
                 score = aiResult.score; 
                 
-                let finalFeedback = `Penilaian AI (${score.toFixed(2)} Poin): ${aiResult.feedback}`;
+                let finalFeedback = `Penilaian AI (${score} Poin): ${aiResult.feedback}`;
 
                 isCorrect = (score === maxScoreForQuestion); 
                 
@@ -1727,7 +1729,8 @@
                     }
                 });
 
-                score = parseFloat(((correctCount / totalItems) * maxScoreForQuestion).toFixed(2)); // Penilaian parsial
+                // FIX: Pembulatan skor parsial
+                score = Math.round(((correctCount / totalItems) * maxScoreForQuestion));
                 isCorrect = (correctCount === totalItems);
                 
             } else { 
@@ -1739,7 +1742,8 @@
                         return;
                     }
                     isCorrect = (q.type === 'true_false') ? (userAnswer === 'Benar' ? true : false) === q.answer : (userAnswer === q.answer);
-                    score = isCorrect ? maxScoreForQuestion : 0;
+                    // FIX: Pembulatan skor
+                    score = isCorrect ? Math.round(maxScoreForQuestion) : 0;
                     
                 } else if (q.type === 'multiple_correct') {
                     const checkedBoxes = userAnswer || [];
@@ -1749,10 +1753,11 @@
                     
                     if (correctAnswers.length > 0) {
                         if (incorrectlySelected === 0 && correctlySelected === correctAnswers.length) {
-                            score = maxScoreForQuestion; isCorrect = true;
+                            score = Math.round(maxScoreForQuestion); isCorrect = true;
                         } else if (incorrectlySelected === 0 && correctlySelected > 0) {
                             const ratio = (correctlySelected / correctAnswers.length);
-                            score = parseFloat((ratio * maxScoreForQuestion).toFixed(2)); isCorrect = false;
+                            // FIX: Pembulatan skor parsial
+                            score = Math.round(ratio * maxScoreForQuestion); isCorrect = false;
                         } else { score = 0; isCorrect = false; }
                     }
 
@@ -1766,17 +1771,18 @@
                     q.matches.forEach((match, index) => {
                         if (selectedTargets[index] === match.target) correctMatches++;
                     });
-                    score = parseFloat(((correctMatches / q.matches.length) * maxScoreForQuestion).toFixed(2));
+                    // FIX: Pembulatan skor parsial
+                    score = Math.round((correctMatches / q.matches.length) * maxScoreForQuestion);
                     isCorrect = (score === maxScoreForQuestion);
                 }
             }
                 
             if (q.type !== 'essay') { 
                 if (isCorrect) {
-                    feedback = qState.isConsulted ? `Jawaban Benar dengan Bantuan Ahli! Mendapat ${score.toFixed(2)} Poin.` : 'Jawaban Benar! 🎉';
+                    feedback = qState.isConsulted ? `Jawaban Benar dengan Bantuan Ahli! Mendapat ${score} Poin.` : 'Jawaban Benar! 🎉';
                 } else {
                     if (qState.isConsulted) {
-                        feedback = `Jawaban salah, meskipun sudah menggunakan Ahli. Mendapat ${score.toFixed(2)} Poin.`;
+                        feedback = `Jawaban salah, meskipun sudah menggunakan Ahli. Mendapat ${score} Poin.`;
                     } else {
                         feedback = 'Jawaban Salah. Anda bisa coba Tanya Ahli (Max 5 Poin), atau Lewati Soal.';
                     }
@@ -1861,11 +1867,12 @@
             // Reset mission elapsed time (waktu misi saat ini)
             appState.missionElapsedTime = 0; 
 
-            const finalScore = calculateGameScore(); 
+            // FIX 1: Membulatkan skor akhir ke bilangan genap
+            const finalScore = Math.round(calculateGameScore()); 
             const missionName = 'Quiz Biaya Produksi & BEP';
 
             document.getElementById('mission-final-title').textContent = missionName;
-            document.getElementById('mission-final-score').textContent = finalScore.toFixed(2);
+            document.getElementById('mission-final-score').textContent = finalScore;
             document.getElementById('max-game-score').textContent = MAX_GAME_SCORE;
             document.getElementById('final-user-info').textContent = `${userInfo.nama} dari ${userInfo.jurusan} (${userInfo.kelas})`;
             document.getElementById('total-time-display').textContent = formatTime(totalTimeSeconds); // Menggunakan totalTimeSeconds
@@ -1875,7 +1882,7 @@
                 nama_lengkap: userInfo.nama,
                 kelas: userInfo.kelas,
                 jurusan: userInfo.jurusan,
-                skor_total: finalScore,
+                skor_total: finalScore, // FIX: Mengirim skor bulat
                 waktu_total: formatTime(totalTimeSeconds), 
                 
                 // DATA ESSAY
@@ -2076,5 +2083,3 @@
     </script>
 </body>
 </html>
-
-
