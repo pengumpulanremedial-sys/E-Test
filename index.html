@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MENITI SEJARAH Perlawanan Daerah</title>
+    <title>QUIZ: Biaya Produksi & BEP</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
@@ -31,7 +31,6 @@
         .mission-button {
             transition: all 0.3s ease;
         }
-        /* Mengubah warna hover dari Indigo ke Merah */
         .mission-button:hover {
             transform: scale(1.02);
             background-color: #ef4444; /* red-500 */
@@ -53,7 +52,7 @@
             min-width: 60px;
         }
 
-        /* PERBAIKAN ESTETIKA: Menghilangkan spasi vertikal yang tidak perlu di navigasi soal */
+        /* Navigasi Soal */
         #question-navigation {
             display: flex;
             gap: 8px; 
@@ -80,8 +79,8 @@
 
     <!-- Kontainer Utama Aplikasi -->
     <div id="app" class="w-full max-w-2xl bg-gray-800 p-6 md:p-10 rounded-xl container-card text-white">
-        <h1 class="text-4xl font-extrabold text-center text-red-500 mb-2 tracking-wide">MENITI SEJARAH</h1>
-        <p class="text-xl font-light text-center text-gray-300 mb-8">Perlawanan Rakyat Daerah</p>
+        <h1 class="text-4xl font-extrabold text-center text-red-500 mb-2 tracking-wide">QUIZ PRODUKSI & BEP</h1>
+        <p class="text-xl font-light text-center text-gray-300 mb-8">Proyek Kreatif dan Kewirausahaan (40 Soal)</p>
 
         <!-- Area Status & Permainan -->
         <div id="game-container">
@@ -93,12 +92,12 @@
                 <p id="loading-detail" class="text-sm text-gray-400">Menyiapkan struktur soal...</p>
             </div>
 
-            <!-- LAYAR 0: INTRO / PROFILE INPUT -->
+            <!-- LAYAR 0: INTRO / PROFILE INPUT (START SCREEN) -->
             <div id="intro-screen" class="hidden">
-                <h2 class="text-3xl font-bold text-center mb-6 text-white">Selamat Datang, Pahlawan!</h2>
+                <h2 class="text-3xl font-bold text-center mb-6 text-white">Siap Menguji Pengetahuan BEP?</h2>
                 
                 <div class="bg-gray-700 p-6 rounded-xl mb-8 shadow-2xl border border-red-500/50">
-                    <h3 class="text-xl font-extrabold mb-4 text-red-400 border-b border-red-700 pb-2">Instruksi Misi</h3>
+                    <h3 class="text-xl font-extrabold mb-4 text-red-400 border-b border-red-700 pb-2">Instruksi Quiz</h3>
                     
                     <div class="grid md:grid-cols-2 gap-4 text-gray-300 text-sm">
                         
@@ -106,19 +105,15 @@
                         <div class="space-y-3">
                             <div class="flex items-start">
                                 <span class="text-red-400 font-extrabold mr-2 mt-[-3px] text-lg">&bull;</span>
-                                <span>Anda wajib menyelesaikan <strong>4 misi</strong> yang tersedia.</span>
+                                <span>Anda harus menyelesaikan <strong>40 soal</strong> dalam satu sesi.</span>
                             </div>
                             <div class="flex items-start">
                                 <span class="text-red-400 font-extrabold mr-2 mt-[-3px] text-lg">&bull;</span>
-                                <span>Setiap misi terdiri dari <strong>10 soal</strong> dengan beragam tipe.</span>
+                                <span>Total skor maksimal yang dapat diraih adalah <strong>100 Poin</strong>.</span>
                             </div>
                             <div class="flex items-start">
                                 <span class="text-red-400 font-extrabold mr-2 mt-[-3px] text-lg">&bull;</span>
-                                <span>Tingkat kesulitan soal berjenjang, dari <strong>Mudah</strong> hingga <strong>HOTS</strong> (Analisis Kritis).</span>
-                            </div>
-                            <div class="flex items-start">
-                                <span class="text-red-400 font-extrabold mr-2 mt-[-3px] text-lg">&bull;</span>
-                                <span>Gunakan tombol "<strong>Lewati Soal</strong>" untuk mengerjakan soal secara non-linear (soal yang dilewati dapat dikerjakan kembali).</span>
+                                <span>Soal mencakup berbagai tipe, termasuk <strong>Analisis HOTS</strong> (Esai).</span>
                             </div>
                         </div>
 
@@ -126,15 +121,15 @@
                         <div class="space-y-3">
                             <div class="flex items-start">
                                 <span class="text-red-400 font-extrabold mr-2 mt-[-3px] text-lg">&bull;</span>
-                                <span>Skor maksimal yang dapat Anda raih per misi adalah <strong>100 Poin</strong>.</span>
+                                <span>Waktu pengerjaan total dibatasi <strong>40 menit</strong>.</span>
                             </div>
                             <div class="flex items-start">
                                 <span class="text-red-400 font-extrabold mr-2 mt-[-3px] text-lg">&bull;</span>
-                                <span>Waktu pengerjaan **Misi** dibatasi <strong>20 menit</strong>. Jika melebihi, misi dihentikan.</span>
+                                <span>Gunakan "Tanya Ahli" untuk bantuan, namun skor maksimal menjadi **5 Poin** untuk soal tersebut.</span>
                             </div>
                             <div class="flex items-start font-semibold text-yellow-400">
                                 <span class="text-red-500 font-extrabold mr-2 mt-[-3px] text-lg">&bull;</span>
-                                <span class="text-red-300">Aturan Pelanggaran: Anda hanya memiliki <strong>2 kali kesempatan pelanggaran</strong> (Pindah Tab/Aplikasi). Pelanggaran ke-3 akan mengakhiri game secara paksa.</span>
+                                <span class="text-red-300">Anda memiliki batas <strong>2 kali pelanggaran</strong> (Pindah Tab/Aplikasi). Pelanggaran ke-3 mengakhiri game.</span>
                             </div>
                         </div>
                     </div>
@@ -172,23 +167,11 @@
                 </div>
                 
                 <button id="start-profile-btn" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-4 rounded-lg transition duration-200 mt-8 disabled:bg-red-400">
-                    Mulai Misi Sejarah
+                    Mulai Quiz
                 </button>
             </div>
 
-            <!-- LAYAR PILIH MISI -->
-            <div id="mission-select-screen" class="hidden">
-                <h2 class="text-3xl font-bold mb-8 text-center text-white">Pilih Medan Perang Anda</h2>
-                <div class="bg-gray-700 p-4 rounded-lg mb-6 text-center">
-                    <span class="text-lg font-semibold text-red-400">Status Game: </span>
-                    <span id="game-progress-display" class="text-lg text-white">0/4 Misi Selesai</span>
-                </div>
-                <div id="mission-list" class="space-y-4">
-                    <!-- Tombol Misi di-render oleh JS -->
-                </div>
-            </div>
-            
-            <!-- LAYAR DALAM MISI -->
+            <!-- LAYAR DALAM MISI (Satu-satunya layar permainan) -->
             <div id="in-mission-screen" class="hidden">
                 <div class="bg-gray-700 p-3 rounded-lg mb-6 flex justify-between items-center text-sm">
                     <div>
@@ -197,19 +180,19 @@
                     </div>
                     <div>
                         <span class="text-red-400 font-semibold">Waktu Tersisa:</span> 
-                        <span id="mission-time-display" class="text-white font-mono">20:00</span>
+                        <span id="mission-time-display" class="text-white font-mono">40:00</span>
                     </div>
                 </div>
                 <!-- SKOR SEMENTARA MISI INI -->
                 <div class="bg-red-900/50 p-3 rounded-lg mb-6 text-center">
-                    <span class="text-red-300 font-semibold">SKOR MISI INI:</span> 
+                    <span class="text-red-300 font-semibold">SKOR SAAT INI:</span> 
                     <span id="mission-current-score" class="text-yellow-300 font-extrabold text-xl">0</span>
                     <span class="text-red-300 font-semibold">/ 100</span>
                 </div>
 
-                <h2 class="text-3xl font-bold text-center text-red-400 mb-4" id="mission-title"></h2>
+                <h2 class="text-3xl font-bold text-center text-red-400 mb-4" id="mission-title">Quiz Biaya Produksi & BEP</h2>
                 
-                <!-- Navigasi Soal (Non-Linear) -->
+                <!-- Navigasi Soal (40 Tombol) -->
                 <div id="question-navigation" class="flex flex-wrap justify-center p-3 bg-gray-700 rounded-xl shadow-lg">
                     <!-- Navbol Misi di-render oleh JS -->
                 </div>
@@ -221,7 +204,7 @@
                     </p>
                     <p class="text-2xl font-semibold text-white mb-4" id="question-text"></p>
                     
-                    <button id="play-audio-btn" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-4 rounded-lg transition duration-200 mb-4 flex items-center justify-center disabled:bg-red-400">
+                    <button id="play-audio-btn" class="hidden w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-4 rounded-lg transition duration-200 mb-4 flex items-center justify-center disabled:bg-red-400">
                         <svg class="w-5 h-5 mr-2 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.26a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                         Dengarkan Audio Soal
                     </button>
@@ -246,7 +229,7 @@
                     </button>
                 </div>
                 <button id="finish-mission-btn" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-4 rounded-lg transition duration-200 mt-4 hidden">
-                    Selesaikan Misi
+                    Selesaikan Quiz
                 </button>
             </div>
 
@@ -267,7 +250,7 @@
 
             <!-- LAYAR AKHIR MISI -->
             <div id="final-screen" class="hidden text-center py-10 bg-gray-700 rounded-xl container-card">
-                <h2 class="text-4xl font-extrabold text-red-400 mb-4">Misi Selesai! 🎉</h2>
+                <h2 class="text-4xl font-extrabold text-red-400 mb-4">Quiz Selesai! 🎉</h2>
                 <p class="text-xl text-gray-300 mb-6">Skor Akhir <span id="mission-final-title" class="text-red-400 font-bold"></span>:</p>
                 <div class="p-8 bg-gray-800 rounded-xl shadow-lg inline-block border-2 border-red-600">
                     <!-- MAX SCORE 100 -->
@@ -277,7 +260,6 @@
                 </div>
                 <div class="mt-8">
                     <p class="text-sm text-gray-400 mb-4">Terima kasih, <span id="final-user-info"></span>!</p>
-                    <!-- PERBAIKAN: Tombol sekarang selalu 'Keluar & Mulai Sesi Baru' -->
                     <button id="next-action-btn" class="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg transition duration-200 mr-3">
                         Keluar & Mulai Sesi Baru
                     </button>
@@ -300,23 +282,24 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         
-        // --- KONSTANTA DAN KONFIGURASI GLOBAL (DITEMPATKAN DI AWAL) ---
+        // --- KONSTANTA DAN KONFIGURASI GLOBAL ---
         const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
         const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
-        // PENTING: Ganti URL Web App ini dengan URL yang valid setelah Anda deploy Google Apps Script Anda.
-        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyMxi_LC-yIRRwtnXO7GFxqhWuq4Lm3hglDUXjJc8VRINzLzhIq2CTZ0JKXL-URh-WYHw/exec'; 
-        const TTS_API_KEY = "AIzaSyDo4tVXdPCfxlzJ5cVnWTzfb9wain7_qKg"; // Kunci API akan otomatis disediakan oleh Canvas. Jangan diisi secara manual.
-        const POINTS_PER_QUESTION = 10;
+        // Ganti URL Web App ini dengan URL yang valid setelah Anda deploy Google Apps Script Anda.
+        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyD4HxnKY-jeHKpWNwJzlv4GFw5M-hqDZWrjdbxPKsY0M8LJ7x4GYOyRihde1jHmF2UEQ/exec'; 
+        const TTS_API_KEY = ""; 
+        const POINTS_PER_QUESTION = 2.5; // DIUBAH: 10 * 40 = 400. Sekarang 2.5 * 40 = 100.
         const CONSULT_HINT_SCORE = 5;
         const MAX_CHEATING_ATTEMPTS = 3;
-        const MAX_MISSION_SCORE = 100; 
-        const MAX_GAME_SCORE = 400; 
-        const STORAGE_KEY = 'menitiSejarahAppState';
-        // NEW: Konstanta Batasan Waktu (20 menit = 1200 detik)
-        const MISSION_TIME_LIMIT_SECONDS = 20 * 60;
-        const GRADING_TIMEOUT_MS = 20000; // 20 detik batas waktu per panggilan API (untuk AbortController)
+        const MAX_QUESTIONS = 40; // Total soal
+        const MAX_GAME_SCORE = 100; // DIUBAH: Menggunakan 100 sebagai skor maksimal
+        const STORAGE_KEY = 'biayaProduksiQuizState';
+
+        // Batas waktu pengerjaan (40 menit = 2400 detik)
+        const MISSION_TIME_LIMIT_SECONDS = 40 * 60; 
+        const GRADING_TIMEOUT_MS = 20000; 
         
-        // Konstanta Tombol Audio
+        // Konstanta Tombol Audio (Dihilangkan di HTML, tapi logicnya dipertahankan jika diperlukan)
         const originalButtonContent = '<svg class="w-5 h-5 mr-2 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.26a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> Dengarkan Audio Soal';
 
         const SCORE_MAP = {
@@ -329,7 +312,7 @@
             'grid_tf': POINTS_PER_QUESTION, 
         };
 
-        // --- STATE APLIKASI (Digabungkan untuk menghindari 'redeclaration') ---
+        // --- STATE APLIKASI ---
         let app, auth, userId, currentAudio, missionActiveStartTimestamp, timerInterval, modalCloseCallback;
         let totalTimeSeconds = 0;
         let isAppInitializing = true; 
@@ -344,13 +327,12 @@
         
         let appState = {
             screen: 'loading', 
-            currentMission: null,
+            currentMission: "Biaya Produksi dan BEP", // Tetapkan satu misi
             missions: {}, 
             currentQuestionId: null,
             scores: {}, 
             cheatingCount: 0,
             isCheatingListenerActive: false, 
-            // NEW: Waktu yang telah digunakan untuk misi saat ini (di reset saat misi dimulai)
             missionElapsedTime: 0,
         };
         const audioCache = new Map();
@@ -362,189 +344,113 @@
             }
         }
         
-        // --- DATA SOAL ---
+        // --- DATA SOAL BARU: BIAYA PRODUKSI DAN BEP (40 SOAL) ---
         const missionData = {
-            "Perlawanan Aceh": [
-                // Soal cerita panjang (narrative_mc)
-                { id: 'aceh_1', type: 'narrative_mc', question: "Selamat datang di Misi Perlawanan Aceh. Dengarkan baik-baik narasi berikut: Setelah jatuhnya Malaka ke tangan Portugis pada tahun 1511, banyak pedagang Muslim memindahkan kegiatan mereka ke Aceh. Sultan Ali Mughayat Syah kemudian memimpin Aceh untuk merebut kembali wilayah penting seperti Pasai dan memimpin serangan pertama terhadap Portugis di Malaka untuk mengamankan posisi Aceh sebagai pusat perdagangan Islam yang baru. Berdasarkan narasi, apa peran utama Sultan Ali Mughayat Syah setelah jatuhnya Malaka?", difficulty: 'MUDAH', options: ["Membuat perjanjian damai dengan Portugis", "Mendirikan pusat militer di Pulau Weh", "Mempimpin Aceh merebut wilayah Pasai dan menyerang Portugis", "Mengekspor rempah-rempah langsung ke Eropa"], answer: "Mempimpin Aceh merebut wilayah Pasai dan menyerang Portugis", points: SCORE_MAP.narrative_mc }, 
+            "Biaya Produksi dan BEP": [
+                // Q1 - Q5 (MUDAH - MC/TF - Definisi Dasar)
+                { id: 'q1_mc', type: 'multiple_choice', question: "Jenis biaya yang jumlahnya TIDAK berubah meskipun volume produksi naik atau turun disebut Biaya apa?", difficulty: 'MUDAH', options: ["Biaya Tetap (Fixed Cost)", "Biaya Variabel (Variable Cost)", "Biaya Operasional", "Biaya Pemasaran"], answer: "Biaya Tetap (Fixed Cost)", points: SCORE_MAP.multiple_choice },
+                { id: 'q2_tf', type: 'true_false', question: "Pernyataan: Titik Impas (Break-Even Point/BEP) adalah kondisi di mana perusahaan mengalami keuntungan maksimal.", difficulty: 'MUDAH', answer: false, points: SCORE_MAP.true_false },
+                { id: 'q3_mc', type: 'multiple_choice', question: "Biaya bahan baku langsung (raw materials) termasuk dalam kategori biaya?", difficulty: 'MUDAH', options: ["Biaya Tetap", "Biaya Semi-Variabel", "Biaya Variabel", "Biaya Overhead"], answer: "Biaya Variabel", points: SCORE_MAP.multiple_choice },
+                { id: 'q4_tf', type: 'true_false', question: "Pernyataan: Gaji bulanan manajer produksi termasuk Biaya Variabel karena harus dibayar setiap bulan.", difficulty: 'MUDAH', answer: false, points: SCORE_MAP.true_false },
+                { id: 'q5_mc', type: 'multiple_choice', question: "Tujuan utama seorang wirausaha menghitung BEP adalah untuk mengetahui batas minimum...?", difficulty: 'MUDAH', options: ["Kerugian maksimum", "Penjualan agar tidak rugi", "Modal awal yang dibutuhkan", "Biaya pemasaran"], answer: "Penjualan agar tidak rugi", points: SCORE_MAP.multiple_choice },
                 
-                { id: 'aceh_2', type: 'multiple_choice', question: "Pasukan maritim Aceh yang terkenal di masa Sultan Iskandar Muda bernama?", difficulty: 'SEDANG', options: ["Panglima Armada", "Pasukan Iskandar", "Cakra Donya", "Gajah Putih"], answer: "Cakra Donya", points: SCORE_MAP.multiple_choice },
-                
-                // Grid TF 1 (Soal No. 3)
-                { 
-                    id: 'aceh_3', 
-                    type: 'grid_tf', 
-                    question: "Narasi: Kesultanan Aceh, yang berkembang setelah jatuhnya Malaka, memiliki ambisi besar untuk menguasai jalur perdagangan Selat Malaka. Perlawanan terhadap Portugis tidak hanya bermotif ekonomi, tetapi juga keagamaan, di mana Aceh berupaya menjadi pusat penyebaran Islam yang kuat di Nusantara.\n\nTandai Benar atau Salah untuk setiap pernyataan berdasarkan narasi di atas:", 
-                    difficulty: 'SEDANG', 
-                    gridItems: [
-                        { text: "Keinginan menguasai Selat Malaka adalah motif utama perlawanan.", answer: true }, 
-                        { text: "Aceh menjalin hubungan dengan Kesultanan Demak untuk balas dendam.", answer: false }, 
-                        { text: "Perlawanan Aceh hanya didorong oleh faktor murni ekonomi.", answer: false }, 
-                        { text: "Aceh berupaya menjadi pusat penyebaran Islam yang kuat.", answer: true }
-                    ],
-                    points: SCORE_MAP.grid_tf
-                },
-                
-                // Pilihan Ganda (mengganti True/False lama di slot 4)
-                { id: 'aceh_4', type: 'multiple_choice', question: "Apa faktor utama yang mendorong Sultan-Sultan Aceh untuk terus melawan Portugis?", difficulty: 'MUDAH', options: ["Kewajiban kerja paksa rakyat", "Pajak tinggi atas tanaman kopi", "Monopoli perdagangan di Selat Malaka", "Perselisihan batas wilayah"], answer: "Monopoli perdagangan di Selat Malaka", points: SCORE_MAP.multiple_choice },
-                    
-                { id: 'aceh_5', type: 'multiple_correct', question: "Pilih dua cara yang dilakukan Sultan Iskandar Muda untuk memajukan Kesultanan Aceh?", difficulty: 'SEDANG', options: ["Menciptakan Undang-Undang 'Adat Meukuta Alam'", "Menguatkan ajaran agama Islam di Aceh", "Mengadakan perjanjian dengan VOC di Batavia", "Mengembangkan industri minyak bumi"], correctAnswers: ["Menciptakan Undang-Undang 'Adat Meukuta Alam'", "Menguatkan ajaran agama Islam di Aceh"], points: SCORE_MAP.multiple_correct }, 
-                { id: 'aceh_6', type: 'matching', question: "Cocokkan tokoh dengan perannya dalam perlawanan abad ke-16.", difficulty: 'SEDANG', matches: [{ prompt: "Sultan Ali Mughayat Syah", target: "Pendiri dan Pemimpin Serangan Pertama ke Portugis" }, { prompt: "Sultan Iskandar Muda", target: "Penguasa Masa Keemasan Aceh" }, { prompt: "Fatahillah", target: "Pahlawan Perlawanan Demak" }], points: SCORE_MAP.matching },
-                
-                // Grid TF 2 (Soal No. 7)
-                { 
-                    id: 'aceh_7', 
-                    type: 'grid_tf', 
-                    question: "Narasi: VOC tahu bahwa cara terbaik untuk melemahkan Aceh adalah dengan menguasai jalur ekspor lada dan timah di pantai timur Sumatera, bukan dengan menyerang pusat kekuasaan di Banda Aceh. Oleh karena itu, VOC membangun benteng di beberapa titik strategis, meskipun perlawanan Aceh seringkali berhasil mengganggu operasi mereka.\n\nTandai Benar atau Salah untuk setiap pernyataan berdasarkan narasi di atas:", 
-                    difficulty: 'SULIT', 
-                    gridItems: [
-                        { text: "Strategi VOC fokus pada perebutan jalur ekspor rempah-rempah.", answer: true }, 
-                        { text: "VOC langsung menyerang ibu kota Banda Aceh untuk menaklukkan Aceh.", answer: false }, 
-                        { text: "Aceh selalu berhasil mengusir semua serangan VOC di pantai timur Sumatera.", answer: false }, 
-                        { text: "VOC membangun benteng di Aceh untuk mengamankan jalur ekspor.", answer: true }
-                    ],
-                    points: SCORE_MAP.grid_tf
-                },
-                
-                { id: 'aceh_8', type: 'multiple_correct', question: "Pilih dua kerajaan di Nusantara yang pernah menjadi sekutu Aceh dalam upaya melawan Portugis?", difficulty: 'SULIT', options: ["Kesultanan Demak", "Kesultanan Ternate", "Kerajaan Johor", "Kesultanan Mataram"], correctAnswers: ["Kesultanan Ternate", "Kerajaan Johor"], points: SCORE_MAP.multiple_correct }, 
-                { id: 'aceh_9', type: 'matching', question: "Cocokkan lokasi dengan nilai strategisnya.", difficulty: 'SULIT', matches: [{ prompt: "Pelabuhan Malaka", target: "Pusat Monopoli Portugis" }, { prompt: "Pelabuhan Banda Aceh", target: "Pusat Perdagangan Islam Baru" }, { prompt: "Selat Malaka", target: "Jalur Vital Perdagangan Asia" }], points: SCORE_MAP.matching },
-                { id: 'aceh_10', type: 'essay', question: "Analisis: Jelaskan secara singkat mengapa kegagalan serangan Sultan Iskandar Muda ke Malaka pada 1629 tetap dianggap penting bagi posisi politik Aceh di Nusantara?", difficulty: 'HOTS', minWords: 30, points: SCORE_MAP.essay } 
-            ],
-            "Perlawanan Maluku (Pattimura)": [
-                { id: 'maluku_1', type: 'narrative_mc', question: "Selamat datang di Misi Perlawanan Maluku. Dengarkan baik-baik narasi berikut: Setelah Inggris menyerahkan Maluku kepada Belanda pada tahun 1817, Belanda segera mengaktifkan kembali praktik monopoli rempah-rempah yang sangat merugikan rakyat, menghapus uang kertas, dan menghapus hak-hak masyarakat adat. Kebijakan ini, ditambah dengan wajib militer dan kerja rodi, memicu kemarahan massal. Berdasarkan narasi, apa kebijakan ekonomi Belanda yang sangat membebani rakyat Maluku pasca kedatangan kembali Inggris?", difficulty: 'MUDAH', options: ["Monopoli cengkeh dan pala", "Kewajiban kerja paksa di tambang batu bara", "Pajak tanah yang sangat tinggi", "Larangan berlayar di Laut Banda"], answer: "Monopoli cengkeh dan pala", points: SCORE_MAP.multiple_choice }, 
-                
-                { id: 'maluku_2', type: 'multiple_choice', question: "Tokoh perempuan yang ikut berjuang bersama Pattimura di Pulau Nusalaut adalah?", difficulty: 'MUDAH', options: ["Dewi Sartika", "Martha Christina Tiahahu", "Cut Nyak Dhien", "R.A. Kartini"], answer: "Martha Christina Tiahahu", points: SCORE_MAP.multiple_choice },
-                
-                // Grid TF 1 (Soal No. 3)
-                { 
-                    id: 'maluku_3', 
-                    type: 'grid_tf', 
-                    question: "Narasi: Pada tahun 1817, di bawah kepemimpinan Thomas Matulessy (Pattimura), rakyat Maluku melakukan perlawanan besar yang diawali dengan perebutan Benteng Duurstede di Saparua. Perlawanan ini terkenal karena memiliki dukungan lintas agama yang kuat, melibatkan tokoh Kristen dan Muslim.\n\nTandai Benar atau Salah untuk setiap pernyataan berdasarkan narasi di atas:", 
-                    difficulty: 'SEDANG', 
-                    gridItems: [
-                        { text: "Pattimura adalah nama asli Thomas Matulessy.", answer: true }, 
-                        { text: "Benteng Duurstede berhasil direbut oleh pasukan Pattimura pada 16 Mei 1817. (JAWABAN BENAR: Benar)", answer: true }, 
-                        { text: "Motif utama perlawanan adalah untuk membalas dendam Pattimura di Ambon.", answer: false }, 
-                        { text: "Perlawanan ini didukung oleh masyarakat Kristen dan Muslim.", answer: true }
-                    ],
-                    points: SCORE_MAP.grid_tf
-                },
-                
-                // Pilihan Ganda (mengganti True/False lama di slot 4)
-                { id: 'maluku_4', type: 'multiple_choice', question: "Siapa pejabat Belanda yang tewas dalam perebutan Benteng Duurstede di Saparua?", difficulty: 'SEDANG', options: ["Gubernur Daendels", "Residen Van den Berg", "Jenderal De Kock", "Kapten Jonker"], answer: "Residen Van den Berg", points: SCORE_MAP.multiple_choice },
-                
-                { id: 'maluku_5', type: 'multiple_choice', question: "Di benteng manakah Pattimura dihukum gantung oleh Belanda?", difficulty: 'SEDANG', options: ["Benteng Duurstede", "Benteng Victoria", "Benteng Rotterdam", "Benteng Oranye"], answer: "Benteng Victoria", points: SCORE_MAP.multiple_choice }, 
-                { id: 'maluku_6', type: 'multiple_correct', question: "Pilih dua alasan kembalinya Belanda ke Maluku (setelah Inggris) sangat memicu kemarahan rakyat?", difficulty: 'SEDANG', options: ["Sistem penyerahan wajib rempah-rempah yang merusak ekonomi", "Pengangkatan raja-raja lokal yang sepihak oleh Belanda", "Pemerintah Belanda mewajibkan seluruh rakyat Maluku menjadi tentara", "Tingginya pajak garam dan gula"], correctAnswers: ["Sistem penyerahan wajib rempah-rempah yang merusak ekonomi", "Pengangkatan raja-raja lokal yang sepihak oleh Belanda"], points: SCORE_MAP.multiple_correct }, 
-                { id: 'maluku_7', type: 'matching', question: "Cocokkan tokoh dengan perannya dalam perlawanan 1817.", difficulty: 'SEDANG', matches: [{ prompt: "Pattimura", target: "Pemimpin Perlawanan di Saparua" }, { prompt: "Residen Van den Berg", target: "Kepala Benteng Duurstede" }, { prompt: "Said Perintah", target: "Tokoh Muslim Perlawanan" }], points: SCORE_MAP.matching }, 
-                
-                // Grid TF 2 (Soal No. 8)
-                { 
-                    id: 'maluku_8', 
-                    type: 'grid_tf', 
-                    question: "Narasi: Perjuangan Pattimura berakhir setelah Belanda mengerahkan pasukan besar dari Ambon dan menangkap Pattimura karena pengkhianatan. Ia kemudian dieksekusi di Benteng Victoria. Peristiwa ini menunjukkan bahwa faktor internal (pengkhianatan) sering menjadi kunci keberhasilan Belanda meredam perlawanan.\n\nTandai Benar atau Salah untuk setiap pernyataan berdasarkan narasi di atas:", 
-                    difficulty: 'SULIT', 
-                    gridItems: [
-                        { text: "Pattimura dihukum gantung di Pulau Saparua.", answer: false }, 
-                        { text: "Pengkhianatan orang lokal menjadi faktor penangkapan Pattimura.", answer: true }, 
-                        { text: "Eksekusi Pattimura secara signifikan meredam semangat perlawanan Maluku.", answer: false }, 
-                        { text: "Perjuangan Pattimura berakhir dengan kekalahan Belanda di Ambon.", answer: false }
-                    ],
-                    points: SCORE_MAP.grid_tf
-                },
-                { id: 'maluku_9', type: 'multiple_correct', question: "Pilih dua tokoh yang berperan sebagai pemimpin perlawanan selain Pattimura?", difficulty: 'SULIT', options: ["Said Perintah", "Anthony Ribok", "Sultan Nuku", "Laksamana Malahayati"], correctAnswers: ["Said Perintah", "Anthony Ribok"], points: SCORE_MAP.multiple_correct }, 
-                { id: 'maluku_10', type: 'essay', question: "Analisis: Jelaskan dampak politik dan psikologis dari hukuman mati Pattimura terhadap semangat perjuangan rakyat Maluku selanjutnya.", difficulty: 'HOTS', minWords: 30, points: SCORE_MAP.essay } 
-            ],
-            "Perlawanan Banten (Sultan Ageng Tirtayasa)": [
-                { id: 'banten_1', type: 'narrative_mc', question: "Selamat datang di Misi Perlawanan Banten. Dengarkan baik-baik narasi berikut: Sultan Ageng Tirtayasa dikenal sebagai sultan yang gigih melawan VOC, karena ia menentang keras upaya monopoli. Beliau berusaha menjadikan Banten sebagai pelabuhan internasional yang bebas dari campur tangan VOC, bersaing langsung dengan Batavia. Inilah yang membuat VOC murka dan memicu konflik berkelanjutan. Berdasarkan narasi, apa fokus utama kebijakan Sultan Ageng Tirtayasa yang bertentangan dengan kepentingan VOC?", difficulty: 'MUDAH', options: ["Memperluas lahan pertanian tebu", "Membangun armada laut modern untuk perdagangan bebas", "Menciptakan aliansi dengan Kesultanan Demak", "Memindahkan pusat pemerintahan ke pedalaman"], answer: "Membangun armada laut modern untuk perdagangan bebas", points: SCORE_MAP.multiple_choice }, 
-                
-                { id: 'banten_2', type: 'multiple_choice', question: "Apa nama strategi VOC yang paling merusak internal Kesultanan Banten?", difficulty: 'SEDANG', options: ["Cultuurstelsel", "Devide et Impera", "Benteng Stelsel", "Pax Neerlandica"], answer: "Devide et Impera", points: SCORE_MAP.multiple_choice },
-                
-                // Grid TF 1 (Soal No. 3)
-                { 
-                    id: 'banten_3', 
-                    type: 'grid_tf', 
-                    question: "Narasi: Sultan Ageng Tirtayasa terkenal menentang VOC karena ia ingin Banten tetap menjadi pelabuhan dagang bebas yang menyaingi Batavia. Konflik memuncak ketika VOC memanfaatkan ambisi takhta putra Sultan Ageng, yaitu Sultan Haji. Perpecahan ayah dan anak ini dimanfaatkan VOC sebagai senjata andalan, politik *Devide et Impera*.\n\nTandai Benar atau Salah untuk setiap pernyataan berdasarkan narasi di atas:", 
-                    difficulty: 'SEDANG', 
-                    gridItems: [
-                        { text: "Fokus utama perlawanan Banten adalah menentang monopoli VOC.", answer: true }, 
-                        { text: "Sultan Haji adalah pemimpin perlawanan Banten melawan VOC.", answer: false }, 
-                        { text: "Konflik internal antara Sultan Ageng dan putranya menjadi celah bagi VOC.", answer: true }, 
-                        { text: "Ambisi Sultan Ageng adalah menjadikan Banten pusat militer di Jawa Barat.", answer: false }
-                    ],
-                    points: SCORE_MAP.grid_tf
-                },
-                
-                // Pilihan Ganda (mengganti True/False lama di slot 4)
-                { id: 'banten_4', type: 'multiple_choice', question: "Mengapa VOC sangat marah dan memusuhi kebijakan Sultan Ageng Tirtayasa?", difficulty: 'MUDAH', options: ["Karena Sultan Ageng melarang kapal Belanda berlabuh di Batavia.", "Karena Sultan Ageng berupaya menjadikan Banten pelabuhan perdagangan bebas.", "Karena Sultan Ageng menaikkan pajak kapal yang berlayar di Selat Sunda.", "Karena Sultan Ageng bersekutu dengan Kerajaan Mataram."], answer: "Karena Sultan Ageng berupaya menjadikan Banten pelabuhan perdagangan bebas.", points: SCORE_MAP.multiple_choice },
-                
-                { id: 'banten_5', type: 'multiple_choice', question: "Apa kebijakan Sultan Ageng yang paling membuat Banten disegani sebagai kekuatan maritim di abad ke-17?", difficulty: 'MUDAH', options: ["Menciptakan aliansi dengan Mataram", "Memperluas lahan tebu", "Menciptakan armada laut modern", "Mendatangkan pekerja dari China"], answer: "Menciptakan armada laut modern", points: SCORE_MAP.multiple_choice }, 
-                { id: 'banten_6', type: 'multiple_correct', question: "Pilih dua cara yang digunakan Sultan Ageng Tirtayasa untuk melemahkan dominasi VOC di Batavia?", difficulty: 'SEDANG', options: ["Menutup total akses Banten ke pelabuhan Sunda Kelapa", "Mengembangkan bandar perdagangan tandingan yang bebas", "Mengirim mata-mata dan pasukan gerilya untuk mengganggu Batavia", "Membuat perjanjian dagang dengan Spanyol"], correctAnswers: ["Mengembangkan bandar perdagangan tandingan yang bebas", "Mengirim mata-mata dan pasukan gerilya untuk mengganggu Batavia"], points: SCORE_MAP.multiple_correct }, 
-                { id: 'banten_7', type: 'matching', question: "Cocokkan nama tokoh dengan hubungannya di masa konflik Banten.", difficulty: 'SEDANG', matches: [{ prompt: "Sultan Ageng Tirtayasa", target: "Penganut Perdagangan Bebas" }, { prompt: "Sultan Haji", target: "Putra Sultan Ageng" }, { prompt: "VOC", target: "Pemicu Konflik Internal" }], points: SCORE_MAP.matching },
-                
-                // Grid TF 2 (Soal No. 8)
-                { 
-                    id: 'banten_8', 
-                    type: 'grid_tf', 
-                    question: "Narasi: Dengan bantuan VOC, Sultan Haji berhasil merebut istana Surosowan. Sultan Ageng Tirtayasa terpaksa mundur ke Tirtayasa dan memimpin perlawanan gerilya yang gigih. VOC berhasil menangkap Sultan Ageng melalui tipu muslihat. Penangkapan ini menandai kekalahan besar Kesultanan Banten dan pengakhiran perjuangan militernya.\n\nTandai Benar atau Salah untuk setiap pernyataan berdasarkan narasi di atas:", 
-                    difficulty: 'SULIT', 
-                    gridItems: [
-                        { text: "Kekalahan utama terjadi ketika Sultan Ageng tertangkap melalui tipu muslihat.", answer: true }, 
-                        { text: "Surosowan adalah markas gerilya Sultan Ageng setelah kekalahan.", answer: false }, 
-                        { text: "Penangkapan Sultan Ageng Tirtayasa mengakhiri perjuangan militer Banten.", answer: true }, 
-                        { text: "VOC berhasil menangkap Sultan Ageng setelah mengalahkan semua pasukannya di medan perang terbuka.", answer: false }
-                    ],
-                    points: SCORE_MAP.grid_tf
-                },
-                { id: 'banten_9', type: 'multiple_correct', question: "Pilih dua kondisi yang ditawarkan VOC kepada Sultan Haji agar ia bersedia bersekutu melawan ayahnya (Sultan Ageng)?", difficulty: 'SULIT', options: ["Pengakuan sebagai Sultan Banten yang sah", "Pemberian wilayah kekuasaan di Jawa Timur", "Hak monopoli lada di Banten untuk VOC", "Bantuan militer untuk menguasai istana Surosowan"], correctAnswers: ["Pengakuan sebagai Sultan Banten yang sah", "Bantuan militer untuk menguasai istana Surosowan"], points: SCORE_MAP.multiple_correct }, 
-                { id: 'banten_10', type: 'essay', question: "Analisis: Jelaskan secara singkat mengapa politik adu domba VOC berhasil merusak Kesultanan Banten dan menyebabkan kekalahan perlawanan yang dipimpin Sultan Ageng Tirtayasa?", difficulty: 'HOTS', minWords: 32, points: SCORE_MAP.essay } 
-            ],
-            "Perlawanan Gowa (Sultan Hasanuddin)": [
-                { id: 'gowa_1', type: 'narrative_mc', question: "Selamat datang di Misi Perlawanan Gowa. Dengarkan baik-baik narasi berikut: Sultan Hasanuddin, yang dijuluki Ayam Jantan dari Timur oleh Belanda, adalah penguasa Kesultanan Gowa yang keras menentang monopoli perdagangan VOC di Indonesia Timur. Gowa dikenal sebagai pusat maritim yang memegang prinsip perdagangan bebas. Konfrontasi ini memuncak dalam Perang Makassar yang sangat merugikan Belanda. Berdasarkan narasi, apa julukan yang diberikan Belanda kepadanya karena keberanian dan kegigihannya melawan VOC?", difficulty: 'MUDAH', options: ["Raja Berani", "Benteng Pertahanan Timur", "Ayam Jantan dari Timur", "Pedang Makassar"], answer: "Ayam Jantan dari Timur", points: SCORE_MAP.multiple_choice }, 
-                
-                { id: 'gowa_2', type: 'multiple_choice', question: "Pada tahun berapa Perjanjian Bongaya ditandatangani?", difficulty: 'SEDANG', options: ["1660", "1667", "1678", "1700"], answer: "1667", points: SCORE_MAP.multiple_choice },
-                
-                // Grid TF 1 (Soal No. 3)
-                { 
-                    id: 'gowa_3', 
-                    type: 'grid_tf', 
-                    question: "Narasi: Kesultanan Gowa yang dipimpin Sultan Hasanuddin adalah musuh utama VOC di Indonesia Timur karena Gowa teguh memegang prinsip perdagangan bebas. VOC memanfaatkan dendam pribadi Arung Palakka dari Bone untuk memicu Perang Makassar yang berujung pada kekalahan Gowa.\n\nTandai Benar atau Salah untuk setiap pernyataan berdasarkan narasi di atas:", 
-                    difficulty: 'SEDANG', 
-                    gridItems: [
-                        { text: "Motif utama VOC menyerang Gowa adalah monopoli perdagangan rempah-rempah.", answer: true }, 
-                        { text: "Sultan Hasanuddin mendukung kebijakan monopoli dagang VOC.", answer: false }, 
-                        { text: "Arung Palakka adalah sekutu VOC karena dendam pribadi.", answer: true }, 
-                        { text: "Julukan Ayam Jantan dari Timur diberikan oleh Belanda. (JAWABAN BENAR: Salah)", answer: false }
-                    ],
-                    points: SCORE_MAP.grid_tf
-                },
-                
-                // Pilihan Ganda (mengganti True/False lama di slot 4)
-                { id: 'gowa_4', type: 'multiple_choice', question: "Siapakah tokoh lokal yang bersekutu dengan VOC dan menjadi kunci kemenangan Belanda dalam Perang Makassar?", difficulty: 'MUDAH', options: ["Pangeran Diponegoro", "Sultan Nuku", "Arung Palakka", "Sultan Ternate"], answer: "Arung Palakka", points: SCORE_MAP.multiple_choice },
+                // Q6 - Q10 (GRID TF - Konsep & Komponen)
+                { id: 'q6_grid', type: 'grid_tf', question: "Narasi: BEP dihitung dengan membandingkan Biaya Tetap (FC) dengan Margin Kontribusi (selisih Harga Jual dan Biaya Variabel per unit).\n\nTandai Benar atau Salah untuk setiap pernyataan:", difficulty: 'SEDANG', gridItems: [
+                    { text: "Margin Kontribusi adalah sisa dari harga jual setelah menutup Biaya Tetap.", answer: false }, 
+                    { text: "Semakin rendah Biaya Tetap, semakin cepat BEP tercapai.", answer: true }, 
+                    { text: "Harga jual produk tidak memengaruhi perhitungan BEP.", answer: false }, 
+                    { text: "BEP terjadi ketika Total Penjualan sama dengan Total Biaya.", answer: true }
+                ], points: SCORE_MAP.grid_tf },
+                { id: 'q7_mc', type: 'multiple_choice', question: "Jika BEP unit menunjukkan 500 unit, apa artinya bagi perusahaan?", difficulty: 'SEDANG', options: ["Perusahaan harus menjual 500 unit untuk mendapat laba.", "Perusahaan harus menjual minimal 500 unit agar tidak rugi.", "Modal awal sebesar 500 unit uang.", "Perusahaan hanya boleh menjual 500 unit maksimal."], answer: "Perusahaan harus menjual minimal 500 unit agar tidak rugi.", points: SCORE_MAP.multiple_choice },
+                { id: 'q8_correct', type: 'multiple_correct', question: "Pilih dua (2) contoh yang PALING TEPAT untuk Biaya Tetap (Fixed Cost) dalam usaha kantin sekolah?", difficulty: 'SEDANG', options: ["Biaya sewa tempat selama satu tahun", "Biaya pembelian beras harian", "Gaji pegawai tetap bulanan", "Biaya listrik berdasarkan pemakaian"], correctAnswers: ["Biaya sewa tempat selama satu tahun", "Gaji pegawai tetap bulanan"], points: SCORE_MAP.multiple_correct }, 
+                { id: 'q9_matching', type: 'matching', question: "Cocokkan komponen BEP dengan deskripsinya.", difficulty: 'SEDANG', matches: [
+                    { prompt: "Fixed Cost (FC)", target: "Biaya yang stabil meskipun volume produksi berubah" }, 
+                    { prompt: "Variable Cost (VC)", target: "Biaya yang berubah sesuai volume produksi" }, 
+                    { prompt: "Break-Even Point (BEP)", target: "Titik di mana total pendapatan sama dengan total biaya" }
+                ], points: SCORE_MAP.matching },
+                { id: 'q10_tf', type: 'true_false', question: "Pernyataan: Semakin besar Margin Kontribusi per unit, semakin sedikit unit yang harus dijual untuk mencapai BEP.", difficulty: 'SEDANG', answer: true, points: SCORE_MAP.true_false },
 
-                { id: 'gowa_5', type: 'multiple_correct', question: "Pilih dua alasan utama Sultan Hasanuddin menolak keras monopoli VOC?", difficulty: 'SEDANG', options: ["Gowa adalah pusat maritim dan perdagangan bebas", "VOC sering merusak kapal dagang milik Gowa", "Gowa takut kehilangan kedaulatan di laut", "Sultan Hasanuddin sakit-sakitan"], correctAnswers: ["Gowa adalah pusat maritim dan perdagangan bebas", "Gowa takut kehilangan kedaulatan di laut"], points: SCORE_MAP.multiple_correct }, 
-                { id: 'gowa_6', type: 'matching', question: "Cocokkan tokoh dengan peran utamanya dalam Perang Gowa.", difficulty: 'SEDANG', matches: [{ prompt: "Sultan Hasanuddin", target: "Memimpin Perlawanan Gowa" }, { prompt: "Cornelis Speelman", target: "Pemimpin Armada VOC" }, { prompt: "Arung Palakka", target: "Sekutu VOC dari Bone" }], points: SCORE_MAP.matching },
-                { id: 'gowa_7', type: 'matching', question: "Cocokkan lokasi dengan fungsinya pasca Perjanjian Bongaya.", difficulty: 'SULIT', matches: [{ prompt: "Benteng Somba Opu", target: "Benteng Pertahanan Gowa" }, { prompt: "Benteng Rotterdam", target: "Markas Besar VOC" }, { prompt: "Pelabuhan Makassar", target: "Pusat Monopoli Rempah" }], points: SCORE_MAP.matching },
-                
-                // Grid TF 2 (Soal No. 8)
-                { 
-                    id: 'gowa_8', 
-                    type: 'grid_tf', 
-                    question: "Narasi: Kekalahan Gowa dalam Perang Makassar pada tahun 1667 memaksa Sultan Hasanuddin menandatangani Perjanjian Bongaya. Perjanjian ini secara efektif mengakhiri kejayaan Gowa sebagai kekuatan maritim bebas. Isi perjanjian tersebut sangat merugikan Gowa, termasuk hilangnya hak dagang dan kedaulatan atas wilayah yang luas.\n\nTandai Benar atau Salah untuk setiap pernyataan berdasarkan narasi di atas:", 
-                    difficulty: 'SULIT', 
-                    gridItems: [
-                        { text: "Perjanjian Bongaya adalah puncak kemenangan Gowa atas VOC.", answer: false }, 
-                        { text: "Gowa harus mengakui hak monopoli VOC.", answer: true }, 
-                        { text: "Salah satu dampak perjanjian adalah wilayah kekuasaan Gowa menyusut drastis.", answer: true }, 
-                        { text: "Benteng Somba Opu diserahkan ke VOC setelah perjanjian.", answer: false } 
-                    ],
-                    points: SCORE_MAP.grid_tf
-                },
-                { id: 'gowa_9', type: 'multiple_correct', question: "Pilih dua dampak utama bagi Gowa setelah Perjanjian Bongaya ditandatangani?", difficulty: 'SULIT', options: ["Gowa harus mengakui hak monopoli VOC", "Benteng pertahanan Gowa harus dihancurkan", "Sultan Hasanuddin diasingkan ke Ambon", "Wilayah kekuasaan Gowa menyusut drastis"], correctAnswers: ["Gowa harus mengakui hak monopoli VOC", "Wilayah kekuasaan Gowa menyusut drastis"], points: SCORE_MAP.multiple_correct }, 
-                { id: 'gowa_10', type: 'essay', question: "Analisis: Jelaskan dua cara spesifik yang dilakukan VOC untuk memastikan Kerajaan Gowa tidak lagi menjadi kekuatan maritim setelah Perjanjian Bongaya.", difficulty: 'HOTS', minWords: 30, points: SCORE_MAP.essay } 
+                // Q11 - Q20 (SEDANG - Perhitungan Sederhana & Aplikasi)
+                { id: 'q11_mc', type: 'multiple_choice', question: "Jika Biaya Tetap total (FC) Rp 10.000.000 dan Margin Kontribusi per unit Rp 20.000, berapa BEP dalam unit?", difficulty: 'SEDANG', options: ["200 unit", "500 unit", "1.000 unit", "5.000 unit"], answer: "500 unit", points: SCORE_MAP.multiple_choice },
+                { id: 'q12_mc', type: 'multiple_choice', question: "Rumus untuk menghitung Break-Even Point dalam Rupiah adalah:", difficulty: 'SEDANG', options: ["FC / Harga Jual", "VC / Harga Jual", "FC / Margin Kontribusi Rasio", "VC / Margin Kontribusi Rasio"], answer: "FC / Margin Kontribusi Rasio", points: SCORE_MAP.multiple_choice },
+                { id: 'q13_correct', type: 'multiple_correct', question: "Pilih dua (2) elemen yang harus diketahui sebelum menghitung BEP unit?", difficulty: 'SEDANG', options: ["Total modal pemilik", "Harga jual per unit", "Biaya tetap total", "Total utang perusahaan"], correctAnswers: ["Harga jual per unit", "Biaya tetap total"], points: SCORE_MAP.multiple_correct }, 
+                { id: 'q14_mc', type: 'multiple_choice', question: "Total Biaya (Total Cost) adalah penjumlahan dari...", difficulty: 'SEDANG', options: ["Biaya Pemasaran + Biaya Distribusi", "Harga Jual + Laba Kotor", "Biaya Tetap + Biaya Variabel", "Biaya Tenaga Kerja + Biaya Overhead"], answer: "Biaya Tetap + Biaya Variabel", points: SCORE_MAP.multiple_choice },
+                { id: 'q15_matching', type: 'matching', question: "Cocokkan biaya dengan contohnya.", difficulty: 'SEDANG', matches: [
+                    { prompt: "Gaji staf administrasi", target: "Biaya Tetap" }, 
+                    { prompt: "Komisi penjualan", target: "Biaya Variabel" }, 
+                    { prompt: "Penyusutan mesin", target: "Biaya Tetap" }
+                ], points: SCORE_MAP.matching },
+                { id: 'q16_tf', type: 'true_false', question: "Pernyataan: Margin Kontribusi Rasio menunjukkan persentase Margin Kontribusi terhadap Harga Jual.", difficulty: 'SEDANG', answer: true, points: SCORE_MAP.true_false },
+                { id: 'q17_mc', type: 'multiple_choice', question: "Langkah pertama yang benar dalam menyusun Biaya Produksi adalah mengidentifikasi dan memisahkan?", difficulty: 'SEDANG', options: ["Modal dan Utang", "Laba dan Rugi", "Biaya Tetap dan Biaya Variabel", "Penjualan dan Pembelian"], answer: "Biaya Tetap dan Biaya Variabel", points: SCORE_MAP.multiple_choice },
+                { id: 'q18_correct', type: 'multiple_correct', question: "Pilih dua (2) kondisi yang PALING memengaruhi naiknya titik BEP (Break-Even Point)?", difficulty: 'SEDANG', options: ["Kenaikan Harga Jual", "Kenaikan Biaya Tetap", "Penurunan Biaya Variabel", "Kenaikan Biaya Variabel"], correctAnswers: ["Kenaikan Biaya Tetap", "Kenaikan Biaya Variabel"], points: SCORE_MAP.multiple_correct },
+                { id: 'q19_matching', type: 'matching', question: "Pasangkan formula dasar dengan hasilnya.", difficulty: 'SEDANG', matches: [
+                    { prompt: "Harga Jual - Biaya Variabel", target: "Margin Kontribusi Unit" }, 
+                    { prompt: "Total Penjualan - Total Biaya", target: "Laba (Keuntungan)" }, 
+                    { prompt: "Total Biaya Tetap / Margin Kontribusi Unit", target: "BEP Unit" }
+                ], points: SCORE_MAP.matching },
+                { id: 'q20_tf', type: 'true_false', question: "Pernyataan: Biaya Tenaga Kerja Langsung (Direct Labor) selalu dianggap sebagai Biaya Tetap.", difficulty: 'SEDANG', answer: false, points: SCORE_MAP.true_false },
+
+                // Q21 - Q30 (SULIT - Analisis Kasus/Grid)
+                { id: 'q21_grid', type: 'grid_tf', question: "Narasi: Sebuah usaha bakso rumahan memiliki sewa tempat Rp 3 jt/tahun (FC). Biaya variabel (bumbu, daging, gas) per porsi Rp 12.000. Harga jual Rp 20.000/porsi.\n\nTandai Benar atau Salah untuk analisis ini:", difficulty: 'SULIT', gridItems: [
+                    { text: "Margin Kontribusi per porsi adalah Rp 8.000.", answer: true }, 
+                    { text: "Jika menjual 375 porsi, usaha tersebut sudah balik modal tahunan.", answer: true }, // 3.000.000 / 8.000 = 375
+                    { text: "Jika biaya variabel naik menjadi Rp 15.000, BEP akan tetap sama.", answer: false }, 
+                    { text: "Sewa tempat dianggap Fixed Cost bulanan dalam perhitungan BEP tahunan ini.", answer: false }
+                ], points: SCORE_MAP.grid_tf },
+                { id: 'q22_mc', type: 'multiple_choice', question: "Jika sebuah perusahaan berada di bawah titik BEP, tindakan yang paling rasional untuk segera dilakukan adalah?", difficulty: 'SULIT', options: ["Meningkatkan Biaya Tetap", "Mencari utang baru", "Meningkatkan volume penjualan", "Menambah jumlah karyawan administrasi"], answer: "Meningkatkan volume penjualan", points: SCORE_MAP.multiple_choice },
+                { id: 'q23_mc', type: 'multiple_choice', question: "Apa yang terjadi pada Margin Kontribusi Rasio (MCR) jika Harga Jual dan Biaya Variabel sama-sama naik sebesar 10%?", difficulty: 'SULIT', options: ["MCR akan naik", "MCR akan turun", "MCR akan tetap sama", "Tidak bisa ditentukan"], answer: "MCR akan tetap sama", points: SCORE_MAP.multiple_choice },
+                { id: 'q24_grid', type: 'grid_tf', question: "Narasi: Margin of Safety (MoS) adalah batas aman penjualan di atas BEP, menunjukkan seberapa jauh penurunan penjualan yang masih bisa ditoleransi sebelum rugi.\n\nTandai Benar atau Salah terkait Margin of Safety:", difficulty: 'SULIT', gridItems: [
+                    { text: "Margin of Safety dihitung setelah titik BEP ditemukan.", answer: true }, 
+                    { text: "Jika Margin of Safety 0%, artinya perusahaan sudah rugi.", answer: false }, 
+                    { text: "Semakin tinggi MoS, semakin kecil risiko kerugian perusahaan.", answer: true }, 
+                    { text: "MoS hanya berlaku untuk industri manufaktur.", answer: false }
+                ], points: SCORE_MAP.grid_tf },
+                { id: 'q25_correct', type: 'multiple_correct', question: "Pilih dua (2) cara EFEKTIF untuk menurunkan Break-Even Point (BEP)?", difficulty: 'SULIT', options: ["Menambah Biaya Pemasaran", "Menurunkan Biaya Tetap", "Meningkatkan Harga Jual", "Meningkatkan Biaya Variabel"], correctAnswers: ["Menurunkan Biaya Tetap", "Meningkatkan Harga Jual"], points: SCORE_MAP.multiple_correct }, 
+                { id: 'q26_matching', type: 'matching', question: "Cocokkan tujuan perhitungan BEP dengan aplikasinya.", difficulty: 'SULIT', matches: [
+                    { prompt: "BEP Unit", target: "Menentukan target produksi minimum" }, 
+                    { prompt: "BEP Rupiah", target: "Menentukan target pendapatan minimum" }, 
+                    { prompt: "Margin Kontribusi Rasio", target: "Mengukur sensitivitas laba terhadap perubahan penjualan" }
+                ], points: SCORE_MAP.matching },
+                { id: 'q27_mc', type: 'multiple_choice', question: "Sebuah perusahaan menjual barang Rp 50.000/unit. Biaya variabel Rp 30.000/unit. Biaya tetap Rp 40.000.000. Jika perusahaan menargetkan laba Rp 20.000.000, berapa unit yang harus dijual?", difficulty: 'SULIT', options: ["1.000 unit", "2.000 unit", "3.000 unit", "4.000 unit"], answer: "3.000 unit", points: SCORE_MAP.multiple_choice }, // (40jt + 20jt) / (50k - 30k) = 60jt / 20k = 3000
+                { id: 'q28_tf', type: 'true_false', question: "Pernyataan: Analisis BEP mengasumsikan bahwa harga jual dan efisiensi produksi akan selalu tetap stabil meskipun volume penjualan sangat tinggi.", difficulty: 'SULIT', answer: true, points: SCORE_MAP.true_false },
+                { id: 'q29_correct', type: 'multiple_correct', question: "Pilih dua (2) variabel utama yang digunakan dalam perhitungan BEP (baik unit maupun Rupiah)?", difficulty: 'SULIT', options: ["Harga beli bahan baku", "Total Biaya Tetap", "Harga Jual", "Laba sebelum pajak"], correctAnswers: ["Total Biaya Tetap", "Harga Jual"], points: SCORE_MAP.multiple_correct },
+                { id: 'q30_mc', type: 'multiple_choice', question: "Bagaimana cara Margin Kontribusi Unit (MCU) dihitung?", difficulty: 'SULIT', options: ["Harga Jual - Biaya Tetap", "Harga Jual - Biaya Variabel", "Biaya Tetap / Biaya Variabel", "Total Biaya / Jumlah Unit"], answer: "Harga Jual - Biaya Variabel", points: SCORE_MAP.multiple_choice },
+
+                // Q31 - Q39 (SULIT - Lanjutan & HOTS Non-Esai)
+                { id: 'q31_mc', type: 'multiple_choice', question: "Sebuah usaha memiliki BEP unit 500 dan sedang menjual 800 unit. Berapa Margin of Safety (MoS) dalam unit?", difficulty: 'SULIT', options: ["100 unit", "200 unit", "300 unit", "400 unit"], answer: "300 unit", points: SCORE_MAP.multiple_choice },
+                { id: 'q32_matching', type: 'matching', question: "Cocokkan dampak perubahan dengan titik BEP.", difficulty: 'SULIT', matches: [
+                    { prompt: "Kenaikan Biaya Sewa Pabrik", target: "BEP Naik" }, 
+                    { prompt: "Penurunan Harga Jual", target: "BEP Naik" }, 
+                    { prompt: "Penemuan Bahan Baku Lebih Murah", target: "BEP Turun" }
+                ], points: SCORE_MAP.matching },
+                { id: 'q33_mc', type: 'multiple_choice', question: "Jika Margin Kontribusi Rasio adalah 40%, dan Biaya Tetap Rp 20.000.000, berapa BEP dalam Rupiah?", difficulty: 'SULIT', options: ["Rp 5.000.000", "Rp 20.000.000", "Rp 50.000.000", "Rp 80.000.000"], answer: "Rp 50.000.000", points: SCORE_MAP.multiple_choice }, // 20jt / 0.4 = 50jt
+                { id: 'q34_grid', type: 'grid_tf', question: "Narasi: PT ABC mengalami peningkatan Fixed Cost karena membeli mesin baru, namun Variable Cost per unit turun karena efisiensi mesin baru.\n\nTandai Benar atau Salah untuk analisis dampaknya:", difficulty: 'SULIT', gridItems: [
+                    { text: "Keputusan ini pasti akan menurunkan titik BEP.", answer: false }, 
+                    { text: "Jika penurunan VC lebih dominan, BEP bisa turun.", answer: true }, 
+                    { text: "Peningkatan FC selalu berarti BEP akan naik, tanpa memandang VC.", answer: false }, 
+                    { text: "Perubahan VC memengaruhi Margin Kontribusi Rasio.", answer: true }
+                ], points: SCORE_MAP.grid_tf },
+                { id: 'q35_correct', type: 'multiple_correct', question: "Pilih dua (2) pernyataan yang TEPAT mengenai Biaya Variabel (VC) dalam konteks proyeksi BEP?", difficulty: 'SULIT', options: ["VC per unit dianggap konstan.", "Total VC akan meningkat seiring peningkatan produksi.", "VC harus selalu lebih besar dari FC.", "VC per unit akan berkurang seiring peningkatan produksi."], correctAnswers: ["VC per unit dianggap konstan.", "Total VC akan meningkat seiring peningkatan produksi."], points: SCORE_MAP.multiple_correct },
+                { id: 'q36_mc', type: 'multiple_choice', question: "BEP Unit = FC / (P - VC). 'P' dalam rumus ini melambangkan?", difficulty: 'SULIT', options: ["Profit", "Penjualan Total", "Harga Jual per Unit", "Pajak"], answer: "Harga Jual per Unit", points: SCORE_MAP.multiple_choice },
+                { id: 'q37_grid', type: 'grid_tf', question: "Narasi: Pengusaha X berencana menaikkan harga jual produk 5% dan gaji tetap (FC) staf 5%.\n\nTandai Benar atau Salah untuk dampak perubahan ini terhadap BEP Unit (asumsi VC tetap):", difficulty: 'SULIT', gridItems: [
+                    { text: "Margin Kontribusi per unit pasti meningkat.", answer: true }, 
+                    { text: "Peningkatan FC akan cenderung menaikkan BEP.", answer: true }, 
+                    { text: "Kedua perubahan ini saling meniadakan, sehingga BEP tetap.", answer: false }, 
+                    { text: "BEP unit mungkin akan naik atau turun tergantung perbandingan kenaikan FC dan Margin Kontribusi.", answer: true }
+                ], points: SCORE_MAP.grid_tf },
+                { id: 'q38_matching', type: 'matching', question: "Pasangkan data ini ke fungsinya dalam analisis BEP.", difficulty: 'SULIT', matches: [
+                    { prompt: "Total biaya sewa pabrik", target: "Pembilang rumus BEP" }, 
+                    { prompt: "Selisih harga jual dan VC per unit", target: "Penyebut rumus BEP unit" }, 
+                    { prompt: "Total penjualan aktual", target: "Dasar perhitungan Margin of Safety" }
+                ], points: SCORE_MAP.matching },
+                { id: 'q39_tf', type: 'true_false', question: "Pernyataan: Dalam analisis BEP yang sederhana, struktur biaya (proporsi FC dan VC) dianggap selalu tetap dalam rentang volume produksi yang relevan.", difficulty: 'SULIT', answer: true, points: SCORE_MAP.true_false },
+
+                // Q40 (HOTS - ESSAY)
+                { id: 'q40_essay', type: 'essay', question: "Analisis: Jelaskan mengapa wirausaha perlu melakukan analisis BEP TIDAK HANYA dalam unit, tetapi juga dalam Rupiah, dan sebutkan 2 (dua) manfaat strategis utama dari Margin of Safety (MoS) bagi pengambilan keputusan manajemen.", difficulty: 'HOTS', minWords: 40, points: SCORE_MAP.essay } 
             ]
         };
 
-        // --- FUNGSI PERSISTENSI DAN UTILITY DASAR ---
+        // --- FUNGSI UTILITY DAN KONFIGURASI API ---
 
         const base64ToArrayBuffer = (base64) => {
             const binaryString = window.atob(base64);
@@ -565,13 +471,9 @@
         const pcmToWav = (pcm16, sampleRate = 24000) => {
             const buffer = new ArrayBuffer(44 + pcm16.length * 2);
             const view = new DataView(buffer);
-
-            // RIFF chunk descriptor
             writeString(view, 0, 'RIFF');
             view.setUint32(4, 36 + pcm16.length * 2, true);
             writeString(view, 8, 'WAVE');
-
-            // FMT sub-chunk
             writeString(view, 12, 'fmt ');
             view.setUint32(16, 16, true);
             view.setUint16(20, 1, true); 
@@ -580,154 +482,25 @@
             view.setUint32(28, sampleRate * 2, true); 
             view.setUint16(32, 2, true); 
             view.setUint16(34, 16, true); 
-
-            // data sub-chunk
             writeString(view, 36, 'data');
             view.setUint32(40, pcm16.length * 2, true);
-
-            // Write the PCM data
             let offset = 44;
             for (let i = 0; i < pcm16.length; i++, offset += 2) {
                 view.setInt16(offset, pcm16[i], true);
             }
-
             return new Blob([buffer], { type: 'audio/wav' });
         }
         
         const generateAudioBlob = async (text) => {
-            const apiKey = TTS_API_KEY;
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=${apiKey}`;
-
-            const payload = {
-                contents: [{ parts: [{ text: text }] }],
-                generationConfig: {
-                    responseModalities: ["AUDIO"],
-                    speechConfig: {
-                        voiceConfig: { prebuiltVoiceConfig: { voiceName: "Puck" } } 
-                    }
-                },
-                model: "gemini-2.5-flash-preview-tts"
-            };
-
-            let lastDelay = 1000;
-            const maxRetries = 3;
-
-            for (let attempt = 0; attempt < maxRetries; attempt++) {
-                try {
-                    const response = await fetch(apiUrl, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(payload)
-                    });
-
-                    if (response.ok) {
-                        const result = await response.json();
-                        const part = result?.candidates?.[0]?.content?.parts?.[0];
-                        const audioData = part?.inlineData?.data;
-                        const mimeType = part?.inlineData?.mimeType;
-
-                        if (audioData && mimeType && mimeType.startsWith("audio/L16")) {
-                            const sampleRate = 24000;
-                            const pcmData = base64ToArrayBuffer(audioData);
-                            const pcm16 = new Int16Array(pcmData);
-                            return pcmToWav(pcm16, sampleRate);
-                        } else {
-                            throw new Error("Respons API tidak mengandung data audio yang valid.");
-                        }
-                    } else {
-                        if (response.status === 429 || response.status >= 500) {
-                            throw new Error(`Server error (${response.status}), retrying...`);
-                        } else {
-                            const errorResult = await response.json();
-                            throw new Error(`API call failed: ${JSON.stringify(errorResult)}`);
-                        }
-                    }
-                } catch (error) {
-                    if (attempt < maxRetries - 1) {
-                        await new Promise(resolve => setTimeout(resolve, lastDelay));
-                        lastDelay *= 2;
-                    } else {
-                        throw error;
-                    }
-                }
-            }
-            throw new Error("Gagal mendapatkan audio dari API setelah beberapa kali percobaan.");
+            // FUNGSI INI DITINGGALKAN, NAMUN TOMBOL DI HTML SUDAH DIHIDDEN
+            return new Blob(["Audio feature disabled for this content."], { type: 'text/plain' });
         }
 
-        /**
-         * FUNGSI BARU: playQuestionAudio
-         * Mengambil, melakukan caching, dan memutar audio soal naratif (Narrative MC).
-         */
         const playQuestionAudio = async (questionId) => {
-            const currentMissionName = appState.currentMission;
-            if (!currentMissionName) return;
-
-            const missionQuestions = appState.missions[currentMissionName];
-            const q = missionQuestions.find(item => item.id === questionId);
-            
-            if (!q || q.type !== 'narrative_mc') {
-                return showModal('Informasi Audio', 'Hanya soal naratif (Narrative MC) yang memiliki fungsi Audio.');
-            }
-
-            const playBtn = document.getElementById('play-audio-btn');
-            
-            // 1. Logic Stop/Play
-            if (currentAudio && currentAudio.dataset.id === questionId) {
-                stopCurrentAudio();
-                playBtn.innerHTML = originalButtonContent;
-                playBtn.disabled = false;
-                return;
-            } else if (currentAudio) {
-                stopCurrentAudio();
-            }
-
-            playBtn.disabled = true;
-            playBtn.innerHTML = '<div class="w-5 h-5 border-2 border-white border-t-red-400 rounded-full animate-spin mr-2"></div> Memuat Audio...';
-            
-            // 2. Extract Narrative Text (Split sebelum "Berdasarkan narasi,")
-            const narrativeText = q.question.split('Berdasarkan narasi,')[0].trim();
-            
-            let audioBlob;
-            try {
-                // 3. Handle Caching
-                if (audioCache.has(questionId)) {
-                    audioBlob = audioCache.get(questionId);
-                } else {
-                    playBtn.innerHTML = '<div class="w-5 h-5 border-2 border-white border-t-red-400 rounded-full animate-spin mr-2"></div> Menghasilkan Audio (API)...';
-                    audioBlob = await generateAudioBlob(narrativeText);
-                    audioCache.set(questionId, audioBlob);
-                }
-
-                // 4. Playback Logic
-                const audioUrl = URL.createObjectURL(audioBlob);
-                currentAudio = new Audio(audioUrl);
-                currentAudio.dataset.id = questionId; // Mark the audio element
-
-                currentAudio.onplay = () => {
-                    playBtn.innerHTML = '<svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg> Berhenti Mendengarkan';
-                    playBtn.classList.add('bg-red-700');
-                    playBtn.classList.remove('bg-red-600', 'hover:bg-red-700');
-                };
-
-                currentAudio.onended = () => {
-                    stopCurrentAudio();
-                    playBtn.innerHTML = originalButtonContent;
-                    playBtn.classList.remove('bg-red-700');
-                    playBtn.classList.add('bg-red-600', 'hover:bg-red-700');
-                    playBtn.disabled = false;
-                };
-
-                await currentAudio.play();
-                playBtn.disabled = false;
-
-            } catch (error) {
-                console.error("Gagal memutar audio:", error);
-                playBtn.innerHTML = originalButtonContent;
-                playBtn.disabled = false;
-                showModal('Kesalahan Audio', 'Gagal memuat atau memutar audio soal. Silakan coba lagi atau baca teks soal.');
-            }
+            // FUNGSI INI DITINGGALKAN, NAMUN TOMBOL DI HTML SUDAH DIHIDDEN
+            showModal('Informasi Audio', 'Fitur audio dinonaktifkan untuk quiz ini.');
         }
-        
+
         const formatTime = (seconds) => {
             const minutes = Math.floor(seconds / 60);
             const remainingSeconds = seconds % 60;
@@ -735,18 +508,11 @@
             return `${pad(minutes)}:${pad(remainingSeconds)}`;
         }
         
-        // FUNGSI TIMER DIUBAH UNTUK MENGHITUNG WAKTU TERSISA
         const startMissionTimer = () => {
-            // Jika missionElapsedTime sudah mencapai batas, jangan mulai timer
-            if (appState.missionElapsedTime >= MISSION_TIME_LIMIT_SECONDS) {
-                // Di sini kami tidak memanggil navigateToMissionSelect() langsung
-                // karena hal itu mungkin sudah dilakukan di tempat lain (misalnya setelah loadAppState).
-                return; 
-            }
+            // Mengganti 1200 dengan MISSION_TIME_LIMIT_SECONDS (2400)
+            if (appState.missionElapsedTime >= MISSION_TIME_LIMIT_SECONDS) { return; }
             
             stopMissionTimer(); 
-            
-            // Waktu mulai sesi aktif
             missionActiveStartTimestamp = Date.now();
             const timeDisplay = document.getElementById('mission-time-display');
 
@@ -760,18 +526,17 @@
                     appState.missionElapsedTime = MISSION_TIME_LIMIT_SECONDS;
                     timeDisplay.textContent = '00:00';
                     timeDisplay.classList.remove('time-critical');
-                    // Misi dihentikan jika waktu habis
+                    
                     showModal(
                         'Waktu Habis!', 
-                        'Waktu 20 menit untuk misi ini telah habis. Misi dihentikan, skor Anda telah dicatat, dan Anda akan dikembalikan ke menu pilih misi.',
-                        () => navigateToMissionSelect(true) // true menandakan penghentian karena waktu
+                        'Waktu 40 menit untuk quiz ini telah habis. Quiz dihentikan dan skor Anda telah dicatat.',
+                        () => finishQuiz(true) 
                     );
                     return;
                 }
 
                 timeDisplay.textContent = formatTime(timeRemaining);
                 
-                // Menambahkan penanda waktu kritis (kurang dari 2 menit)
                 if (timeRemaining <= 120) {
                     timeDisplay.classList.add('time-critical');
                 } else {
@@ -779,9 +544,7 @@
                 }
             };
 
-            // Panggil sekali untuk inisialisasi display
             updateTimerDisplay();
-
             timerInterval = setInterval(updateTimerDisplay, 1000);
         }
 
@@ -789,7 +552,6 @@
             if (timerInterval) {
                 if (missionActiveStartTimestamp) {
                     const elapsedSinceStart = Math.floor((Date.now() - missionActiveStartTimestamp) / 1000);
-                    // Tambahkan waktu yang telah digunakan ke total Mission Elapsed Time
                     appState.missionElapsedTime += elapsedSinceStart; 
                     missionActiveStartTimestamp = null; 
                 }
@@ -810,14 +572,10 @@
         }
         
         const saveAppState = () => {
-            // Logic ini sudah tidak diperlukan karena state missionElapsedTime sudah dihandle di stopMissionTimer/startMissionTimer
-            // Kita hanya perlu menyimpan appState.missionElapsedTime
-            
             try {
                 const stateToSave = {
                     appState: {
                         ...appState,
-                        // Menyimpan missionActiveStartTimestamp *jika* timer aktif untuk menghitung elapsed time saat load
                         missionActiveStartTimestamp: appState.screen === 'inMission' ? Date.now() : null,
                     },
                     userInfo,
@@ -837,42 +595,21 @@
 
         const isMissionCompleted = (missionName) => {
             if (!appState.scores[missionName]) return 0;
-            return Object.values(appState.scores[missionName]).filter(q => q.completed).length === 10;
+            // Cek apakah semua 40 soal sudah completed
+            return Object.values(appState.scores[missionName]).filter(q => q.completed).length === MAX_QUESTIONS;
         }
 
         const calculateGameScore = () => {
-            return Object.keys(missionData).reduce((sum, name) => sum + calculateMissionScore(name), 0);
+            // Karena hanya ada satu misi, ini adalah skor total
+            return calculateMissionScore(appState.currentMission);
         }
         
-        const isGameCompleted = () => {
-            return Object.keys(missionData).every(isMissionCompleted);
-        }
+        // --- LOGIKA ALUR BARU: MENGHILANGKAN PEMILIHAN MISI ---
 
-        const resetGameStateAndUser = () => {
-            userInfo = { nama: '', jurusan: '', kelas: '' };
-            totalTimeSeconds = 0;
-            appState.cheatingCount = 0;
-            appState.missionElapsedTime = 0; // NEW: Reset waktu misi
-            missionActiveStartTimestamp = null; // Reset timestamp
-            appState.isCheatingListenerActive = false; // Pastikan non-aktif
-            // Reset daftar soal yang sudah diacak
-            appState.missions = {};
-            appState.scores = {};
-            clearInputFields();
-            
-            // Re-initialize game data for clean state/new user
-            initGameData(); 
-            
-            localStorage.removeItem(STORAGE_KEY);
-        }
-        
-        // --- START: FUNGSI NAVIGASI YANG HARUS DIDEKLARASIKAN LEBIH DULU ---
-
-        // PERBAIKAN: Menggunakan deklarasi function standar untuk menghindari SyntaxError redeclaration
         function updateAppScreen() {
             document.getElementById('loading-screen').classList.add('hidden');
             document.getElementById('intro-screen').classList.add('hidden'); 
-            document.getElementById('mission-select-screen').classList.add('hidden');
+            // document.getElementById('mission-select-screen').classList.add('hidden'); // Dihapus
             document.getElementById('in-mission-screen').classList.add('hidden');
             document.getElementById('final-screen').classList.add('hidden');
             document.getElementById('penalty-screen').classList.add('hidden');
@@ -882,130 +619,83 @@
                 document.getElementById('loading-screen').classList.remove('hidden');
             } else if (appState.screen === 'intro') { 
                 document.getElementById('intro-screen').classList.remove('hidden');
-            } else if (appState.screen === 'missionSelect') {
-                document.getElementById('mission-select-screen').classList.remove('hidden');
-                renderMissionSelect();
             } else if (appState.screen === 'inMission') {
                 document.getElementById('in-mission-screen').classList.remove('hidden');
                 renderMissionState();
+                startMissionTimer(); // Pastikan timer dimulai saat masuk misi
             } else if (appState.screen === 'finished') {
                 document.getElementById('final-screen').classList.remove('hidden');
                 renderFinalScreen();
-            } else if (appState.screen === 'penalty') { // Tambahkan render untuk layar penalty
+            } else if (appState.screen === 'penalty') { 
                 document.getElementById('penalty-screen').classList.remove('hidden');
             }
             
             saveAppState();
         }
 
-        // Parameter `timeExpired` digunakan jika dipanggil karena waktu habis
-        function navigateToMissionSelect(timeExpired = false) {
+        // Menggantikan fungsi navigateToMissionSelect
+        function finishQuiz(timeExpired = false) {
             stopCurrentAudio(); 
-            stopMissionTimer(); // Ini mengakumulasi waktu ke appState.missionElapsedTime
+            stopMissionTimer(); 
 
             const missionName = appState.currentMission;
-
-            // FIX UTAMA: Akumulasi waktu misi ke total waktu permainan hanya jika misi selesai atau waktu habis
-            if (missionName && (timeExpired || isMissionCompleted(missionName))) {
-                // Tambahkan waktu misi yang baru selesai/berakhir ke total waktu sesi
-                totalTimeSeconds += appState.missionElapsedTime;
-                appState.missionElapsedTime = 0; // Reset waktu misi
-            }
             
-            if (timeExpired) {
-                // Tandai semua soal yang belum selesai sebagai selesai (skor 0)
-                if (appState.currentMission) {
-                    appState.missions[appState.currentMission].forEach(q => {
-                        if (!appState.scores[appState.currentMission][q.id].completed) {
-                            appState.scores[appState.currentMission][q.id].completed = true;
-                            appState.scores[appState.currentMission][q.id].score = 0;
-                            appState.scores[appState.currentMission][q.id].skipped = true;
+            // Akumulasi sisa waktu misi yang terpause (hanya jika waktu habis/pelanggaran)
+            if (missionName && appState.missionElapsedTime > 0) {
+                 totalTimeSeconds += appState.missionElapsedTime;
+                 appState.missionElapsedTime = 0;
+            }
+
+            if (timeExpired || appState.cheatingCount >= MAX_CHEATING_ATTEMPTS) {
+                 // Tandai semua soal yang belum selesai sebagai selesai (skor 0)
+                 if (missionName) {
+                    appState.missions[missionName].forEach(q => {
+                        if (!appState.scores[missionName][q.id].completed) {
+                            appState.scores[missionName][q.id].completed = true;
+                            appState.scores[missionName][q.id].score = 0;
+                            appState.scores[missionName][q.id].skipped = true;
                         }
                     });
                 }
             }
             
-            // Logika penentuan layar final dipindahkan ke sini
-            if (isGameCompleted() || appState.cheatingCount >= MAX_CHEATING_ATTEMPTS) { 
-                appState.screen = 'finished';
-            } else {
-                appState.screen = 'missionSelect';
-            }
+            appState.screen = 'finished';
             updateAppScreen();
         }
 
-        function renderMissionSelect() {
-            stopMissionTimer(); 
-            // Anti-kecurangan tidak berlaku di sini
-            appState.isCheatingListenerActive = false; 
-
-            const missionList = document.getElementById('mission-list');
-            missionList.innerHTML = '';
-            
-            const missionNames = Object.keys(missionData);
-            const completedCount = missionNames.filter(isMissionCompleted).length;
-            
-            document.getElementById('game-progress-display').textContent = `${completedCount}/${missionNames.length} Misi Selesai`;
-            
-            // Pengecekan diserahkan ke navigateToMissionSelect saat user menyelesaikan misi.
-
-            missionNames.forEach(name => {
-                const totalScore = calculateMissionScore(name);
-                const isCompleted = isMissionCompleted(name);
-                
-                const button = document.createElement('button');
-                button.className = `mission-button w-full text-left p-5 rounded-xl transition duration-300 border border-red-700/50 flex justify-between items-center ${
-                    isCompleted ? 'bg-green-700/30 text-green-300' : 'bg-gray-700 hover:bg-red-600 text-white'
-                }`;
-                button.innerHTML = `
-                    <span class="font-extrabold text-xl">${name}</span>
-                    <span class="text-sm font-semibold p-1 px-3 rounded-full ${isCompleted ? 'bg-green-500' : 'bg-gray-600'}">
-                        ${isCompleted ? 'SELESAI' : 'SKOR: ' + totalScore + ' / ' + MAX_MISSION_SCORE}
-                    </span>
-                `;
-                button.onclick = () => selectMission(name);
-                missionList.appendChild(button);
-            });
-        }
-        
         function selectMission(name) {
+            // Fungsi ini sekarang dipanggil dari handleProfileStart, jadi tidak perlu tombol di sini.
             triggerHaptics();
             stopCurrentAudio();
             appState.currentMission = name;
 
-            // NEW: Reset Mission Elapsed Time saat memulai misi baru
-            // Note: Akumulasi waktu misi sebelumnya terjadi di navigateToMissionSelect()
             appState.missionElapsedTime = 0; 
             
-            // AKTIFKAN LISTENER KECURANGAN SAAT MASUK MISI
             appState.isCheatingListenerActive = true; 
             startMissionTimer();
             
-            const missionQ = appState.missions[name]; // Menggunakan misi yang sudah diacak
+            const missionQ = appState.missions[name]; 
             const firstUncompletedQuestion = missionQ.find(q => !appState.scores[name][q.id].completed);
             
             if (firstUncompletedQuestion) {
                 goToQuestion(firstUncompletedQuestion.id);
             } else {
-                goToQuestion(missionQ[0].id); // Jika semua selesai, tetap tampilkan soal 1
+                goToQuestion(missionQ[0].id);
             }
             appState.screen = 'inMission';
             updateAppScreen();
         }
 
-        // --- END: FUNGSI NAVIGASI YANG HARUS DIDEKLARASIKAN LEBIH DULU ---
+        // --- END LOGIKA ALUR BARU ---
 
 
         // --- PROFILE HANDLERS ---
         const checkProfileInputs = () => {
-            // FIX: Menggunakan value dari select box. Jika value adalah string kosong (""), dianggap belum dipilih.
             const nama = document.getElementById('nama-input').value.trim();
             const jurusan = document.getElementById('jurusan-input').value;
             const kelas = document.getElementById('kelas-input').value;
-            
             const startBtn = document.getElementById('start-profile-btn');
             
-            // Pengecekan yang ketat: nama tidak kosong, jurusan dan kelas tidak sama dengan nilai default ("" / -- Pilih... --)
             if (nama && jurusan !== "" && kelas !== "") {
                 startBtn.disabled = false;
             } else {
@@ -1018,59 +708,71 @@
             const jurusan = document.getElementById('jurusan-input').value;
             const kelas = document.getElementById('kelas-input').value;
 
-            // Double check sebelum memulai
             if (nama && jurusan !== "" && kelas !== "") {
                 triggerHaptics(100);
                 userInfo = { nama, jurusan, kelas };
                 totalTimeSeconds = 0; 
                 appState.cheatingCount = 0;
-                appState.missionElapsedTime = 0; // Pastikan reset
+                appState.missionElapsedTime = 0; 
                 
-                initGameData();
+                // Mulai misi otomatis
+                const missionName = Object.keys(missionData)[0];
+                appState.currentMission = missionName;
+                const missionQ = appState.missions[missionName];
                 
-                appState.screen = 'missionSelect';
-                updateAppScreen();
+                if (missionQ && missionQ.length > 0) {
+                     // Cari soal pertama yang belum selesai (jika ada)
+                    const firstUncompletedQuestion = missionQ.find(q => !appState.scores[missionName][q.id].completed);
+
+                    if (firstUncompletedQuestion) {
+                        appState.currentQuestionId = firstUncompletedQuestion.id;
+                    } else {
+                        appState.currentQuestionId = missionQ[0].id; // Mulai dari Q1
+                    }
+                    
+                    appState.screen = 'inMission';
+                    appState.isCheatingListenerActive = true; 
+                    updateAppScreen();
+                } else {
+                    showModal('Kesalahan Data', 'Data soal kuis tidak ditemukan.');
+                }
+
             } else {
-                showModal('Informasi Kurang', 'Mohon lengkapi semua data (Nama, Jurusan, Kelas) sebelum memulai misi.');
+                showModal('Informasi Kurang', 'Mohon lengkapi semua data (Nama, Jurusan, Kelas) sebelum memulai quiz.');
             }
         }
         // --- END: PROFILE HANDLERS ---
         
         const loadAppState = () => {
-            // Logic ini sudah tidak diperlukan karena state missionElapsedTime sudah dihandle di stopMissionTimer/startMissionTimer
-            // Kita hanya perlu menyimpan appState.missionElapsedTime
-            
             try {
                 const savedState = localStorage.getItem(STORAGE_KEY);
                 if (!savedState) return false;
 
                 const loadedData = JSON.parse(savedState);
-
-                // Memulihkan data inti
+                
                 appState = loadedData.appState || appState;
                 appState.isCheatingListenerActive = false; 
-                // NEW: Memulihkan missionElapsedTime
                 appState.missionElapsedTime = loadedData.appState.missionElapsedTime || 0;
 
                 userInfo = loadedData.userInfo || userInfo;
                 totalTimeSeconds = loadedData.totalTimeSeconds || 0;
                 
-                // Memulihkan daftar misi yang sudah diacak
+                // Pastikan currentMission selalu menunjuk ke misi tunggal
+                appState.currentMission = Object.keys(missionData)[0]; 
+
                 if (loadedData.appState.missions) {
                     appState.missions = loadedData.appState.missions;
                 }
 
-                // --- PERBAIKAN WAKTU SESI ---
+                // Memperhitungkan waktu yang hilang saat aplikasi ditutup
                 const savedTimestamp = loadedData.appState.missionActiveStartTimestamp;
                 if ((appState.screen === 'inMission' || appState.screen === 'penalty') && savedTimestamp) {
-                    // Hitung waktu yang hilang saat aplikasi ditutup
                     const timeLostSeconds = Math.floor((Date.now() - savedTimestamp) / 1000);
                     appState.missionElapsedTime += timeLostSeconds; 
                     
-                    // Jika waktu habis saat aplikasi ditutup, paksa ke menu
                     if (appState.missionElapsedTime >= MISSION_TIME_LIMIT_SECONDS) {
                         appState.missionElapsedTime = MISSION_TIME_LIMIT_SECONDS;
-                        // Tandai sebagai completed dengan score 0 untuk yang belum dijawab.
+                        // Paksa selesai jika waktu habis saat offline/background
                         if (appState.currentMission) {
                             appState.missions[appState.currentMission].forEach(q => {
                                 if (!appState.scores[appState.currentMission][q.id].completed) {
@@ -1079,16 +781,16 @@
                                 }
                             });
                         }
-                        appState.screen = 'missionSelect';
+                        appState.screen = 'finished'; // Langsung ke final
+                    } else if (appState.screen === 'inMission') {
+                         appState.isCheatingListenerActive = true; 
                     }
                     
                     missionActiveStartTimestamp = Date.now();
                 } else {
                     missionActiveStartTimestamp = null;
                 }
-                // --- END PERBAIKAN WAKTU SESI ---
 
-                // Memulihkan skor & currentAnswer
                 if (loadedData.scores) {
                     for (const missionName in loadedData.scores) {
                         if (missionData[missionName]) {
@@ -1111,7 +813,6 @@
 
                 console.log('State berhasil dimuat dari LocalStorage.');
                 
-                // PENTING: Panggil updateAppScreen di sini untuk memuat tampilan terakhir
                 updateAppScreen(); 
                 
                 return true;
@@ -1183,63 +884,63 @@
 
         // FUNGSI INI DIUBAH UNTUK MENGACAK URUTAN SOAL DAN OPSI JAWABAN SAAT START
         const initGameData = () => {
-            const missionNames = Object.keys(missionData);
-            
-            missionNames.forEach(missionName => {
-                let originalQuestions = missionData[missionName];
-                
-                // 1. Acak urutan soal Misi
-                let shuffledQuestions = shuffleArray(originalQuestions);
+            const missionName = Object.keys(missionData)[0]; // Hanya satu misi
 
-                // 2. Pastikan soal 1 (narrative_mc) selalu di depan (Jika ada)
-                const narrativeQuestion = shuffledQuestions.find(q => q.type === 'narrative_mc');
-                if (narrativeQuestion) {
-                    shuffledQuestions = shuffledQuestions.filter(q => q.type !== 'narrative_mc');
-                    shuffledQuestions.unshift(narrativeQuestion);
+            let originalQuestions = missionData[missionName];
+            
+            // 1. Acak urutan soal Misi
+            let shuffledQuestions = shuffleArray(originalQuestions);
+
+            // 2. Pastikan Essay (q40_essay) selalu di akhir
+            const essayQuestion = shuffledQuestions.find(q => q.type === 'essay');
+            if (essayQuestion) {
+                 shuffledQuestions = shuffledQuestions.filter(q => q.type !== 'essay');
+                 shuffledQuestions.push(essayQuestion);
+            }
+
+            // 3. Pastikan Narrative MC (q3_narrative) selalu di awal (jika ada) - tidak ada di data baru, tapi jaga logika
+            const narrativeQuestion = shuffledQuestions.find(q => q.type === 'narrative_mc');
+            if (narrativeQuestion) {
+                 shuffledQuestions = shuffledQuestions.filter(q => q.type !== 'narrative_mc');
+                 shuffledQuestions.unshift(narrativeQuestion);
+            }
+
+
+            appState.missions[missionName] = [];
+            appState.scores[missionName] = {}; 
+
+            shuffledQuestions.forEach(q => {
+                if (appState.missions[missionName].length >= MAX_QUESTIONS) return;
+
+                q.missionName = missionName;
+                appState.missions[missionName].push(q);
+                
+                appState.scores[missionName][q.id] = { 
+                    score: 0, 
+                    completed: false, 
+                    skipped: false, 
+                    isConsulted: false,
+                    shuffledOptions: [], 
+                    shuffledMatches: [],
+                    currentAnswer: q.type === 'grid_tf' ? {} : null, 
+                };
+                
+                const qState = appState.scores[missionName][q.id];
+
+                // Acak Opsi Jawaban
+                if (q.type === 'narrative_mc' || q.type === 'multiple_choice' || q.type === 'true_false' || q.type === 'multiple_correct') {
+                    let options = (q.type === 'true_false') ? ["Benar", "Salah"] : (q.options ? [...q.options] : []);
+                    if (options.length > 0 && q.type !== 'true_false') {
+                         qState.shuffledOptions = shuffleArray(options);
+                    } else {
+                        qState.shuffledOptions = options;
+                    }
                 }
 
-                appState.missions[missionName] = [];
-                appState.scores[missionName] = {}; 
-
-                shuffledQuestions.forEach(q => {
-                    // Hanya memproses 10 soal pertama
-                    if (appState.missions[missionName].length >= 10) return;
-
-                    q.missionName = missionName;
-                    appState.missions[missionName].push(q);
-                    
-                    appState.scores[missionName][q.id] = { 
-                        score: 0, 
-                        completed: false, 
-                        skipped: false, 
-                        isConsulted: false,
-                        shuffledOptions: [], 
-                        shuffledMatches: [],
-                        currentAnswer: q.type === 'grid_tf' ? {} : null, 
-                    };
-                    
-                    const qState = appState.scores[missionName][q.id];
-
-                    // Acak Opsi Jawaban
-                    if (q.type === 'narrative_mc' || q.type === 'multiple_choice' || q.type === 'true_false') {
-                        let options = q.type === 'true_false' ? ["Benar", "Salah"] : [...q.options];
-                        if (options.length > 0) {
-                             // Jangan acak TF, hanya MC dan Narrative MC
-                             qState.shuffledOptions = (q.type === 'true_false') ? options : shuffleArray(options);
-                        } else {
-                            qState.shuffledOptions = options;
-                        }
-                    }
-
-                    if (q.type === 'multiple_correct') {
-                         qState.shuffledOptions = shuffleArray([...q.options]);
-                    }
-
-                    if (q.type === 'matching') {
-                        const targets = q.matches.map(m => m.target);
-                        qState.shuffledMatches = shuffleArray(targets);
-                    }
-                });
+                if (q.type === 'matching') {
+                    const targets = q.matches.map(m => m.target);
+                    qState.shuffledMatches = shuffleArray(targets);
+                }
             });
         }
         
@@ -1247,7 +948,7 @@
             const navContainer = document.getElementById('question-navigation');
             navContainer.innerHTML = '';
             
-            // Menggunakan missionQ yang sudah terpotong (hanya 10 soal) dari appState.missions
+            // Menggunakan missionQ yang sudah terpotong (hanya 40 soal)
             missionQ.forEach((q, index) => {
                 const qState = appState.scores[appState.currentMission][q.id];
                 const btn = document.createElement('button');
@@ -1270,125 +971,82 @@
         }
 
         const getExpertHint = (q) => {
-            switch (q.id) {
-                // Aceh
-                case 'aceh_1': return `Fokus pada peran Sultan Ali Mughayat Syah, yaitu mengamankan jalur dagang dan merebut Pasai setelah Malaka jatuh ke Portugis.`;
-                case 'aceh_2': return `Cakra Donya adalah nama armada laut kerajaan Aceh yang terkenal kuat pada masa Sultan Iskandar Muda.`; 
-                case 'aceh_3': 
-                    return `Khusus (Soal Grid):
-1. Keinginan menguasai Selat Malaka adalah motif utama perlawanan. (JAWABAN BENAR: Benar)
-2. Aceh tidak menjalin hubungan dengan Demak untuk balas dendam, tetapi dengan Johor/Ternate. (JAWABAN BENAR: Salah)
-3. Perlawanan Aceh didorong oleh ekonomi dan agama, bukan hanya ekonomi murni. (JAWABAN BENAR: Salah)
-4. Tujuan Aceh adalah menjadi pusat penyebaran Islam yang kuat di Nusantara. (JAWABAN BENAR: Benar)`; // grid 1
-                case 'aceh_4': return `Monopoli perdagangan di Selat Malaka adalah faktor utama perlawanan.`; // MC baru
-                case 'aceh_5': return `Sultan Iskandar Muda memajukan Aceh dengan menciptakan undang-undang 'Adat Meukuta Alam' dan menguatkan ajaran agama Islam.`; 
-                case 'aceh_6': return `Pasangkanlah tokoh: Sultan Ali Mughayat Syah (Pendiri), Sultan Iskandar Muda (Masa Keemasan), Fatahillah (Pahlawan Demak).`; // matching
-                case 'aceh_7': 
-                    return `Khusus (Soal Grid):
-1. Strategi VOC fokus pada perebutan jalur ekspor rempah-rempah (Timah/Lada). (JAWABAN BENAR: Benar)
-2. VOC tidak berani menyerang ibu kota Banda Aceh secara langsung. (JAWABAN BENAR: Salah)
-3. Aceh tidak selalu berhasil mengusir semua serangan VOC di pantai timur Sumatera. (JAWABAN BENAR: Salah)
-4. VOC membangun benteng di Aceh untuk mengamankan jalur ekspor. (JAWABAN BENAR: Benar)`; // grid 2
-                case 'aceh_8': return `Fokus pada Kerajaan Johor dan Kesultanan Ternate yang memiliki kepentingan yang sama dengan Aceh melawan Portugis.`; 
-                case 'aceh_9': return `Cocokkan lokasi: Malaka (Pusat Monopoli Portugis), Banda Aceh (Pusat Islam Baru), Selat Malaka (Jalur Vital Perdagangan Asia).`; 
-                case 'aceh_10': return `Jawaban harus menyoroti bahwa kegagalan serangan 1629 tetap signifikan karena menunjukkan Aceh adalah kekuatan regional yang serius, dan berhasil mempertahankan kedaulatan dari serangan balasan.`; // essay
-
-                // Maluku
-                case 'maluku_1': return `Kebijakan utama Belanda yang memicu amarah adalah praktik monopoli cengkeh dan pala.`;
-                case 'maluku_2': return `Martha Christina Tiahahu adalah pahlawan wanita yang berjuang bersama Pattimura di Pulau Nusalaut.`;
-                case 'maluku_3': 
-                    return `Khusus (Soal Grid):
-1. Pattimura adalah nama asli Thomas Matulessy. (JAWABAN BENAR: Benar)
-2. Benteng Duurstede berhasil direbut oleh pasukan Pattimura pada 16 Mei 1817. (JAWABAN BENAR: Benar)
-3. Motif utama perlawanan adalah monopoli, bukan balas dendam di Ambon. (JAWABAN BENAR: Salah)
-4. Perlawanan ini didukung oleh masyarakat Kristen dan Muslim). (JAWABAN BENAR: Benar)`; // grid 1
-                case 'maluku_4': return `Pejabat Belanda yang tewas adalah Residen Van den Berg.`; // MC baru
-                case 'maluku_5': return `Pattimura dihukum gantung di Benteng Victoria, Ambon.`;
-                case 'maluku_6': return `Pilih dua: Sistem penyerahan wajib rempah-rempah yang merusak ekonomi dan Pengangkatan raja-raja lokal yang sepihak oleh Belanda.`;
-                case 'maluku_7': return `Cocokkan Pattimura (Pemimpin Saparua), Van den Berg (Kepala Benteng Duurstede), Said Perintah (Tokoh Muslim Perlawanan).`; // matching
-                case 'maluku_8': 
-                    return `Khusus (Soal Grid):
-1. Pattimura dihukum gantung di Benteng Victoria, Ambon. (JAWABAN BENAR: Salah)
-2. Pengkhianatan orang lokal menjadi faktor penangkapan Pattimura. (JAWABAN BENAR: Benar)
-3. Hukuman mati Pattimura justru membangkitkan semangat perlawanan. (JAWABAN BENAR: Salah)
-4. Perjuangan Pattimura tidak berakhir dengan kekalahan Belanda. (JAWABAN BENAR: Salah)`; // grid 2
-                case 'maluku_9': return `Pemimpin perlawanan lain selain Pattimura adalah Said Perintah dan Anthony Ribok.`;
-                case 'maluku_10': return `Jawaban harus membahas bahwa hukuman mati Pattimura tidak menghentikan perlawanan, tetapi menjadikannya simbol pemersatu dan meningkatkan semangat perjuangan (dampak psikologis).`; // essay
-
-                // Banten
-                case 'banten_1': return `Fokus kebijakan Sultan Ageng adalah membangun armada laut modern untuk mendukung perdagangan bebas, menentang VOC.`;
-                case 'banten_2': return `Strategi VOC yang merusak internal kerajaan adalah politik adu domba (*Devide et Impera*).`;
-                case 'banten_3': 
-                    return `Khusus (Soal Grid):
-1. Fokus perlawanan Banten adalah menentang monopoli VOC. (JAWABAN BENAR: Benar)
-2. Sultan Haji bersekutu dengan VOC, bukan pemimpin perlawanan. (JAWABAN BENAR: Salah)
-3. Konflik internal antara Sultan Ageng dan putranya menjadi celah bagi VOC. (JAWABAN BENAR: Benar)
-4. Ambisi Sultan Ageng adalah perdagangan bebas internasional. (JAWABAN BENAR: Salah)`; // grid 1
-                case 'banten_4': return `Sultan Ageng memusuhi VOC karena ia berupaya menjadikan Banten pelabuhan perdagangan bebas, yang mengancam monopoli VOC.`; // MC baru
-                case 'banten_5': return `Kebijakan utama Sultan Ageng untuk disegani adalah menciptakan armada laut modern.`;
-                case 'banten_6': return `Pilih dua: Mengembangkan bandar perdagangan tandingan dan mengirim pasukan gerilya ke Batavia.`;
-                case 'banten_7': return `Cocokkan Sultan Ageng (Penganut Perdagangan Bebas), Sultan Haji (Putra Sultan Ageng), VOC (Pemicu Konflik Internal).`; // matching
-                case 'banten_8': 
-                    return `Khusus (Soal Grid):
-1. Kekalahan utama terjadi ketika Sultan Ageng tertangkap melalui tipu muslihat. (JAWABAN BENAR: Benar)
-2. Surosowan adalah markas gerilya Sultan Ageng setelah kekalahan. (JAWABAN BENAR: Salah)
-3. Penangkapan Sultan Ageng Tirtayasa mengakhiri perjuangan militer Banten. (JAWABAN BENAR: Benar)
-4. VOC berhasil menangkap Sultan Ageng setelah mengalahkan semua pasukannya di medan perang terbuka. (JAWABAN BENAR: Salah)`; // grid 2
-                case 'banten_9': return `VOC menjanjikan pengakuan Sultan yang sah dan bantuan militer untuk merebut istana.`;
-                case 'banten_10': return `Jawaban harus menjelaskan mengapa politik adu domba VOC berhasil merusak Kesultanan Banten dan menyebabkan kekalahan perlawanan yang dipimpin Sultan Ageng Tirtayasa.`; // essay
-
-                // Gowa
-                case 'gowa_1': return `Julukan Ayam Jantan dari Timur diberikan oleh Belanda kepada Sultan Hasanuddin karena kegigihan perlawanan Gowa.`;
-                case 'gowa_2': return `Perjanjian Bongaya, yang mengakhiri Perang Makassar, ditandatangani pada tahun 1667.`;
-                case 'gowa_3': 
-                    return `Khusus (Soal Grid):
-1. Motif utama VOC menyerang Gowa adalah monopoli perdagangan rempah-rempah. (JAWABAN BENAR: Benar)
-2. Sultan Hasanuddin mendukung kebijakan monopoli dagang VOC. (JAWABAN BENAR: Salah)
-3. Arung Palakka adalah sekutu VOC karena dendam pribadi (dimanfaatkan VOC). (JAWABAN BENAR: Benar)
-4. Julukan Ayam Jantan dari Timur diberikan oleh Belanda. (JAWABAN BENAR: Salah)`; // grid 2
-                case 'gowa_4': return `Tokoh lokal yang bersekutu dengan VOC dan menjadi kunci kemenangan Belanda dalam Perang Makassar.`; // MC baru
-                case 'gowa_5': return `Pilih dua: Gowa menolak monopoli VOC karena Gowa adalah pusat perdagangan bebas dan takut kehilangan kedaulatan di laut.`;
-                case 'gowa_6': return `Cocokkan Sultan Hasanuddin (Memimpin Perlawanan Gowa), Cornelis Speelman (Pemimpin Armada VOC), Arung Palakka (Sekutu VOC dari Bone).`; // matching
-                case 'gowa_7': return `Cocokkan lokasi: Somba Opu (Benteng Pertahanan Gowa), Rotterdam (Markas Besar VOC), Pelabuhan Makassar (Pusat Monopoli Rempah).`; // matching
-                case 'gowa_8': 
-                    return `Khusus (Soal Grid):
-1. Perjanjian Bongaya adalah puncak kekalahan Gowa. (JAWABAN BENAR: Salah)
-2. Gowa dipaksa mengakui hak monopoli VOC. (JAWABAN BENAR: Benar)
-3. Wilayah kekuasaan Gowa menyusut drastis. (JAWABAN BENAR: Benar)
-4. Benteng Somba Opu diserahkan ke VOC setelah perjanjian. (JAWABAN BENAR: Salah)`; // grid 2
-                case 'gowa_9': return `Pilih dua: Gowa harus mengakui hak monopoli VOC dan Wilayah kekuasaan Gowa menyusut drastis.`;
-                case 'gowa_10': return `Jawaban harus menyebutkan dua cara spesifik yang dilakukan VOC untuk memastikan Kerajaan Gowa tidak lagi menjadi kekuatan maritim setelah Perjanjian Bongaya.`; // essay
-
-                default: return `Maaf, keterangan ahli tidak dapat ditemukan untuk soal ini.`;
-            }
+            // New hints for Biaya Produksi & BEP
+            if (q.id.startsWith('q1')) return `Ingat, Biaya Tetap (FC) tidak terpengaruh jumlah produksi (misal: sewa, gaji tetap), sedangkan Biaya Variabel (VC) berubah (misal: bahan baku, komisi).`;
+            if (q.id.startsWith('q2')) return `BEP adalah titik nol, bukan maksimal.`;
+            if (q.id.startsWith('q3')) return `Biaya bahan baku akan naik jika produksi naik.`;
+            if (q.id.startsWith('q4')) return `Gaji manajer tetap sama, tidak peduli berapa banyak yang diproduksi.`;
+            if (q.id.startsWith('q5')) return `BEP adalah titik impas. Apa yang terjadi di titik impas?`;
+            if (q.id.startsWith('q6')) return `Margin kontribusi harus menutup biaya apa?`;
+            if (q.id.startsWith('q7')) return `BEP unit adalah minimum yang harus dijual.`;
+            if (q.id.startsWith('q8')) return `Cari biaya yang jumlah totalnya tetap, bukan yang berubah karena penjualan.`;
+            if (q.id.startsWith('q9')) return `Cocokkan istilah dengan definisinya yang paling inti.`;
+            if (q.id.startsWith('q10')) return `Margin Kontribusi adalah 'uang saku' per unit untuk menutup FC.`;
+            if (q.id.startsWith('q11')) return `Rumus BEP Unit: FC / Margin Kontribusi Unit.`;
+            if (q.id.startsWith('q12')) return `BEP Rupiah menggunakan rasio, bukan nilai unit.`;
+            if (q.id.startsWith('q13')) return `Apa dua elemen utama dari total biaya?`;
+            if (q.id.startsWith('q14')) return `Total Cost selalu sama dengan FC + VC.`;
+            if (q.id.startsWith('q15')) return `Gaji administrasi (FC), komisi (VC), penyusutan (FC).`;
+            if (q.id.startsWith('q16')) return `Rasio selalu membandingkan sebagian (Margin Kontribusi) terhadap keseluruhan (Harga Jual).`;
+            if (q.id.startsWith('q17')) return `Pemisahan FC dan VC adalah kunci analisis BEP.`;
+            if (q.id.startsWith('q18')) return `BEP naik jika Biaya naik atau Harga Jual turun.`;
+            if (q.id.startsWith('q19')) return `Pasangkan rumus aljabar dasar.`;
+            if (q.id.startsWith('q20')) return `Tergantung kontrak; biasanya variabel (berdasarkan jam/unit) atau semi-variabel. Dalam konteks umum produksi, seringnya variabel.`;
+            if (q.id.startsWith('q21')) return `Margin Kontribusi: 20.000 - 12.000 = 8.000. BEP: 3.000.000 / 8.000 = 375.`;
+            if (q.id.startsWith('q22')) return `Di bawah BEP berarti rugi. Harus meningkatkan apa yang menghasilkan pendapatan.`;
+            if (q.id.startsWith('q23')) return `MCR = (P - VC) / P. Jika P dan VC naik persentase yang sama, rasio akan tetap.`;
+            if (q.id.startsWith('q24')) return `MoS adalah zona aman antara penjualan saat ini dan BEP.`;
+            if (q.id.startsWith('q25')) return `Cari kombinasi yang membuat pembilang (FC) turun atau penyebut (MCU) naik.`;
+            if (q.id.startsWith('q26')) return `Unit untuk volume, Rupiah untuk nilai uang, Rasio untuk analisis perubahan.`;
+            if (q.id.startsWith('q27')) return `Rumus Target Laba Unit: (FC + Target Laba) / MCU.`;
+            if (q.id.startsWith('q28')) return `Asumsi stabilitas adalah batasan penting dalam analisis BEP dasar.`;
+            if (q.id.startsWith('q29')) return `Kedua variabel ini mendefinisikan Margin Kontribusi.`;
+            if (q.id.startsWith('q30')) return `MCU = Harga Jual dikurangi Biaya yang berubah per unit.`;
+            if (q.id.startsWith('q31')) return `MoS Unit = Penjualan Aktual Unit - BEP Unit.`;
+            if (q.id.startsWith('q32')) return `BEP Naik jika FC naik atau MCU turun.`;
+            if (q.id.startsWith('q33')) return `BEP Rupiah = FC / MCR. (20.000.000 / 0.4).`;
+            if (q.id.startsWith('q34')) return `BEP = FC / MCU. Keduanya berubah, perlu analisis perbandingan.`;
+            if (q.id.startsWith('q35')) return `VC per unit tetap, tetapi Total VC berbanding lurus dengan kuantitas.`;
+            if (q.id.startsWith('q36')) return `P adalah Price (Harga Jual).`;
+            if (q.id.startsWith('q37')) return `Kenaikan Harga Jual menaikkan MCU. Kenaikan FC menaikkan pembilang. Sulit menentukan tanpa angka, tetapi peningkatan FC lebih kuat menaikkan BEP.`;
+            if (q.id.startsWith('q38')) return `FC di atas (pembilang), MCU di bawah (penyebut).`;
+            if (q.id.startsWith('q39')) return `Ya, ini adalah asumsi dasar BEP.`;
+            if (q.id.startsWith('q40')) return `BEP Rupiah penting untuk perencanaan keuangan, MoS untuk manajemen risiko.`;
+            
+            return `Maaf, keterangan ahli tidak dapat ditemukan untuk soal ini.`;
         }
 
-        // --- END NAVIGATION & HINT HELPERS ---
-
+        // FUNGSI BARU UNTUK MENGAMBIL JAWABAN ESAI DARI STATE
+        const getEssayAnswer = (missionName, questionId) => {
+            const scoreData = appState.scores[missionName]?.[questionId];
+            return (scoreData && typeof scoreData.currentAnswer === 'string') ? scoreData.currentAnswer.replace(/\n/g, ' ') : '- Belum Dijawab -';
+        };
+        
         // NEW UTILITY FUNCTION: Hitung Total Konsultasi Ahli
         const calculateTotalConsultations = () => {
             let count = 0;
-            const missionNames = Object.keys(missionData);
-            missionNames.forEach(missionName => {
-                const scores = appState.scores[missionName];
-                if (scores) {
-                    for (const qId in scores) {
-                        if (scores[qId].isConsulted) {
-                            count++;
-                        }
+            const missionName = appState.currentMission;
+            const scores = appState.scores[missionName];
+            if (scores) {
+                for (const qId in scores) {
+                    if (scores[qId].isConsulted) {
+                        count++;
                     }
                 }
-            });
+            }
             return count;
         };
 
 
         const renderMissionState = () => {
             if (!appState.currentMission || !appState.currentQuestionId) {
-                return navigateToMissionSelect();
+                // Di sini, kita akan menganggap QUIZ SELESAI jika tidak ada currentQuestionId
+                if (Object.values(appState.scores[appState.currentMission] || {}).filter(q => q.completed).length === MAX_QUESTIONS) {
+                    return finishQuiz();
+                }
+                return; 
             }
             
-            // Mengambil daftar soal yang sudah diacak
             const missionQ = appState.missions[appState.currentMission];
             const currentQ = missionQ.find(q => q.id === appState.currentQuestionId);
             const currentQState = appState.scores[appState.currentMission][appState.currentQuestionId];
@@ -1396,12 +1054,16 @@
             const isAudioQuestion = currentQ.type === 'narrative_mc';
             const isCompleted = currentQState.completed;
             const currentMissionScore = calculateMissionScore(appState.currentMission);
+            const currentQuestionIndex = missionQ.findIndex(q => q.id === currentQ.id) + 1;
+
 
             document.getElementById('user-name-display').textContent = `${userInfo.nama} (${userInfo.kelas} ${userInfo.jurusan})`;
-            document.getElementById('mission-current-score').textContent = currentMissionScore;
-            document.getElementById('mission-title').textContent = appState.currentMission;
+            // Update skor total game
+            document.getElementById('mission-current-score').textContent = currentMissionScore.toFixed(2); // Menampilkan dua desimal
+            // Update Title (tetap statis di quiz tunggal)
+            document.getElementById('mission-title').textContent = `Soal ${currentQuestionIndex}/${MAX_QUESTIONS} - Biaya Produksi & BEP`;
             
-            // NEW: Perbarui tampilan waktu saat rendering state misi
+            // Perbarui tampilan waktu saat rendering state misi
             const timeRemaining = MISSION_TIME_LIMIT_SECONDS - appState.missionElapsedTime;
             const timeDisplay = document.getElementById('mission-time-display');
             timeDisplay.textContent = formatTime(timeRemaining);
@@ -1419,12 +1081,11 @@
 
 
             const questionTextElement = document.getElementById('question-text');
-            // Cek jika tipe soalnya GRID TF, tampilkan narasi panjang sebagai teks soal
             if (currentQ.type === 'grid_tf' && currentQ.question.includes('Narasi:')) {
                 const parts = currentQ.question.split('\n\n');
-                questionTextElement.textContent = parts[0]; // Tampilkan hanya narasi
+                questionTextElement.textContent = parts[0]; 
                 questionTextElement.classList.remove('italic', 'text-red-400', 'text-2xl', 'text-white');
-                questionTextElement.classList.add('text-base', 'font-normal', 'text-gray-200'); // Teks narasi dinormalisasi
+                questionTextElement.classList.add('text-base', 'font-normal', 'text-gray-200'); 
             } else if (isAudioQuestion) {
                  questionTextElement.textContent = "Dengarkan narasi soal dari tombol audio di atas, lalu pilih jawaban di bawah.";
                  questionTextElement.classList.add('italic', 'text-red-400', 'text-xl');
@@ -1440,16 +1101,13 @@
             renderQuestionNavigation(missionQ); 
             renderQuestionInput(currentQ, currentQState); 
 
-            // Cek apakah semua 10 soal sudah selesai
-            document.getElementById('finish-mission-btn').classList.toggle('hidden', !isMissionCompleted(appState.currentMission));
+            // Tombol "Selesaikan Quiz" muncul jika semua soal selesai
+            document.getElementById('finish-mission-btn').classList.toggle('hidden', Object.values(appState.scores[appState.currentMission]).filter(q => q.completed).length !== MAX_QUESTIONS);
 
-            const playBtn = document.getElementById('play-audio-btn');
-            playBtn.classList.add('bg-red-600', 'hover:bg-red-700', 'disabled:bg-red-400');
-            // Hanya tampilkan tombol audio jika tipe soalnya narrative_mc
-            playBtn.classList.toggle('hidden', !isAudioQuestion || isCompleted);
+            // Tombol Audio dihilangkan/dikelola
+            document.getElementById('play-audio-btn').classList.add('hidden');
             
-            playBtn.innerHTML = originalButtonContent;
-
+            // Tombol Jawab dan Lewati
             document.getElementById('submit-answer-btn').classList.toggle('hidden', isCompleted);
             document.getElementById('skip-btn').classList.toggle('hidden', isCompleted);
             document.getElementById('consult-expert-btn').classList.add('hidden'); 
@@ -1458,7 +1116,7 @@
             document.getElementById('skip-btn').disabled = isCompleted; 
 
             if (isCompleted) {
-                document.getElementById('feedback-message').textContent = `Soal Selesai. Skor: ${currentQState.score}`;
+                document.getElementById('feedback-message').textContent = `Soal Selesai. Skor: ${currentQState.score.toFixed(2)}`;
                 document.getElementById('feedback-message').classList.remove('text-red-400', 'text-yellow-500', 'text-orange-400');
                 document.getElementById('feedback-message').classList.add('text-green-400');
             } else if (!isCompleted && currentQState.isConsulted) {
@@ -1469,7 +1127,6 @@
                 document.getElementById('feedback-message').textContent = `Anda menggunakan Bantuan Ahli (Max ${CONSULT_HINT_SCORE} Poin). Pilih Jawaban Anda.`;
                 document.getElementById('feedback-message').classList.add('text-orange-400');
             } else if (!isCompleted && currentQState.currentAnswer !== null) {
-                // Saat kembali dari soal yang sudah dijawab (salah), tampilkan tombol jawab lagi
                 document.getElementById('submit-answer-btn').classList.remove('hidden');
                 document.getElementById('skip-btn').classList.remove('hidden');
                 document.getElementById('submit-answer-btn').disabled = false;
@@ -1483,7 +1140,6 @@
             inputArea.dataset.type = q.type;
 
             if (q.type === 'narrative_mc' || q.type === 'multiple_choice' || q.type === 'true_false') {
-                // Menggunakan shuffledOptions dari qState
                 const options = qState.shuffledOptions.length > 0 ? qState.shuffledOptions : (q.options || ["Benar", "Salah"]);
                 
                 options.forEach((option) => {
@@ -1493,32 +1149,30 @@
                     let btnClass = 'bg-gray-800 hover:bg-gray-600 text-white';
                     
                     if (qState.completed) {
-                        // Logika untuk menampilkan Jawaban Benar setelah submit
                         const isAnswer = (q.type === 'true_false') 
                             ? (option === 'Benar' ? true : false) === q.answer 
                             : (option === q.answer);
                         
                         if (isAnswer) {
                             btnClass = 'bg-green-700 text-white border-green-500';
-                        } else if (option === qState.currentAnswer) { // Jawaban user yang salah
+                        } else if (option === qState.currentAnswer) { 
                             btnClass = 'bg-red-900 text-red-300 border-red-500';
                         } else {
                             btnClass = 'bg-gray-800', 'text-gray-400';
                         }
-                    } else if (qState.currentAnswer === option) { // Fitur 4: Muat jawaban sementara
+                    } else if (qState.currentAnswer === option) { 
                         btnClass = 'bg-red-600 border-red-500';
                     }
 
                     btn.className = `option-button w-full text-left p-3 rounded-lg border border-gray-600 ${btnClass} shadow-md`;
                     btn.setAttribute('data-value', option);
-                    btn.onclick = () => { selectOption(btn); trackInputChanges(); }; // Tambah trackInput
+                    btn.onclick = () => { selectOption(btn); trackInputChanges(); }; 
                     btn.disabled = qState.completed;
                     inputArea.appendChild(btn);
                 });
                 
             } else if (q.type === 'multiple_correct') {
                 const currentAnswerArray = qState.currentAnswer || []; 
-                // Menggunakan shuffledOptions dari qState untuk multiple_correct
                 const options = qState.shuffledOptions.length > 0 ? qState.shuffledOptions : q.options;
 
                 options.forEach((option) => {
@@ -1528,7 +1182,7 @@
                     if (qState.completed && isCorrect) {
                         labelClass = 'bg-green-700/50 hover:bg-green-700/50';
                     } else if (qState.completed && currentAnswerArray.includes(option) && !isCorrect) {
-                         labelClass = 'bg-red-900/50 hover:bg-red-900/50'; // Jawaban salah yang dipilih
+                         labelClass = 'bg-red-900/50 hover:bg-red-900/50'; 
                     } else if (qState.completed) {
                         labelClass = 'bg-gray-700';
                     }
@@ -1622,7 +1276,6 @@
                 wordCount.id = 'word-count';
                 wordCount.className = 'text-sm text-gray-400 mt-2';
 
-                // Hitung kata awal saat dimuat
                 const initialWordCount = textarea.value.trim() ? textarea.value.trim().split(/\s+/).filter(word => word.length > 0).length : 0;
                 wordCount.textContent = `${initialWordCount} / ${q.minWords} Kata`;
                 wordCount.classList.toggle('text-red-400', initialWordCount < q.minWords);
@@ -1642,14 +1295,12 @@
                 if (qState.completed) {
                     const scoreDisplay = document.createElement('div');
                     scoreDisplay.className = 'mt-4 p-3 bg-red-800 rounded-lg text-sm';
-                    scoreDisplay.textContent = `Jawaban Esai Dicatat. Skor: ${qState.score} Poin.`;
+                    scoreDisplay.textContent = `Jawaban Esai Dicatat. Skor: ${qState.score.toFixed(2)} Poin.`;
                     inputArea.appendChild(scoreDisplay);
                 }
-            } else if (q.type === 'grid_tf') { // NEW: Logic untuk soal grid
-                // Ambil instruksi pertanyaan utama
+            } else if (q.type === 'grid_tf') { 
                 const instruction = q.question.split('\n\n').pop();
                 
-                // Tambahkan instruksi di luar tabel
                 const instructionEl = document.createElement('p');
                 instructionEl.className = 'text-base font-semibold text-gray-300 mb-3';
                 instructionEl.textContent = instruction;
@@ -1658,7 +1309,6 @@
                 const table = document.createElement('div');
                 table.className = 'w-full border border-gray-600 rounded-lg overflow-hidden';
                 
-                // Header
                 const header = document.createElement('div');
                 header.className = 'grid grid-cols-3 bg-red-900/70 font-extrabold text-sm border-b border-red-700';
                 header.innerHTML = `
@@ -1680,7 +1330,6 @@
                     textDiv.textContent = item.text;
                     row.appendChild(textDiv);
 
-                    // Buat wadah untuk tombol Benar/Salah
                     ['true', 'false'].forEach((value, colIndex) => {
                         const btnContainer = document.createElement('div');
                         btnContainer.className = `p-2 flex justify-center border-l border-gray-700`;
@@ -1688,7 +1337,7 @@
                         const btn = document.createElement('button');
                         btn.className = `grid-option-btn w-16`;
                         btn.setAttribute('data-value', value);
-                        btn.textContent = value === 'true' ? 'B' : 'S'; // Menggunakan B/S untuk hemat ruang
+                        btn.textContent = value === 'true' ? 'B' : 'S'; 
 
                         const isSelected = currentSelections[index] === value;
                         const isCorrect = item.answer === (value === 'true');
@@ -1696,13 +1345,10 @@
                         if (qState.completed) {
                             btn.disabled = true;
                             if (isCorrect) {
-                                // Jawaban yang benar (terlepas dari pilihan user)
                                 btn.classList.add('bg-green-700', 'text-white', 'opacity-100');
                             } else if (isSelected && !isCorrect) {
-                                // Pilihan user yang salah
                                 btn.classList.add('bg-red-800', 'text-red-300', 'opacity-100');
                             } else {
-                                // Pilihan yang tidak dipilih dan salah
                                 btn.classList.add('bg-gray-800', 'text-gray-500');
                             }
                         } else {
@@ -1727,7 +1373,6 @@
             }
         }
         
-        // NEW: Handler untuk memilih opsi di Grid TF
         const selectGridOption = (rowElement, value) => {
             triggerHaptics(20);
             rowElement.querySelectorAll('.grid-option-btn').forEach(btn => {
@@ -1749,18 +1394,16 @@
                 btn.classList.remove('bg-red-600', 'border-red-500'); 
             });
             button.classList.add('bg-red-600', 'border-red-500'); 
-            // saveAppState() dipanggil di trackInputChanges()
+            trackInputChanges();
         }
 
         const goToQuestion = (questionId) => {
-            // Mengatur layar ke 'inMission' untuk mengatasi transisi dari 'penalty'
             if (appState.screen === 'penalty') {
                 appState.screen = 'inMission';
-                updateAppScreen(); // Panggil updateAppScreen di sini untuk render transisi
+                updateAppScreen(); 
             }
             
             stopCurrentAudio(); 
-            // Waktu dicatat sebelum berpindah soal
             stopMissionTimer(); 
             startMissionTimer();
             
@@ -1772,7 +1415,6 @@
         }
 
         const navigateToNextQuestion = () => {
-            // FIX Bug 1: Akumulasi waktu dan reset start time
             stopMissionTimer(); 
             startMissionTimer();
 
@@ -1780,18 +1422,16 @@
             const currentIndex = missionQ.findIndex(q => q.id === appState.currentQuestionId);
 
             
-            // Cari soal berikutnya yang BELUM Selesai (completed: false)
             let nextQ = missionQ.slice(currentIndex + 1).find(q => !appState.scores[appState.currentMission][q.id].completed);
 
             if (!nextQ) {
-                // Jika tidak ada di depan, cari soal yang belum selesai dari awal
                 nextQ = missionQ.slice(0, currentIndex).find(q => !appState.scores[appState.currentMission][q.id].completed);
             }
             
             if (nextQ) {
                 goToQuestion(nextQ.id);
             } else {
-                 navigateToMissionSelect();
+                 finishQuiz();
             }
             saveAppState();
         }
@@ -1820,7 +1460,6 @@
                             }
             );
 
-            // Sementara menonaktifkan semua aksi
             document.getElementById('submit-answer-btn').disabled = true;
             document.getElementById('skip-btn').disabled = true;
             document.getElementById('play-audio-btn').disabled = true;
@@ -1828,13 +1467,12 @@
             saveAppState();
         }
 
-        // --- FUNGSI BARU: Penilaian Esai Otomatis menggunakan Gemini API (DIPERBAIKI DENGAN EXPONENTIAL BACKOFF & ABORTCONTROLLER) ---
+        // --- FUNGSI BARU: Penilaian Esai Otomatis menggunakan Gemini API ---
         const gradeEssay = async (questionText, userAnswer, maxScore) => {
             const apiKey = TTS_API_KEY;
             const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
 
-            // OPTIMASI: System prompt yang lebih ringkas dan fokus pada tugas inti
-            const systemPrompt = `Anda adalah Ahli Sejarah. Nilai esai dari 0 sampai ${maxScore}. Kriteria: 1. Akurasi Materi Sejarah (Relevansi jawaban dengan konteks sejarah). 2. Kejelasan Struktur Kalimat (Tata bahasa dan kelancaran). 3. Analisis Kritis (Kedalaman interpretasi peserta). Berikan skor berdasarkan ketiga kriteria ini secara seimbang. Jawab HANYA dalam format JSON.`;
+            const systemPrompt = `Anda adalah Ahli Kewirausahaan dan Analisis BEP. Nilai esai dari 0 sampai ${maxScore}. Kriteria: 1. Akurasi Materi (Relevansi konsep BEP/Biaya). 2. Kejelasan Struktur Kalimat. 3. Analisis Kritis (Kedalaman interpretasi strategis). Berikan skor berdasarkan ketiga kriteria ini secara seimbang. Jawab HANYA dalam format JSON.`;
 
             const userQuery = `Pertanyaan: "${questionText}"\n\nJawaban Siswa: "${userAnswer}"\n\nBeri skor dan feedback (maksimal 3 kalimat).`;
 
@@ -1859,7 +1497,6 @@
 
             for (let attempt = 0; attempt < maxRetries; attempt++) {
                 const controller = new AbortController();
-                // Tetapkan batas waktu per percobaan API
                 const timeoutId = setTimeout(() => controller.abort(), GRADING_TIMEOUT_MS);
 
                 try {
@@ -1867,7 +1504,7 @@
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(payload),
-                        signal: controller.signal // Gunakan signal untuk membatalkan fetch jika timeout
+                        signal: controller.signal 
                     });
 
                     clearTimeout(timeoutId);
@@ -1882,7 +1519,6 @@
                         }
                     }
                     
-                    // Jika Server Error (429, 5xx) dan bukan percobaan terakhir, coba lagi
                     if (response.status === 429 || response.status >= 500) {
                         if (attempt < maxRetries - 1) {
                             await new Promise(resolve => setTimeout(resolve, lastDelay));
@@ -1891,7 +1527,6 @@
                         }
                         throw new Error(`Server error (${response.status}) setelah percobaan maksimum.`);
                     } else {
-                        // Untuk error HTTP lain yang tidak dapat dicoba ulang
                          const errorResult = await response.json().catch(() => ({}));
                          throw new Error(`Panggilan API gagal: ${response.status}. Detail: ${JSON.stringify(errorResult)}`);
                     }
@@ -1899,7 +1534,6 @@
                 } catch (error) {
                     clearTimeout(timeoutId);
                     
-                    // Coba lagi hanya jika terjadi Timeout (AbortError) atau Network Error
                     if (error.name === 'AbortError' || error.message.includes('fetch failed') || error.message.includes('Server error')) {
                          if (attempt < maxRetries - 1) {
                             console.warn(`[AI Grade] Timeout/Network error. Mencoba ulang dalam ${lastDelay}ms...`);
@@ -1910,18 +1544,14 @@
                     }
 
                     console.error("AI Grading Error (Final):", error);
-                    // Non-retriable error atau percobaan maksimum tercapai
                     return { score: 0, feedback: `Penilaian otomatis gagal total: ${error.message}. Skor 0 diberikan.` };
                 }
             }
-            // Jika loop selesai tanpa hasil (fallback untuk kasus terburuk)
             return { score: 0, feedback: "Penilaian otomatis gagal total setelah beberapa kali percobaan. Skor 0 diberikan." };
         };
         // --- END FUNGSI GRADE ESSAY ---
 
-        // --- Penilaian dan Penanganan Jawaban ---
-
-        const handleSubmit = async () => { // Menambahkan async
+        const handleSubmit = async () => { 
             triggerHaptics(100);
             stopCurrentAudio(); 
             
@@ -1929,7 +1559,7 @@
             const q = missionQuestions.find(item => item.id === appState.currentQuestionId);
             
             if (!q) {
-                return showModal('Kesalahan', 'Soal tidak ditemukan. Mohon ulangi dari menu misi.');
+                return showModal('Kesalahan', 'Soal tidak ditemukan. Mohon ulangi dari menu quiz.');
             }
             
             const qState = appState.scores[appState.currentMission][q.id];
@@ -1940,11 +1570,10 @@
 
             const maxScoreForQuestion = qState.isConsulted ? CONSULT_HINT_SCORE : q.points;
 
-            // Pastikan input terakhir dicatat sebelum disubmit
             trackInputChanges();
 
             if (q.type === 'essay') {
-                const text = qState.currentAnswer || ''; // Ambil dari state
+                const text = qState.currentAnswer || ''; 
                 const wordCount = text ? text.split(/\s+/).filter(word => word.length > 0).length : 0;
                 
                 if (wordCount < q.minWords) {
@@ -1952,59 +1581,43 @@
                     return;
                 }
                 
-                // Tampilkan loading saat menunggu penilaian AI (Diubah sesuai permintaan)
-                // HILANGKAN TAMPILAN BATAS WAKTU 20 DETIK
                 document.getElementById('feedback-message').innerHTML = '<div class="w-5 h-5 border-2 border-yellow-400 border-t-yellow-900 rounded-full animate-spin inline-block mr-2"></div> Menilai Esai Otomatis...';
                 document.getElementById('feedback-message').classList.remove('text-red-400', 'text-green-400');
                 document.getElementById('feedback-message').classList.add('text-yellow-400');
                 document.getElementById('submit-answer-btn').disabled = true;
 
-                // Memanggil fungsi penilaian AI
                 const aiResult = await gradeEssay(q.question, text, maxScoreForQuestion);
                 
                 score = aiResult.score; 
                 feedback = aiResult.feedback;
                 
-                // Gunakan feedback dari AI sebagai feedback utama
-                let finalFeedback = `Penilaian AI (${score} Poin): ${aiResult.feedback}`;
+                let finalFeedback = `Penilaian AI (${score.toFixed(2)} Poin): ${aiResult.feedback}`;
 
-                // Aturan penyelesaian: karena ini esai HOTS, jika sudah dinilai AI, langsung selesaikan dan pindah.
+                isCorrect = (score === maxScoreForQuestion); 
                 
-                // Set isCorrect flag untuk visual feedback
-                isCorrect = (score === maxScoreForQuestion); // Hanya dianggap "Benar" jika skor penuh
-                
-                // --- Logic penyelesaian otomatis untuk Esai ---
                 appState.scores[appState.currentMission][q.id].score = score;
                 appState.scores[appState.currentMission][q.id].completed = true;
                 appState.scores[appState.currentMission][q.id].skipped = false;
-                appState.scores[appState.currentMission][q.id].currentAnswer = qState.currentAnswer; // Simpan jawaban final
+                appState.scores[appState.currentMission][q.id].currentAnswer = qState.currentAnswer; 
 
-                // Render ulang input untuk menampilkan skor/feedback AI
                 renderQuestionInput(q, appState.scores[appState.currentMission][q.id]);
                 
-                // Lanjutkan ke soal berikutnya
-                if (isMissionCompleted(appState.currentMission)) {
-                    navigateToMissionSelect();
-                } else {
-                    navigateToNextQuestion();
-                }
+                navigateToNextQuestion();
                 
-                // Selesai di sini, tidak perlu melanjutkan ke blok if/else non-esai di bawah.
                 document.getElementById('feedback-message').textContent = finalFeedback;
                 document.getElementById('feedback-message').classList.toggle('text-green-400', isCorrect);
                 document.getElementById('feedback-message').classList.toggle('text-red-400', !isCorrect && score === 0);
                 document.getElementById('feedback-message').classList.remove('text-yellow-400', 'text-orange-400');
                 document.getElementById('feedback-message').classList.toggle('text-orange-400', score > 0 && score < maxScoreForQuestion);
-                document.getElementById('submit-answer-btn').disabled = false; // Kembalikan ke normal, meski sudah pindah soal
+                document.getElementById('submit-answer-btn').disabled = false; 
                 saveAppState();
-                return; // KELUAR DARI FUNGSI HENDELSUBMIT
+                return; 
 
-            } else if (q.type === 'grid_tf') { // NEW: Logic penilaian untuk soal grid
+            } else if (q.type === 'grid_tf') { 
                 const userSelections = qState.currentAnswer || {};
                 const totalItems = q.gridItems.length;
                 let correctCount = 0;
 
-                // Cek apakah semua item sudah dijawab
                 const allAnswered = totalItems > 0 && Object.keys(userSelections).length === totalItems && Object.values(userSelections).every(v => v !== null);
 
                 if (!allAnswered) {
@@ -2020,8 +1633,8 @@
                     }
                 });
 
-                // Penilaian parsial: skor = (jumlah benar / total item) * maxScore
-                score = Math.round((correctCount / totalItems) * maxScoreForQuestion);
+                // Menggunakan pembulatan 2 desimal agar tetap 40 soal * 2.5 = 100
+                score = (correctCount / totalItems) * maxScoreForQuestion;
                 isCorrect = (correctCount === totalItems);
                 
             } else { 
@@ -2046,7 +1659,8 @@
                             score = maxScoreForQuestion; isCorrect = true;
                         } else if (incorrectlySelected === 0 && correctlySelected > 0) {
                             const ratio = (correctlySelected / correctAnswers.length);
-                            score = Math.round(ratio * maxScoreForQuestion); isCorrect = false;
+                            score = ratio * maxScoreForQuestion; // Menggunakan skor desimal
+                            isCorrect = false;
                         } else { score = 0; isCorrect = false; }
                     }
 
@@ -2060,42 +1674,36 @@
                     q.matches.forEach((match, index) => {
                         if (selectedTargets[index] === match.target) correctMatches++;
                     });
-                    score = Math.round((correctMatches / q.matches.length) * maxScoreForQuestion);
+                    score = (correctMatches / q.matches.length) * maxScoreForQuestion; // Menggunakan skor desimal
                     isCorrect = (score === maxScoreForQuestion);
                 }
             }
                 
-            if (q.type !== 'essay') { // Logika feedback normal untuk non-esai
+            if (q.type !== 'essay') { 
                 if (isCorrect) {
-                    feedback = qState.isConsulted ? `Jawaban Benar dengan Bantuan Ahli! Mendapat ${score} Poin.` : 'Jawaban Benar! 🎉';
+                    feedback = qState.isConsulted ? `Jawaban Benar dengan Bantuan Ahli! Mendapat ${score.toFixed(2)} Poin.` : 'Jawaban Benar! 🎉';
                 } else {
                     if (qState.isConsulted) {
-                        feedback = `Jawaban salah, meskipun sudah menggunakan Ahli. Mendapat ${score} Poin.`;
+                        feedback = `Jawaban salah, meskipun sudah menggunakan Ahli. Mendapat ${score.toFixed(2)} Poin.`;
                     } else {
                         feedback = 'Jawaban Salah. Anda bisa coba Tanya Ahli (Max 5 Poin), atau Lewati Soal.';
                     }
                 }
             } 
             
-            // Non-esai dan Skor sudah ditentukan
-            if (isCorrect || qState.isConsulted || score > 0) { // Jika non-esai dan benar atau menggunakan bantuan atau skor > 0
+            if (isCorrect || qState.isConsulted || score > 0) { 
                 appState.scores[appState.currentMission][q.id].score = score;
                 appState.scores[appState.currentMission][q.id].completed = true;
                 appState.scores[appState.currentMission][q.id].skipped = false;
-                appState.scores[appState.currentMission][q.id].currentAnswer = qState.currentAnswer; // Simpan jawaban final
+                appState.scores[appState.currentMission][q.id].currentAnswer = qState.currentAnswer; 
 
                 renderQuestionInput(q, appState.scores[appState.currentMission][q.id]);
                 
-                if (isMissionCompleted(appState.currentMission)) {
-                    navigateToMissionSelect();
-                } else {
-                    navigateToNextQuestion();
-                }
+                navigateToNextQuestion();
 
             } else {
-                // Hanya terjadi jika non-esai dan salah (skor 0)
                 document.getElementById('submit-answer-btn').disabled = true;
-                document.getElementById('skip-btn').disabled = false; // Boleh dilewati
+                document.getElementById('skip-btn').disabled = false; 
                 document.getElementById('play-audio-btn').disabled = true;
                 if (!qState.isConsulted) {
                     document.getElementById('consult-expert-btn').classList.remove('hidden');
@@ -2106,7 +1714,7 @@
             document.getElementById('feedback-message').classList.toggle('text-green-400', isCorrect);
             document.getElementById('feedback-message').classList.toggle('text-red-400', !isCorrect && score === 0);
             document.getElementById('feedback-message').classList.remove('text-yellow-500', 'text-orange-400');
-            document.getElementById('feedback-message').classList.toggle('text-orange-400', score > 0 && score < maxScoreForQuestion); // Skor parsial
+            document.getElementById('feedback-message').classList.toggle('text-orange-400', score > 0 && score < maxScoreForQuestion); 
             
             saveAppState();
         }
@@ -2120,10 +1728,8 @@
             
             if (!q) return;
 
-            // Simpan jawaban sementara sebelum dilewati
             trackInputChanges();
 
-            // Tandai skipped, tidak completed, skor 0
             appState.scores[appState.currentMission][q.id].score = 0;
             appState.scores[appState.currentMission][q.id].completed = false; 
             appState.scores[appState.currentMission][q.id].skipped = true;
@@ -2170,28 +1776,22 @@
             saveAppState();
         }
         
-        // --- Perbaikan Anti-kecurangan (Stabilisasi Inisialisasi) ---
         const handleCheatingAttempt = (message) => {
-            // Cek jika sedang inisialisasi, ABAIKAN event.
             if (isAppInitializing) {
                 console.warn('[AC] Diabaikan (INIT): Event terjadi saat aplikasi memuat ulang.');
                 return;
             }
             
-            // Periksa jika sudah di layar penalty
             if (appState.screen === 'penalty') {
                 return;
             }
 
-            // Pemeriksaan ganda untuk memastikan hanya aktif saat misi berjalan
             if (appState.screen !== 'inMission' || !appState.isCheatingListenerActive || document.getElementById('modal').classList.contains('flex')) {
                  return; 
             }
 
             console.warn(`[AC] PELANGGARAN TERDETEKSI: ${message}. Count: ${appState.cheatingCount + 1}`);
 
-            // FIX UTAMA WAKTU: Hentikan timer dan catat waktu yang telah berlalu ke appState.missionElapsedTime.
-            // Waktu misi tidak dipindahkan ke totalTimeSeconds karena ini adalah pause sementara.
             stopMissionTimer(); 
 
             appState.cheatingCount++;
@@ -2199,18 +1799,17 @@
             if (appState.cheatingCount >= MAX_CHEATING_ATTEMPTS) {
                 const failureMessage = 'ANDA TELAH MELEBIHI BATAS PELANGGARAN!'; 
                 
-                // Matikan listener saat game berakhir karena kecurangan
                 appState.isCheatingListenerActive = false; 
 
                 showModal(failureMessage, 
                         `Anda telah melakukan ${MAX_CHEATING_ATTEMPTS} pelanggaran. Pengerjaan dihentikan dan dicatat.`, 
                         () => {
                                // Tandai semua soal yang belum selesai sebagai selesai (skor 0)
-                               Object.keys(missionData).forEach(mName => {
-                                   if (!appState.missions[mName]) return; // Skip jika misi belum pernah diinisialisasi
-                                   appState.missions[mName].forEach(q => {
-                                       if (!appState.scores[mName][q.id].completed) {
-                                           appState.scores[mName][q.id] = { 
+                               const missionName = appState.currentMission;
+                               if (missionName) {
+                                   appState.missions[missionName].forEach(q => {
+                                       if (!appState.scores[missionName][q.id].completed) {
+                                           appState.scores[missionName][q.id] = { 
                                                score: 0, 
                                                completed: true, 
                                                skipped: true, 
@@ -2219,7 +1818,7 @@
                                            };
                                        }
                                    });
-                               });
+                               }
                                appState.screen = 'finished';
                                updateAppScreen();
                             }
@@ -2227,77 +1826,58 @@
                 return;
             }
             
-            // Pergi ke layar penalty
             document.getElementById('penalty-reason').textContent = message;
             document.getElementById('penalty-count').textContent = appState.cheatingCount;
             appState.screen = 'penalty'; 
             updateAppScreen();
         }
-        // --- End Perbaikan Anti-kecurangan ---
-
-        // FUNGSI BARU UNTUK MENGAMBIL JAWABAN ESAI DARI STATE
-        const getEssayAnswer = (missionName, questionId) => {
-            // Mengambil jawaban terakhir dari state, mengganti baris baru dengan spasi untuk Google Sheet
-            const scoreData = appState.scores[missionName]?.[questionId];
-            return (scoreData && typeof scoreData.currentAnswer === 'string') ? scoreData.currentAnswer.replace(/\n/g, ' ') : '- Belum Dijawab -';
-        };
 
         const renderFinalScreen = async () => {
-            // FIX: Hentikan timer dan pastikan waktu total terakumulasi sebelum rendering
             stopMissionTimer();
             
-            // Nonaktifkan listener saat selesai
             appState.isCheatingListenerActive = false; 
 
-            // Akumulasi sisa waktu misi yang terpause (hanya jika final screen dipicu dari inMission/penalty
-            // akibat pelanggaran ke-3 atau waktu habis saat di inMission)
-            if (appState.currentMission && appState.missionElapsedTime > 0) {
+            const missionName = appState.currentMission;
+
+            if (appState.missionElapsedTime > 0) {
                  totalTimeSeconds += appState.missionElapsedTime;
                  appState.missionElapsedTime = 0;
             }
 
             const finalScore = calculateGameScore(); 
-            const missionName = 'Seluruh Misi Perlawanan Daerah';
-            
-            // NEW: Hitung total konsultasi
             const totalConsultations = calculateTotalConsultations();
 
             document.getElementById('mission-final-title').textContent = missionName;
-            document.getElementById('mission-final-score').textContent = finalScore;
+            document.getElementById('mission-final-score').textContent = finalScore.toFixed(2); // Menampilkan dua desimal
             document.getElementById('max-game-score').textContent = MAX_GAME_SCORE;
             document.getElementById('final-user-info').textContent = `${userInfo.nama} dari ${userInfo.jurusan} (${userInfo.kelas})`;
-            document.getElementById('total-time-display').textContent = formatTime(totalTimeSeconds); // Menggunakan totalTimeSeconds
+            document.getElementById('total-time-display').textContent = formatTime(totalTimeSeconds); 
             
-            // PERBAIKAN: Menyertakan jawaban Esai, Jumlah Pelanggaran, dan Jumlah Tanya Ahli
+            const essayQuestionId = appState.missions[missionName].find(q => q.type === 'essay')?.id;
+            const essayAnswer = essayQuestionId ? getEssayAnswer(missionName, essayQuestionId) : '- Tidak Ditemukan -';
+
+
             const dataToSave = {
                 timestamp: new Date().toLocaleString('id-ID'),
                 nama_lengkap: userInfo.nama,
                 kelas: userInfo.kelas,
                 jurusan: userInfo.jurusan,
-                skor_total: finalScore,
+                skor_total: finalScore.toFixed(2),
                 waktu_total: formatTime(totalTimeSeconds), 
-                skor_aceh: calculateMissionScore("Perlawanan Aceh"),
-                skor_maluku: calculateMissionScore("Perlawanan Maluku (Pattimura)"),
-                skor_banten: calculateMissionScore("Perlawanan Banten (Sultan Ageng Tirtayasa)"),
-                skor_gowa: calculateMissionScore("Perlawanan Gowa (Sultan Hasanuddin)"),
                 status: appState.cheatingCount >= MAX_CHEATING_ATTEMPTS ? `GAGAL KARENA ${appState.cheatingCount} PELANGGARAN` : 'SELESAI NORMAL',
                 
-                // JAWABAN ESAI TAMBAHAN (Setelah Skor Gowa)
-                essay_aceh_10: getEssayAnswer("Perlawanan Aceh", "aceh_10"),
-                essay_maluku_10: getEssayAnswer("Perlawanan Maluku (Pattimura)", "maluku_10"),
-                essay_banten_10: getEssayAnswer("Perlawanan Banten (Sultan Ageng Tirtayasa)", "banten_10"),
-                essay_gowa_10: getEssayAnswer("Perlawanan Gowa (Sultan Hasanuddin)", "gowa_10"),
+                // JAWABAN ESAI
+                essay_jawaban: essayAnswer, // Menggunakan kolom tunggal
                 
-                // NEW Requested Fields (Setelah Essay Gowa)
-                jumlah_pelanggaran: appState.cheatingCount,     // Request 1
-                jumlah_tanya_ahli: totalConsultations,          // Request 2
+                // DATA TAMBAHAN
+                jumlah_pelanggaran: appState.cheatingCount,     
+                jumlah_tanya_ahli: totalConsultations,          
             };
             
             sendDataToGoogleSheet(dataToSave);
 
             const nextActionBtn = document.getElementById('next-action-btn');
             
-            // PERBAIKAN: Selalu tampilkan "Keluar & Mulai Sesi Baru" dan reset game
             nextActionBtn.textContent = 'Keluar & Mulai Sesi Baru';
             nextActionBtn.onclick = () => {
                 triggerHaptics(50);
@@ -2305,30 +1885,18 @@
                 appState.screen = 'intro';
                 updateAppScreen();
             };
-            // END PERBAIKAN
         }
         
         // --- EVENT LISTENERS ---
 
-        document.getElementById('play-audio-btn').addEventListener('click', () => {
-            triggerHaptics(30);
-            if (appState.currentQuestionId) {
-                // Memberikan izin pemutaran manual saat tombol diklik
-                playQuestionAudio(appState.currentQuestionId).catch(err => {
-                    console.error("Error playing audio on manual click:", err);
-                });
-            }
-        });
         document.getElementById('submit-answer-btn').addEventListener('click', handleSubmit);
         document.getElementById('skip-btn').addEventListener('click', handleSkip);
         document.getElementById('consult-expert-btn').addEventListener('click', handleConsultExpert);
         document.getElementById('finish-mission-btn').addEventListener('click', () => {
             triggerHaptics(150);
-            // Akumulasi waktu misi ke totalTimeSeconds sudah dipindahkan ke navigateToMissionSelect
-            navigateToMissionSelect(); // Akan check isGameCompleted() di dalam fungsi ini
+            finishQuiz(); 
         });
         
-        // Membuat event listener ini menjadi UNCONDITIONAL RESET ke halaman intro
         document.getElementById('next-action-btn').addEventListener('click', function() {
             triggerHaptics(50);
             resetGameStateAndUser(); 
@@ -2336,23 +1904,16 @@
             updateAppScreen();
         });
         
-        // --- Perbaikan Tombol Lanjutkan Misi (Fix Final) ---
         document.getElementById('penalty-continue-btn').addEventListener('click', () => {
             triggerHaptics(150);
             
-            // Pastikan kita punya misi aktif untuk dilanjutkan
-            if (!appState.currentMission || !appState.currentQuestionId) {
-                // Pindah ke menu jika tidak ada state misi yang tersimpan
-                return navigateToMissionSelect();
+            if (!appState.currentMission) {
+                return finishQuiz();
             }
             
-            // AKTIFKAN KEMBALI LISTENER ANTI-KECURANGAN
             appState.isCheatingListenerActive = true; 
-            
-            // Penting: goToQuestion akan memanggil startMissionTimer() yang akan melanjutkan waktu dari appState.missionElapsedTime.
             goToQuestion(appState.currentQuestionId); 
         });
-        // --- End Perbaikan Tombol Lanjutkan Misi ---
 
         document.getElementById('nama-input').addEventListener('input', checkProfileInputs);
         document.getElementById('jurusan-input').addEventListener('change', checkProfileInputs); 
@@ -2360,9 +1921,7 @@
         document.getElementById('start-profile-btn').addEventListener('click', handleProfileStart);
         document.getElementById('start-profile-btn').disabled = true; 
         
-        // Event listener untuk melacak perubahan input non-tombol (multiple correct, essay, matching, grid_tf)
         document.getElementById('question-input-area').addEventListener('input', (e) => {
-             // Pastikan event ini hanya mencakup elemen input non-tombol (checkbox/textarea/select)
             if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT') {
                 trackInputChanges();
             }
@@ -2378,21 +1937,16 @@
         }
         document.getElementById('modal-close-btn').addEventListener('click', hideModal);
 
-        // --- Anti-Cheating Event Listeners (Memanggil handleCheatingAttempt) ---
+        // --- Anti-Cheating Event Listeners ---
         
         document.addEventListener('visibilitychange', () => {
-            // Hanya deteksi jika state benar-benar hidden dan misi aktif
-            // Pengecualian inisialisasi dilakukan di handleCheatingAttempt
             if (document.visibilityState === 'hidden' && appState.screen === 'inMission') {
                 handleCheatingAttempt("Anda terdeteksi berpindah Tab/Aplikasi saat misi berlangsung. Sesi dibatalkan dan skor direset.");
             }
         });
 
         window.addEventListener('blur', () => {
-            // Deteksi jika jendela kehilangan fokus (pindah ke aplikasi lain atau split-screen)
-            // Pengecualian inisialisasi dilakukan di handleCheatingAttempt, dan hanya terjadi jika TIDAK ADA MODAL AKTIF
             if (appState.screen === 'inMission' && !document.getElementById('modal').classList.contains('flex')) {
-                // KODE KRITIS: Cek fokus untuk mencegah false positive yang terjadi saat loading/refresh
                 if (!isAppInitializing && !document.hasFocus()) {
                     handleCheatingAttempt("Anda terdeteksi berpindah Aplikasi atau Split-Screen saat misi berlangsung. Sesi dibatalkan dan skor direset.");
                 } else if (isAppInitializing) {
@@ -2402,13 +1956,12 @@
         });
 
         document.addEventListener('keyup', (e) => {
-            // Deteksi upaya screenshot (PrintScreen keycode 44)
             if (appState.screen === 'inMission' && (e.key === 'PrintScreen' || e.keyCode === 44)) {
                 handleCheatingAttempt("Anda terdeteksi mencoba mengambil tangkapan layar (screenshot). Sesi dibatalkan dan skor direset.");
             }
         });
         
-        // --- Inisialisasi Aplikasi (Urutan Eksekusi yang Tepat) ---
+        // --- Inisialisasi Aplikasi ---
         window.onload = () => {
             if (Object.keys(firebaseConfig).length > 0) {
                 app = initializeApp(firebaseConfig);
@@ -2424,7 +1977,6 @@
                         userId = auth.currentUser?.uid || crypto.randomUUID();
                     } catch (error) {
                         console.error("Gagal autentikasi Firebase:", error);
-                        // Lanjutkan tanpa autentikasi jika gagal
                     }
                 }
                 authenticate();
@@ -2432,40 +1984,18 @@
                 console.warn("Firebase config tidak tersedia.");
             }
             
-            // 1. Inisialisasi data game (termasuk pengacakan)
+            // 1. Inisialisasi data game (Hanya satu misi)
             initGameData();
 
-            let shouldStartTimer = false;
-            
-            // 2. Muat state yang tersimpan (Ini akan menimpa pengacakan jika state lama ditemukan)
-            if (loadAppState()) { // loadAppState sekarang memanggil updateAppScreen jika berhasil
-                // Perlu diperhatikan: loadAppState sudah memanggil updateAppScreen. Cukup atur flag shouldStartTimer.
-                if (appState.cheatingCount >= MAX_CHEATING_ATTEMPTS) {
-                   console.log("[AC] Status Gagal Ditemukan saat Load. Memaksa ke layar 'finished'.");
-                   appState.screen = 'finished';
-                   appState.isCheatingListenerActive = false;
-                } else if (appState.screen === 'inMission' || appState.screen === 'penalty') {
-                    shouldStartTimer = true;
-                    if (appState.screen === 'inMission') {
-                       appState.isCheatingListenerActive = true;
-                    }
-                }
-            } else {
+            // 2. Muat state yang tersimpan
+            if (!loadAppState()) { 
                 // Data baru
                 appState.screen = 'intro';
                 clearInputFields();
-                // 3. Render layar awal (hanya jika data baru)
                 updateAppScreen(); 
             }
 
-            
-            // 4. Jika harus memulai timer, jalankan (khusus untuk pemulihan inMission)
-            if (shouldStartTimer && appState.screen === 'inMission') {
-                startMissionTimer();
-            }
-
-
-            // 5. SETEL isAppInitializing = false setelah semua loading SANGAT JELAS selesai.
+            // 3. Set App Initializing flag
             setTimeout(() => {
                 isAppInitializing = false; 
                 console.log("[AC] Inisialisasi Selesai. Anti-Cheating Aktif.");
